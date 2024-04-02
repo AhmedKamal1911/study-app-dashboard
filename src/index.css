@@ -1,0 +1,12 @@
+.shadow-1 {
+  box-shadow: 0 1px 7px -2px rgba(20, 21, 33, 0.06),
+    0 3px 7px 1px rgba(20, 21, 33, 0.04);
+}
+
+.line-clamp {
+  --lines: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--lines);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
