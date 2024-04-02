@@ -18,7 +18,6 @@ const useFetch = (fetchOptions) => {
           ...fetchOptions,
           signal: abortSignal.signal,
         });
-        console.log({ loadingBeforeSetData: isLoading });
         console.log(response);
         setResponseData(response);
       } catch (e) {
@@ -26,7 +25,9 @@ const useFetch = (fetchOptions) => {
         if (e !== "canceled") setError(e);
       } finally {
         console.log("set state to false in finally");
-        setIsLoading(false);
+        if (error !== "canceled") {
+          setIsLoading(false);
+        }
       }
     };
     executeRequestHandler();
@@ -35,7 +36,7 @@ const useFetch = (fetchOptions) => {
       abortSignal.abort("changed");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toStringifiedFetchOptions]);
+  }, [toStringifiedFetchOptions, error]);
   return { responseData, isLoading, error };
 };
 export default useFetch;

@@ -39,7 +39,7 @@ const RegisterForm = ({ onRegister }) => {
       termsAgree: false,
     },
     validationSchema: registerFormSchema,
-    onSubmit: async ({ termsAgree, confirmPassword, ...rest }) => {
+    onSubmit: async ({ termsAgree, confirmPassword, ...rest }, helpers) => {
       await onRegister(rest);
       formik.setSubmitting(false);
     },

@@ -13,7 +13,9 @@ import CustomSelectField from "./CustomSelectField";
 import CustomAutoComplete from "./CustomAutoComplete";
 import DragZone from "./DragZone";
 import { useFormik } from "formik";
-import createCourseFormSchema from "../schemas/createCourseFormSchema";
+import createCourseFormSchema, {
+  fileValidationSchema,
+} from "../schemas/createCourseFormSchema";
 import { useRef } from "react";
 import getFieldError from "../utils/getFieldError";
 
@@ -23,10 +25,11 @@ const instructorFilterOptions = createFilterOptions({
 });
 const CreateCourseForm = ({ onCourseCreation }) => {
   // TODO: Image Validation using formik instead of normal validation
+  const formRef = useRef(null);
   const certifiedCheckBoxRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      courseImgFile: undefined,
+      courseImgFile: null,
       courseName: "",
       courseCat: "",
       courseDesc: "",
@@ -39,9 +42,13 @@ const CreateCourseForm = ({ onCourseCreation }) => {
     validationSchema: createCourseFormSchema,
     onSubmit: async (values) => {
       if (!certifiedCheckBoxRef.current) return;
+      console.log({ formRef });
+      const formData = new FormData(formRef.current);
+      console.log({ formData });
+      console.table([...formData.entries()]);
       // FIXME: structure the data for the api request
-      // TODO: image for data object
       // TODO: idea of resizing image into different sizes (small - medium - large)
+      // TODO: possible to check image dimensions if you want more than 1 course image
       const courseData = {
         title: values.courseName,
         description: values.courseDesc,
@@ -71,26 +78,28 @@ const CreateCourseForm = ({ onCourseCreation }) => {
   const onCourseInstructorChange = (e, value) => {
     formik.setFieldValue("courseInstructor", value);
   };
-  const onFileInputChange = (selectedFile) => {
-    formik.setFieldValue("courseImgFile", selectedFile);
+  const onFileInputChange = (file) => {
+    formik.setFieldValue("courseImgFile", file ?? null);
+  };
+  const onFileDrop = (files, onDropSuccess) => {
+    if (files.length > 1) {
+      formik.setFieldError("courseImgFile", "You cant drop more than 1 image");
+    } else {
+      onDropSuccess(files[0]);
+    }
   };
   return (
     <Box borderRadius={2}>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} ref={formRef}>
         <Stack gap={4} mb={2}>
           {/* File Input */}
-          <div>
-            <DragZone name="courseImgFile" onChange={onFileInputChange} />
-            <p
-              style={{
-                color: "red",
-                margin: 0,
-              }}
-            >
-              {formik.touched.courseImgFile && formik.errors.courseImgFile}
-            </p>
-          </div>
-
+          <DragZone
+            name="courseImgFile"
+            error={getFieldError(formik, "courseImgFile")}
+            fileValidationSchema={fileValidationSchema}
+            onChange={onFileInputChange}
+            onDrop={onFileDrop}
+          />
           <TextField
             id="courseName"
             label="Course Name"

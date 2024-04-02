@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import uploadFileAnimation from "../assets/lottiefiles-animations/upload-file.json";
 import styled from "@emotion/styled";
 import { useRef, useState } from "react";
-
+import * as Yup from "yup";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -17,7 +17,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const DragZone = ({ onChange, name }) => {
+const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
   const [selectedImageURL, setSelectedImageURL] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const alreadyDroppedRef = useRef(false);
@@ -28,106 +28,58 @@ const DragZone = ({ onChange, name }) => {
     if (!fileInputRef.current) return;
     URL.revokeObjectURL(selectedImageURL);
     setSelectedImageURL("");
-    // clearInputFileList();
+    clearInputFileList();
     onChange(null);
     alreadyDroppedRef.current = false;
   }
-
-  // function validateFileType(selectedFile) {
-  //   const inputAcceptType = fileInputRef.current.accept.split("/")[0];
-  //   const selectedFileType = selectedFile.type.split("/")[0];
-
-  //   if (inputAcceptType !== selectedFileType) {
-  //     console.log("Invalid file type: Please select an image file");
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
-
-  // function validateFileSize(selectedFile) {
-  //   const maxFileSizeInMB = 2.5;
-  //   const selectedFileSizeInMB = selectedFile.size / (1024 * 1024);
-
-  //   if (selectedFileSizeInMB > maxFileSizeInMB) {
-  //     console.log("Invalid file size: File size should be less than 2.5 MB");
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
-
-  // function clearInputFileList() {
-  //   const emptyFileList = new DataTransfer().files;
-  //   fileInputRef.current.files = emptyFileList;
-  // }
-
-  // function validateSelectedFile(selectedFile) {
-  //   if (!selectedFile) {
-  //     console.log("No file selected");
-  //     return false;
-  //   }
-
-  //   const isValidType = validateFileType(selectedFile);
-  //   const isValidSize = validateFileSize(selectedFile);
-
-  //   if (!isValidType || !isValidSize) {
-  //     clearInputFileList();
-  //     // TODO: Show Proper Error Message
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
-
-  function handleInputFileChange(files) {
-    // if (!fileInputRef.current || !files.length) return;
-
-    const selectedFile = files[0];
-    // if (!validateSelectedFile(selectedFile)) return;
-    // validateFile.then(() =>
-
-    // )
-    console.log({ fileIs: selectedFile });
-    onChange(selectedFile);
-    // i want to set selectedImgURL only if the image is valid
-    // setSelectedImageURL(URL.createObjectURL(selectedFile));
-    // alreadyDroppedRef.current = true;
+  function clearInputFileList() {
+    const emptyFileList = new DataTransfer().files;
+    fileInputRef.current.files = emptyFileList;
+  }
+  function handleInputFileChange(file) {
+    if (alreadyDroppedRef.current) return;
+    onChange(file);
+    if (!validateFile(file)) return;
+    showPreviewImg(file);
+    alreadyDroppedRef.current = true;
+  }
+  function showPreviewImg(file) {
+    setSelectedImageURL(URL.createObjectURL(file));
+  }
+  function validateFile(file) {
+    try {
+      fileValidationSchema.validateSync(file);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function handleDrop(e) {
+    e.preventDefault();
+    setIsDragging(false);
+    if (alreadyDroppedRef.current) return;
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    onDrop(files, handleInputFileChange);
   }
 
-  // function handleDrop(e) {
-  //   e.preventDefault();
-  //   setIsDragging(false);
-  //   if (!fileInputRef.current || alreadyDroppedRef.current) return;
-  //   const dt = e.dataTransfer;
-  //   const files = dt.files;
-  //   if (files.length > 1) {
-  //     console.log("Only one image is accepted dont drag more than 1 image");
-  //     // TODO: Show Proper Error Message
-  //     return;
-  //   }
-  //   fileInputRef.current.files = files;
-  //   handleInputFileChange(files);
-  //   console.log({ droppedFiles: files, event: e });
-  // }
+  function handleDragEnter() {
+    setIsDragging(true);
+    console.log("drag enter");
+  }
 
-  // function handleDragEnter() {
-  //   setIsDragging(true);
-  //   console.log("drag enter");
-  // }
-
-  // function handleDragLeave(e) {
-  //   if (!dragzoneElRef.current) return;
-  //   if (
-  //     e.target === dragzoneElRef.current &&
-  //     !dragzoneElRef.current.contains(e.relatedTarget)
-  //   ) {
-  //     setIsDragging(false);
-  //   } else {
-  //     setIsDragging(true);
-  //   }
-  //   console.log("drag leave", e);
-  // }
+  function handleDragLeave(e) {
+    if (!dragzoneElRef.current) return;
+    if (
+      e.target === dragzoneElRef.current &&
+      !dragzoneElRef.current.contains(e.relatedTarget)
+    ) {
+      setIsDragging(false);
+    } else {
+      setIsDragging(true);
+    }
+    console.log("drag leave", e);
+  }
 
   return (
     <div>
@@ -148,10 +100,10 @@ const DragZone = ({ onChange, name }) => {
       >
         <label
           ref={dragzoneElRef}
-          // onDrop={handleDrop}
+          onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          // onDragEnter={handleDragEnter}
-          // onDragLeave={handleDragLeave}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
           htmlFor="image-input"
           style={{
             cursor: "pointer",
@@ -173,7 +125,7 @@ const DragZone = ({ onChange, name }) => {
           </div>
         </label>
         <VisuallyHiddenInput
-          onChange={(e) => handleInputFileChange(e.target.files)}
+          onChange={(e) => handleInputFileChange(e.target.files[0])}
           name={name}
           id="image-input"
           type="file"
@@ -222,6 +174,13 @@ const DragZone = ({ onChange, name }) => {
           </>
         )}
       </div>
+      <p
+        style={{
+          color: "red",
+        }}
+      >
+        {error}
+      </p>
     </div>
   );
 };
