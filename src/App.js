@@ -22,44 +22,52 @@ import AuthProvider from "./contexts/authContext.js";
 import StudentEnrollPage from "./pages/StudentEnrollPage/StudentEnrollPage.jsx";
 import ModalProvider from "./contexts/modalContext.js";
 import Loader from "./components/Loader.jsx";
+import PersistLogin from "./components/PersistLogin.jsx";
 
 const RootLayout = lazy(() => import("./layouts/RootLayout/RootLayout.jsx"));
 // TODO: change loading fallback inside the suspense
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/login" element={<LoginPage />} />
-      {/* Require login + admin */}
-      <Route element={<ProtectedRoute onlyAdmin />}>
-        <Route path="/sign-up" element={<RegisterPage />} />
-      </Route>
-      {/*== Require login + admin ==*/}
-      <Route
-        path="/"
-        element={
-          <Suspense fallback={<Loader />}>
-            <RootLayout />
-          </Suspense>
-        }
-      >
-        <Route errorElement={<ErrorPage />}>
-          {/* Require login + admin */}
-          <Route element={<ProtectedRoute onlyAdmin />}>
-            <Route path="/create-course" element={<CreateCoursePage />} />
-            <Route path="/enroll" element={<StudentEnrollPage />} />
-            <Route index element={<StatsPage />} />
-            <Route
-              path="/course-reviews"
-              element={<InstructorCourseReviewsPage />}
-            />
+      <Route element={<PersistLogin />}>
+        <Route path="/login" element={<LoginPage />} />
+        {/* Require login + admin */}
+        <Route element={<ProtectedRoute onlyAdmin />}>
+          <Route path="/sign-up" element={<RegisterPage />} />
+        </Route>
+        {/*== Require login + admin ==*/}
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<Loader />}>
+              <RootLayout />
+            </Suspense>
+          }
+        >
+          <Route errorElement={<ErrorPage />}>
+            {/* Require login + admin */}
+            <Route element={<ProtectedRoute onlyAdmin />}>
+              <Route path="/create-course" element={<CreateCoursePage />} />
+              <Route path="/enroll" element={<StudentEnrollPage />} />
+              <Route index element={<StatsPage />} />
+            </Route>
+            <Route element={<ProtectedRoute onlyInstructor />}>
+              <Route
+                path="/course-reviews"
+                element={<InstructorCourseReviewsPage />}
+              />
+            </Route>
+
+            {/*== Require login + admin ==*/}
+            {/* Require login */}
+            <Route element={<ProtectedRoute onlyStudent onlyInstructor />}>
+              <Route path="/courses" element={<UserCoursesPage />} />
+            </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
+            {/*== Require login ==*/}
           </Route>
-          {/*== Require login + admin ==*/}
-          {/* Require login */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/courses" element={<UserCoursesPage />} />
-          </Route>
-          {/*== Require login ==*/}
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />

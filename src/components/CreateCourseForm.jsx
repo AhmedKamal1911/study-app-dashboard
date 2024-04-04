@@ -100,20 +100,24 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             onChange={onFileInputChange}
             onDrop={onFileDrop}
           />
-          <TextField
-            id="courseName"
-            label="Course Name"
-            variant="outlined"
-            placeholder="ex: React JS"
-            FormHelperTextProps={{
-              style: {
+          <div>
+            <TextField
+              id="courseName"
+              label="Course Name"
+              variant="outlined"
+              placeholder="ex: React JS"
+              value={formik.values.courseName}
+              fullWidth
+              onChange={formik.handleChange}
+            />
+            <p
+              style={{
                 color: "red",
-              },
-            }}
-            helperText={getFieldError(formik, "courseName")}
-            value={formik.values.courseName}
-            onChange={formik.handleChange}
-          />
+              }}
+            >
+              {getFieldError(formik, "courseName")}
+            </p>
+          </div>
           <div>
             <CustomSelectField
               label="Course Category"
@@ -128,6 +132,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
+                marginTop: "5px",
                 color: "red",
               }}
             >
@@ -197,6 +202,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
+                marginTop: "5px",
                 color: "red",
               }}
             >
@@ -216,6 +222,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
+                marginTop: "5px",
                 color: "red",
               }}
             >
@@ -237,6 +244,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
+                marginTop: "5px",
                 color: "red",
               }}
             >

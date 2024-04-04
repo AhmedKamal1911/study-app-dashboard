@@ -35,7 +35,6 @@ const PasswordField = ({
     setShowPassword((show) => !show);
   };
   const passwordFieldRef = useRef(null);
-  console.log({ passwordFieldRef });
   function setCursorToEnd() {
     if (!passwordFieldRef.current) return;
     if (passwordFieldRef.current.setSelectionRange) {

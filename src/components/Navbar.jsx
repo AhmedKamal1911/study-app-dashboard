@@ -28,6 +28,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { useAsideContext } from "../contexts/asideContext";
+import fetchFromAPI from "../utils/constans/fetchFromApi";
+
 const Navbar = () => {
   const { toggleDarkMode, colorMode } = useToggleDarkMode();
   const { setAuth } = useAuth();
@@ -35,6 +37,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { openAside } = useAsideContext();
+  const { auth } = useAuth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,9 +45,25 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const logUserOut = async () => {
+    try {
+      const response = await fetchFromAPI({
+        url: "/auth/user/signout",
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      console.log({ logoutResponse: response });
+      localStorage.removeItem("token");
+      setAuth({ auth: null, user: null });
+      // TODO: show success msg
+    } catch (e) {
+      // TODO show error msg
+    }
+  };
   function handleLogout() {
-    setAuth({});
-    // TODO: api request
+    logUserOut();
   }
 
   return (
@@ -108,7 +127,7 @@ const Navbar = () => {
             }}
           >
             <img
-              src={profileImg}
+              src={auth.user?.avatar || profileImg}
               alt="profile"
               style={{
                 height: "40px",
@@ -145,7 +164,7 @@ const Navbar = () => {
           <MenuItem component={Link} to="/profile">
             <CardMedia
               component="img"
-              image="https://sneat-vuetify-admin-template.vercel.app/assets/avatar-1-19a9226d.png"
+              image={auth.user?.avatar || profileImg}
               sx={{
                 height: "40px",
                 width: "40px",

@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import InfoBoxWrapper from "../../components/InfoBoxWrapper";
+import { useAuth } from "../../contexts/authContext";
 const profileInfo = [
   { info: "Registration Date", value: "February 25,2025 6:01 am" },
   { info: "First Name", value: "Ahmed" },
@@ -16,7 +17,9 @@ const profileInfo = [
   },
 ];
 const ProfilePage = () => {
-  // TODO: Implement
+  const { auth } = useAuth();
+  const [firstName, lastName] = auth.user.fullName.split(" ");
+
   return (
     <Box
       p={4}
@@ -38,13 +41,59 @@ const ProfilePage = () => {
             ))}
           </Stack>
           <Stack direction="column" gap={7}>
-            {profileInfo.map(({ value }, index) => (
-              <Box key={index}>
-                <Typography color="lightDark" variant="body1" maxWidth="500px">
-                  {value}
-                </Typography>
-              </Box>
-            ))}
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                {auth.user.createdAt}
+              </Typography>
+            </Box>
+
+            <Box>
+              <Typography
+                color="lightDark"
+                variant="body1"
+                maxWidth="500px"
+                textTransform="capitalize"
+              >
+                {firstName}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                color="lightDark"
+                variant="body1"
+                maxWidth="500px"
+                textTransform="capitalize"
+              >
+                {lastName}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                {auth.user.username}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                {auth.user.email}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                01226891043
+              </Typography>
+            </Box>
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                Application Developer
+              </Typography>
+            </Box>
+            <Box>
+              <Typography color="lightDark" variant="body1" maxWidth="500px">
+                I'm the Front-End Developer for #Rainbow IT in Bangladesh, OR. I
+                have serious passion for UI effects, animations and creating
+                intuitive, dynamic user experiences.
+              </Typography>
+            </Box>
           </Stack>
         </Stack>
       </Box>

@@ -17,7 +17,7 @@ import getFieldError from "../utils/getFieldError";
 const LoginForm = ({ onLogin }) => {
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema: loginFormSchema,
@@ -89,23 +89,24 @@ const LoginForm = ({ onLogin }) => {
               sx: {
                 "&:not(:placeholder-shown)": {
                   // .MuiInputLabel-root i want to change this style to have focused too
-                  backgroundColor: "red",
                 },
               },
             }}
-            value={formik.values.email}
+            value={formik.values.username}
             onChange={formik.handleChange}
-            name="email"
-            id="email"
-            label="Email"
+            name="username"
+            id="username"
+            label="username"
             variant="outlined"
-            type="email"
+            type="username"
             placeholder="example@gmail.com"
-            helperText={getFieldError(formik, "email")}
+            helperText={getFieldError(formik, "username")}
             FormHelperTextProps={{
               style: {
                 color: "red",
                 fontWeight: "bold",
+                marginTop: "10px",
+                margin: "0",
               },
             }}
             sx={{

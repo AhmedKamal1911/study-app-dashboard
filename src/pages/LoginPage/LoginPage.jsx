@@ -4,6 +4,7 @@ import { LoginForm } from "../../components";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import { wait } from "@testing-library/user-event/dist/utils";
+import fetchFromAPI from "../../utils/constans/fetchFromApi";
 
 const LoginPage = () => {
   const { auth, setAuth } = useAuth();
@@ -14,19 +15,27 @@ const LoginPage = () => {
     try {
       console.log({ loginCredentials });
       // TODO: login request here + storing localStorage token
-      await wait(2000);
-      setAuth({
-        user: { name: "dasdasd", id: 41, isAdmin: true },
-        token: "dasdasda ads das das as121 2 1",
+      const signInResponse = await fetchFromAPI({
+        method: "POST",
+        url: "/auth/user/signin",
+        data: loginCredentials,
       });
-      navigate(location.state?.to.pathname || "/");
+      // const currentUserResponse = await fetchFromAPI({
+      //   url: "/auth/user/profile",
+      //   headers: {
+      //     Authorization: `Bearer ${signInResponse.token}`,
+      //   },
+      // });
+      // console.log({ signInResponse, currentUserResponse });
+      console.log({ signInResponse });
+      setAuth({ user: signInResponse.user, token: signInResponse.token });
+      localStorage.setItem("token", signInResponse.token);
+      // navigate(location.state?.to.pathname || "/");
     } catch (e) {
+      // TODO:Show snackbar if there is error
       console.log({ loginError: e });
     }
   };
-  if (auth.user) {
-    return <Navigate to="/" replace />;
-  }
   return (
     <Box
       bgcolor="rgb(245,245,249)"

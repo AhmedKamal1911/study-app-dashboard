@@ -47,8 +47,9 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
           />
           <p
             style={{
-              color: "red",
               margin: 0,
+              marginTop: "10px",
+              color: "red",
             }}
           >
             {getFieldError(formik, "enrolledStudent")}
@@ -67,8 +68,9 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
           />
           <p
             style={{
-              color: "red",
               margin: 0,
+              marginTop: "10px",
+              color: "red",
             }}
           >
             {getFieldError(formik, "enrolledCourse")}

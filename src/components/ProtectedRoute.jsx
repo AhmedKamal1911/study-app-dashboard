@@ -1,22 +1,38 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
-const ProtectedRoute = ({ onlyAdmin = false }) => {
-  const location = useLocation();
+const ProtectedRoute = ({
+  onlyAdmin = false,
+  onlyInstructor = false,
+  onlyStudent = false,
+}) => {
   const { auth } = useAuth();
-  if (auth.user) {
-    if (onlyAdmin && !auth.user.isAdmin) {
-      return (
-        <Typography>
-          You can't access this page because it's protected
-        </Typography>
-      );
-    }
-    return <Outlet />;
+  if (onlyAdmin && !auth.user.isAdmin) {
+    return (
+      <Typography>
+        You can't access this page (Only admins) because it's protected
+      </Typography>
+    );
   }
-  return <Navigate to="/login" replace state={{ to: location }} />;
+  if (onlyInstructor && !auth.user.isInstructor) {
+    return (
+      <Typography>
+        You can't access this page (Only Instructors) because it's protected
+      </Typography>
+    );
+  }
+  if (onlyStudent && onlyInstructor && auth.user.isAdmin)
+    return (
+      <Typography>
+        You can't access this page (Only Instructors + Students) because it's
+        protected
+      </Typography>
+    );
+  return <Outlet />;
+
+  // return <Navigate to="/login" replace state={{ to: location }} />;
 };
 
 export default ProtectedRoute;

@@ -1,6 +1,7 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { MoreVert, North, South } from "@mui/icons-material";
 import { formatNumber } from "../utils/formatNumber";
+import PercentageArrow from "./PercentageArrow";
 
 const InfoCard = ({ img, info, result, percentage }) => {
   return (
@@ -16,19 +17,7 @@ const InfoCard = ({ img, info, result, percentage }) => {
         <Typography color="dark" my={1} variant="h5">
           ${formatNumber(result)}
         </Typography>
-        <Stack
-          direction="row"
-          alignItems="center"
-          color={percentage >= 0 ? "rgb(113,221,55)" : "red"}
-          gap={1}
-        >
-          {percentage >= 0 ? (
-            <North fontSize="15px" />
-          ) : (
-            <South fontSize="15px" />
-          )}
-          {percentage}%
-        </Stack>
+        <PercentageArrow percentage={percentage} />
       </Box>
     </Box>
   );

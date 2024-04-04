@@ -8,6 +8,6 @@ export { default as walletImg } from "./wallet.png";
 export { default as paymentsImg } from "./payments.png";
 export { default as transactionsImg } from "./transactions.png";
 export { default as manWithLaptopImg } from "./manwithlaptop.png";
-export { default as profileImg } from "./profile.jpg";
+export { default as profileImg } from "./person.png";
 export { default as manWithLaptopImgDark } from "./darkmode-person.png";
 export { default as courseImg } from "./course-img.png";

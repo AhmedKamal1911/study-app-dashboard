@@ -32,6 +32,7 @@ import PieChartBox from "../../components/PieChartBox";
 import StatsBox from "../../components/StatsBox";
 import { ThemeContext, useTheme } from "@emotion/react";
 import { useToggleDarkMode } from "../../contexts/themeContext";
+import StatsTabs from "../../components/StatsTabs";
 const transactionsInfo = [
   {
     id: 1,
@@ -273,7 +274,7 @@ const StatsPage = () => {
         p={2}
         gridColumn={{ md: "span 3", lg: "span 2" }}
       >
-        box 9 total income
+        <StatsTabs />
       </Box>
       <Box
         bgcolor="background.paper"

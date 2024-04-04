@@ -2,6 +2,7 @@ import { North, South } from "@mui/icons-material";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import { TinyLineChart } from "../components";
 import { formatNumber } from "../utils/formatNumber";
+import PercentageArrow from "./PercentageArrow";
 
 const ProfileReportCard = () => {
   return (
@@ -26,15 +27,7 @@ const ProfileReportCard = () => {
           />
         </Box>
         <Box>
-          <Stack
-            direction="row"
-            alignItems="center"
-            color={50.2 >= 0 ? "rgb(113,221,55)" : "red"}
-            gap={1}
-          >
-            {50.2 >= 0 ? <North fontSize="15px" /> : <South fontSize="15px" />}
-            {50.2}%
-          </Stack>
+          <PercentageArrow percentage={50.2} />
           <Typography color="dark" variant="h5">
             ${formatNumber(50500)}
           </Typography>

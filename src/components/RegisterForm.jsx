@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PasswordField from "./PasswordField";
 import CustomSelectField from "./CustomSelectField";
@@ -29,22 +29,38 @@ import getFieldError from "../utils/getFieldError";
 //   },
 // });
 const RegisterForm = ({ onRegister }) => {
+  const formRef = useRef(null);
+  const [showInstructorDescription, setShowInstructorDesc] = useState(false);
   const formik = useFormik({
     initialValues: {
       username: "",
+      fullName: "",
       email: "",
       password: "",
       confirmPassword: "",
-      userType: "student",
+      userType: "users",
+      instructorDescription: "",
       termsAgree: false,
     },
     validationSchema: registerFormSchema,
-    onSubmit: async ({ termsAgree, confirmPassword, ...rest }, helpers) => {
-      await onRegister(rest);
+    onSubmit: async (values) => {
+      const formData = new FormData(formRef.current);
+      const unnecessaryInputNames = [
+        "userType",
+        "termsAgree",
+        "confirmPassword",
+      ];
+      const trimmedFullName = values.fullName.trim();
+      formData.set("fullName", trimmedFullName);
+      unnecessaryInputNames.forEach((key) => formData.delete(key));
+      if (values.userType === "users") {
+        formData.delete("instructorDescription");
+      }
+      // console.table([...formData.entries()]);
+      await onRegister(formData, values.userType);
       formik.setSubmitting(false);
     },
   });
-
   return (
     <Box
       bgcolor="#141213"
@@ -100,7 +116,7 @@ const RegisterForm = ({ onRegister }) => {
           Make your app management easy and fun!
         </Typography>
       </Box>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} ref={formRef}>
         <Stack gap={2} mb={2}>
           <TextField
             name="username"
@@ -111,6 +127,21 @@ const RegisterForm = ({ onRegister }) => {
             value={formik.values.username}
             onChange={formik.handleChange}
             helperText={getFieldError(formik, "username")}
+            FormHelperTextProps={{
+              style: {
+                color: "red",
+              },
+            }}
+          />
+          <TextField
+            name="fullName"
+            id="fullName"
+            label="Full Name"
+            variant="outlined"
+            placeholder="max9874"
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            helperText={getFieldError(formik, "fullName")}
             FormHelperTextProps={{
               style: {
                 color: "red",
@@ -171,12 +202,15 @@ const RegisterForm = ({ onRegister }) => {
           <CustomSelectField
             name="userType"
             label="User Type"
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setShowInstructorDesc(e.target.value === "instructors");
+            }}
             value={formik.values.userType}
             controlled
           >
-            <MenuItem value="student">Student</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="users">Student</MenuItem>
+            <MenuItem value="instructors">Instructor</MenuItem>
           </CustomSelectField>
           <p
             style={{
@@ -186,6 +220,30 @@ const RegisterForm = ({ onRegister }) => {
             {getFieldError(formik, "userType")}
           </p>
         </div>
+
+        <div
+          style={{
+            display: showInstructorDescription ? "block" : "none",
+          }}
+        >
+          <TextField
+            id="instructorDescription"
+            label="Instructor Description"
+            name="instructorDescription"
+            value={formik.values.instructorDescription}
+            onChange={formik.handleChange}
+            variant="outlined"
+            fullWidth
+            placeholder="What is the instructor description?"
+            FormHelperTextProps={{
+              style: {
+                color: "red",
+              },
+            }}
+            helperText={getFieldError(formik, "instructorDescription")}
+          />
+        </div>
+
         <div>
           <FormControlLabel
             sx={{

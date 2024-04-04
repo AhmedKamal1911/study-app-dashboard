@@ -13,7 +13,6 @@ const UserCoursesPage = () => {
   const { error, responseData, isLoading } = useFetch({
     url: "/courses",
   });
-  console.log({ error, isLoading });
   const { closeModal } = useModal();
   const onReviewCreation = (courseId) => async (reviewInfo) => {
     try {
@@ -31,7 +30,6 @@ const UserCoursesPage = () => {
       //TODO: Show Error Message Alert
     }
   };
-  console.log(responseData, "response courses");
   return (
     <Box minHeight="100vh" p={3} bgcolor="background.paper" borderRadius="8px">
       <InfoBoxWrapper title="My Courses">

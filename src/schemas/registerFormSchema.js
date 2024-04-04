@@ -1,7 +1,19 @@
 import * as Yup from "yup";
 
 const registerFormSchema = Yup.object({
+  userType: Yup.string().required("User type is required"),
+  instructorDescription: Yup.string().when("userType", {
+    is: "instructors",
+    then: () => Yup.string().required("Instructor description is required"),
+    otherwise: () => Yup.string().notRequired(),
+  }),
   username: Yup.string().required("Username is required"),
+  fullName: Yup.string()
+    .required("Full name is required.")
+    .matches(
+      /^\s*[a-zA-Z]{2,}\s[a-zA-Z]{2,}\s*$/,
+      "Full name must contain at least 2 characters for each part and no numbers."
+    ),
   email: Yup.string()
     .email("Invalid Email Address")
     .required("Email is required"),

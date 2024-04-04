@@ -2,8 +2,13 @@ import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null);
 
+const initializeAuthState = () => ({
+  token: localStorage.getItem("token") ?? null,
+  user: null,
+});
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(initializeAuthState);
+  console.log({ fromAuthProvider: auth });
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}
