@@ -13,7 +13,7 @@ const SimpleLineChart = ({ data }) => {
   return (
     <ResponsiveContainer height={400} width="100%">
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="7" />
+        <CartesianGrid strokeDasharray="5" />
         <Legend />
         <XAxis dataKey="name" color="red" />
         <Tooltip />

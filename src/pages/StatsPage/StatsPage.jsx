@@ -177,12 +177,6 @@ const StatsPage = () => {
 
         <Stack alignItems="center" direction={{ xs: "column", md: "row" }}>
           <BarChartBox />
-          <Divider
-            orientation="vertical"
-            variant="middle"
-            sx={{ alignSelf: "stretch" }}
-            color="gray"
-          />
         </Stack>
       </Box>
       <Box
