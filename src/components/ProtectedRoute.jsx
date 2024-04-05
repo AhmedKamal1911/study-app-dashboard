@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
-import React from "react";
-import { Outlet } from "react-router-dom";
-import { useAuth } from "../contexts/authContext";
+import { Typography } from '@mui/material';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 const ProtectedRoute = ({
   onlyAdmin = false,
@@ -31,8 +31,6 @@ const ProtectedRoute = ({
       </Typography>
     );
   return <Outlet />;
-
-  // return <Navigate to="/login" replace state={{ to: location }} />;
 };
 
 export default ProtectedRoute;

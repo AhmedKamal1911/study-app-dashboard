@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../contexts/authContext";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
-import { Stack, Typography } from "@mui/material";
-import { InfinitySpin } from "react-loader-spinner";
-import { isCancel } from "axios";
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/authContext';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import fetchFromAPI from '../utils/constans/fetchFromApi';
+import { Stack, Typography } from '@mui/material';
+import { InfinitySpin } from 'react-loader-spinner';
+import { isCancel } from 'axios';
 
 const PersistLogin = () => {
   // TODO: persist login
@@ -20,7 +20,7 @@ const PersistLogin = () => {
         const getCurrentUser = async () => {
           try {
             const response = await fetchFromAPI({
-              url: "/auth/user/profile",
+              url: '/auth/user/profile',
               headers: {
                 Authorization: `Bearer ${auth.token}`,
               },
@@ -35,7 +35,7 @@ const PersistLogin = () => {
             if (isCancel(e)) return;
             if (e.request.status === 401) {
               // if so
-              localStorage.removeItem("token");
+              localStorage.removeItem('token');
               // navigate the user to the login page to be able to get new access token and remove the old token from local storage and set auth to empty
               setAuth({ user: null, token: null });
               setIsLoading(false);
@@ -53,7 +53,7 @@ const PersistLogin = () => {
       setIsLoading(false);
     }
     return () => {
-      abortController?.abort("unmount");
+      abortController?.abort('unmount');
     };
   }, [auth, setAuth]);
   if (isLoading)
@@ -69,7 +69,7 @@ const PersistLogin = () => {
     );
 
   if (!auth.token) {
-    if (location.pathname === "/login") return <Outlet />;
+    if (location.pathname === '/login') return <Outlet />;
     return (
       <Navigate
         to="/login"
@@ -80,14 +80,13 @@ const PersistLogin = () => {
       />
     );
   }
-  // make user go to courses page if he is student or instructor
-  if (auth.user && location.pathname === "/login") {
+  // TODO: make user go to courses page if he is student or instructor or the current page he is in
+  if (auth.user && location.pathname === '/login') {
     // there is token and user and you are on /login
     return <Navigate to="/" replace />;
   }
   // there is user and token
   // there is user and token and location.pathname not /login
-  //
   return <Outlet />;
 };
 

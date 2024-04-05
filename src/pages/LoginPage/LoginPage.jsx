@@ -1,23 +1,23 @@
-import { Box } from "@mui/material";
-import React from "react";
-import { LoginForm } from "../../components";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/authContext";
-import { wait } from "@testing-library/user-event/dist/utils";
-import fetchFromAPI from "../../utils/constans/fetchFromApi";
+import { Box } from '@mui/material';
+import React from 'react';
+import { LoginForm } from '../../components';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/authContext';
+import fetchFromAPI from '../../utils/constans/fetchFromApi';
+import { usersBaseURL } from '../../App';
 
 const LoginPage = () => {
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onLogin = async (loginCredentials) => {
+  const onLogin = async (loginCredentials, loginType) => {
     try {
       console.log({ loginCredentials });
       // TODO: login request here + storing localStorage token
-      const signInResponse = await fetchFromAPI({
-        method: "POST",
-        url: "/auth/user/signin",
+      const { user, token } = await fetchFromAPI({
+        method: 'POST',
+        url: `/auth/${loginType}/signin`,
         data: loginCredentials,
       });
       // const currentUserResponse = await fetchFromAPI({
@@ -27,10 +27,14 @@ const LoginPage = () => {
       //   },
       // });
       // console.log({ signInResponse, currentUserResponse });
-      console.log({ signInResponse });
-      setAuth({ user: signInResponse.user, token: signInResponse.token });
-      localStorage.setItem("token", signInResponse.token);
-      // navigate(location.state?.to.pathname || "/");
+      const userType = user.isAdmin
+        ? 'admin'
+        : user.isInstructor
+        ? 'instructor'
+        : 'student';
+      setAuth({ user, token });
+      localStorage.setItem('token', token);
+      navigate(location.state?.to.pathname || usersBaseURL[userType]);
     } catch (e) {
       // TODO:Show snackbar if there is error
       console.log({ loginError: e });
@@ -40,11 +44,11 @@ const LoginPage = () => {
     <Box
       bgcolor="rgb(245,245,249)"
       sx={{
-        height: "100vh",
+        height: '100vh',
         px: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <LoginForm onLogin={onLogin} />

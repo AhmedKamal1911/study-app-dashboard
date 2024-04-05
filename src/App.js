@@ -24,6 +24,11 @@ import ModalProvider from "./contexts/modalContext.js";
 import Loader from "./components/Loader.jsx";
 import PersistLogin from "./components/PersistLogin.jsx";
 
+export const usersBaseURL = {
+  instructor: '/courses',
+  admin: '/',
+  student: '/courses'
+}
 const RootLayout = lazy(() => import("./layouts/RootLayout/RootLayout.jsx"));
 // TODO: change loading fallback inside the suspense
 const router = createBrowserRouter(

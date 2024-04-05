@@ -3,27 +3,30 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  MenuItem,
   Stack,
   Typography,
-} from "@mui/material";
-import React from "react";
-import PasswordField from "./PasswordField";
-import { Link } from "react-router-dom";
-import CustomTextField from "./CustomTextField";
-import { useFormik } from "formik";
-import loginFormSchema from "../schemas/loginFormSchema";
-import getFieldError from "../utils/getFieldError";
+} from '@mui/material';
+import React, { useState } from 'react';
+import PasswordField from './PasswordField';
+import { Link } from 'react-router-dom';
+import CustomTextField from './CustomTextField';
+import { useFormik } from 'formik';
+import loginFormSchema from '../schemas/loginFormSchema';
+import getFieldError from '../utils/getFieldError';
+import CustomSelectField from './CustomSelectField';
 
 const LoginForm = ({ onLogin }) => {
+  const [userType, setUserType] = useState('user');
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: loginFormSchema,
     onSubmit: async (values) => {
-      console.log("submit");
-      await onLogin(values);
+      console.log('submit');
+      await onLogin(values, userType);
       formik.setSubmitting(false);
     },
   });
@@ -87,7 +90,7 @@ const LoginForm = ({ onLogin }) => {
           <CustomTextField
             inputProps={{
               sx: {
-                "&:not(:placeholder-shown)": {
+                '&:not(:placeholder-shown)': {
                   // .MuiInputLabel-root i want to change this style to have focused too
                 },
               },
@@ -100,21 +103,21 @@ const LoginForm = ({ onLogin }) => {
             variant="outlined"
             type="username"
             placeholder="example@gmail.com"
-            helperText={getFieldError(formik, "username")}
+            helperText={getFieldError(formik, 'username')}
             FormHelperTextProps={{
               style: {
-                color: "red",
-                fontWeight: "bold",
-                marginTop: "10px",
-                margin: "0",
+                color: 'red',
+                fontWeight: 'bold',
+                marginTop: '10px',
+                margin: '0',
               },
             }}
             sx={{
-              "& .css-p51h6s-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill":
+              '& .css-p51h6s-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill':
                 {
-                  boxShadow: "none",
-                  WebkitTextFillColor: "black",
-                  caretColor: "#3a39d0",
+                  boxShadow: 'none',
+                  WebkitTextFillColor: 'black',
+                  caretColor: '#3a39d0',
                 },
             }}
           />
@@ -129,13 +132,24 @@ const LoginForm = ({ onLogin }) => {
             />
             <p
               style={{
-                color: "red",
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "password")}
+              {getFieldError(formik, 'password')}
             </p>
           </div>
         </Stack>
+        <div>
+          <CustomSelectField
+            label="Select User Type"
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
+            controlled
+          >
+            <MenuItem value="user">User</MenuItem>
+            <MenuItem value="instructor">Instructor</MenuItem>
+          </CustomSelectField>
+        </div>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -151,8 +165,8 @@ const LoginForm = ({ onLogin }) => {
           <Link
             to="/forget-password"
             style={{
-              color: "rgb(105, 108, 255)",
-              textDecoration: "none",
+              color: 'rgb(105, 108, 255)',
+              textDecoration: 'none',
             }}
           >
             Forget Password
@@ -167,19 +181,19 @@ const LoginForm = ({ onLogin }) => {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? "Loading" : "Login"}
+          {formik.isSubmitting ? 'Loading' : 'Login'}
         </Button>
         <Typography p={3} color="rgba(50, 71, 92, 0.6)" textAlign="center">
-          New on our platform?{" "}
+          New on our platform?{' '}
           <Link
             to="/sign-up"
             style={{
-              textDecoration: "none",
-              color: "rgb(105, 108, 255)",
+              textDecoration: 'none',
+              color: 'rgb(105, 108, 255)',
             }}
           >
             Create An Account
-          </Link>{" "}
+          </Link>{' '}
         </Typography>
       </form>
     </Box>
