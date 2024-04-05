@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/authContext';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import fetchFromAPI from '../utils/constans/fetchFromApi';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { InfinitySpin } from 'react-loader-spinner';
 import { isCancel } from 'axios';
+import { getUserBaseURL } from '../App';
 
 const PersistLogin = () => {
-  // TODO: persist login
   const { auth, setAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   useEffect(() => {
     let abortController;
     if (auth.token) {
-      //TODO: fetch the user info and update auth user because i want the isAdmin state and isInstructor State
       if (!auth.user) {
         abortController = new AbortController();
         const getCurrentUser = async () => {
@@ -70,23 +69,20 @@ const PersistLogin = () => {
 
   if (!auth.token) {
     if (location.pathname === '/login') return <Outlet />;
+    // TODO: ask ahmed if he wants to keep state in navigation or remove it
     return (
       <Navigate
         to="/login"
         replace
         state={{
-          to: location,
+          from: location,
         }}
       />
     );
   }
-  // TODO: make user go to courses page if he is student or instructor or the current page he is in
   if (auth.user && location.pathname === '/login') {
-    // there is token and user and you are on /login
-    return <Navigate to="/" replace />;
+    return <Navigate to={getUserBaseURL(auth.user)} replace />;
   }
-  // there is user and token
-  // there is user and token and location.pathname not /login
   return <Outlet />;
 };
 

@@ -1,24 +1,30 @@
-import { Close } from "@mui/icons-material";
-import { Button } from "@mui/material";
-import Lottie from "lottie-react";
-import uploadFileAnimation from "../assets/lottiefiles-animations/upload-file.json";
-import styled from "@emotion/styled";
-import { useRef, useState } from "react";
-import * as Yup from "yup";
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
+import { Close } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import Lottie from 'lottie-react';
+import uploadFileAnimation from '../assets/lottiefiles-animations/upload-file.json';
+import styled from '@emotion/styled';
+import { useRef, useState } from 'react';
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
   height: 1,
-  overflow: "hidden",
-  position: "absolute",
+  overflow: 'hidden',
+  position: 'absolute',
   bottom: 0,
   left: 0,
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
   width: 1,
 });
 
-const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
-  const [selectedImageURL, setSelectedImageURL] = useState("");
+const DragZone = ({
+  onChange,
+  onBlur,
+  onDrop,
+  name,
+  fileValidationSchema,
+  error,
+}) => {
+  const [selectedImageURL, setSelectedImageURL] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const alreadyDroppedRef = useRef(false);
   const dragzoneElRef = useRef(null);
@@ -27,7 +33,7 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
   function closeCurrentViewedImage() {
     if (!fileInputRef.current) return;
     URL.revokeObjectURL(selectedImageURL);
-    setSelectedImageURL("");
+    setSelectedImageURL('');
     clearInputFileList();
     onChange(null);
     alreadyDroppedRef.current = false;
@@ -65,7 +71,7 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
 
   function handleDragEnter() {
     setIsDragging(true);
-    console.log("drag enter");
+    console.log('drag enter');
   }
 
   function handleDragLeave(e) {
@@ -78,24 +84,24 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
     } else {
       setIsDragging(true);
     }
-    console.log("drag leave", e);
+    console.log('drag leave', e);
   }
 
   return (
     <div>
       <div
         style={{
-          position: "relative",
-          marginInline: "auto",
-          maxWidth: "500px",
+          position: 'relative',
+          marginInline: 'auto',
+          maxWidth: '500px',
           aspectRatio: 1 / 0.8,
           border: selectedImageURL
-            ? ""
+            ? ''
             : !isDragging
-            ? "2px dotted rgb(105, 108, 255) "
-            : "2px dotted yellowgreen ",
-          borderRadius: "4px",
-          overflow: "hidden",
+            ? '2px dotted rgb(105, 108, 255) '
+            : '2px dotted yellowgreen ',
+          borderRadius: '4px',
+          overflow: 'hidden',
         }}
       >
         <label
@@ -106,19 +112,19 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
           onDragLeave={handleDragLeave}
           htmlFor="image-input"
           style={{
-            cursor: "pointer",
-            display: "block",
-            height: "100%",
-            position: "relative",
+            cursor: 'pointer',
+            display: 'block',
+            height: '100%',
+            position: 'relative',
           }}
         >
           <div
             style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              textAlign: "center",
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
             }}
           >
             <Lottie animationData={uploadFileAnimation} />
@@ -126,6 +132,7 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
         </label>
         <VisuallyHiddenInput
           onChange={(e) => handleInputFileChange(e.target.files[0])}
+          onBlur={onBlur}
           name={name}
           id="image-input"
           type="file"
@@ -137,32 +144,32 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
             <img
               src={selectedImageURL}
               style={{
-                position: "absolute",
-                inset: "0",
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+                position: 'absolute',
+                inset: '0',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
               }}
               alt=""
             />
             <Button
               sx={{
-                background: "#ff274b",
-                border: "none",
-                borderRadius: "6px",
-                color: "white",
-                position: "absolute",
-                right: "5px",
-                top: "5px",
-                cursor: "pointer",
-                pointerEvents: "auto",
-                transition: "0.3s",
+                background: '#ff274b',
+                border: 'none',
+                borderRadius: '6px',
+                color: 'white',
+                position: 'absolute',
+                right: '5px',
+                top: '5px',
+                cursor: 'pointer',
+                pointerEvents: 'auto',
+                transition: '0.3s',
 
-                "&:hover": {
-                  background: "#ff274bc4",
+                '&:hover': {
+                  background: '#ff274bc4',
                 },
-                "&": {
-                  minWidth: "45px",
+                '&': {
+                  minWidth: '45px',
                 },
               }}
               onClick={() => {
@@ -176,7 +183,8 @@ const DragZone = ({ onChange, onDrop, name, fileValidationSchema, error }) => {
       </div>
       <p
         style={{
-          color: "red",
+          color: 'red',
+          textAlign: 'center',
         }}
       >
         {error}

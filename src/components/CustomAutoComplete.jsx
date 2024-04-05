@@ -1,17 +1,18 @@
-import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-import useFetchOnAutoCompleteOpen from "../hooks/useFetchOnAutoCompleteOpen";
+import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import useFetchOnAutoCompleteOpen from '../hooks/useFetchOnAutoCompleteOpen';
 
 const CustomAutoComplete = ({
-  textFieldName = "",
-  label = "Auto Complete",
-  endPointSlug = "/instructors",
+  textFieldName = '',
+  label = 'Auto Complete',
+  endPointSlug = '/instructors',
   multiple = false,
   filterSelectedOptions = false,
   getOptionLabel,
   filterOptions,
-  noOptionsText = "No Such Thing",
+  noOptionsText = 'No Such Thing',
   value,
   onChange,
+  onBlur,
 }) => {
   const { open, error, loading, options, setOpen, clearOptions } =
     useFetchOnAutoCompleteOpen(endPointSlug);
@@ -30,6 +31,7 @@ const CustomAutoComplete = ({
         clearOptions();
       }}
       onChange={onChange}
+      onBlur={onBlur}
       filterSelectedOptions={filterSelectedOptions}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionKey={(option) => option.id}

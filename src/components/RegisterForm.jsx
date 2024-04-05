@@ -7,14 +7,14 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import PasswordField from "./PasswordField";
-import CustomSelectField from "./CustomSelectField";
-import { useFormik } from "formik";
-import registerFormSchema from "../schemas/registerFormSchema";
-import getFieldError from "../utils/getFieldError";
+} from '@mui/material';
+import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import PasswordField from './PasswordField';
+import CustomSelectField from './CustomSelectField';
+import { useFormik } from 'formik';
+import registerFormSchema from '../schemas/registerFormSchema';
+import getFieldError from '../utils/getFieldError';
 // const CustomTextField = styled(TextField)({
 //   "& .MuiOutlinedInput-root": {
 //     "&:not(:hover) fieldset": {
@@ -33,30 +33,31 @@ const RegisterForm = ({ onRegister }) => {
   const [showInstructorDescription, setShowInstructorDesc] = useState(false);
   const formik = useFormik({
     initialValues: {
-      username: "",
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      userType: "users",
-      instructorDescription: "",
+      username: '',
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      userType: 'users',
+      instructorDescription: '',
       termsAgree: false,
     },
     validationSchema: registerFormSchema,
     onSubmit: async (values) => {
       const formData = new FormData(formRef.current);
+      // TODO: test images on ahmed device
+      console.log([...formData.entries()]);
       const unnecessaryInputNames = [
-        "userType",
-        "termsAgree",
-        "confirmPassword",
+        'userType',
+        'termsAgree',
+        'confirmPassword',
       ];
       const trimmedFullName = values.fullName.trim();
-      formData.set("fullName", trimmedFullName);
+      formData.set('fullName', trimmedFullName);
       unnecessaryInputNames.forEach((key) => formData.delete(key));
-      if (values.userType === "users") {
-        formData.delete("instructorDescription");
+      if (values.userType === 'users') {
+        formData.delete('instructorDescription');
       }
-      // console.table([...formData.entries()]);
       await onRegister(formData, values.userType);
       formik.setSubmitting(false);
     },
@@ -118,6 +119,8 @@ const RegisterForm = ({ onRegister }) => {
       </Box>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
         <Stack gap={2} mb={2}>
+          {/* TODO: remove this later or create it / cloudinary error */}
+          <input type="file" name="file" id="file" />
           <TextField
             name="username"
             id="username"
@@ -126,10 +129,10 @@ const RegisterForm = ({ onRegister }) => {
             placeholder="max9874"
             value={formik.values.username}
             onChange={formik.handleChange}
-            helperText={getFieldError(formik, "username")}
+            helperText={getFieldError(formik, 'username')}
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
           />
@@ -141,10 +144,10 @@ const RegisterForm = ({ onRegister }) => {
             placeholder="max9874"
             value={formik.values.fullName}
             onChange={formik.handleChange}
-            helperText={getFieldError(formik, "fullName")}
+            helperText={getFieldError(formik, 'fullName')}
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
           />
@@ -157,10 +160,10 @@ const RegisterForm = ({ onRegister }) => {
             placeholder="example@gmail.com"
             onChange={formik.handleChange}
             value={formik.values.email}
-            helperText={getFieldError(formik, "email")}
+            helperText={getFieldError(formik, 'email')}
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
           />
@@ -174,10 +177,10 @@ const RegisterForm = ({ onRegister }) => {
             />
             <p
               style={{
-                color: "red",
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "password")}
+              {getFieldError(formik, 'password')}
             </p>
           </div>
 
@@ -191,10 +194,10 @@ const RegisterForm = ({ onRegister }) => {
             />
             <p
               style={{
-                color: "red",
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "confirmPassword")}
+              {getFieldError(formik, 'confirmPassword')}
             </p>
           </div>
         </Stack>
@@ -204,7 +207,7 @@ const RegisterForm = ({ onRegister }) => {
             label="User Type"
             onChange={(e) => {
               formik.handleChange(e);
-              setShowInstructorDesc(e.target.value === "instructors");
+              setShowInstructorDesc(e.target.value === 'instructors');
             }}
             value={formik.values.userType}
             controlled
@@ -214,16 +217,16 @@ const RegisterForm = ({ onRegister }) => {
           </CustomSelectField>
           <p
             style={{
-              color: "red",
+              color: 'red',
             }}
           >
-            {getFieldError(formik, "userType")}
+            {getFieldError(formik, 'userType')}
           </p>
         </div>
 
         <div
           style={{
-            display: showInstructorDescription ? "block" : "none",
+            display: showInstructorDescription ? 'block' : 'none',
           }}
         >
           <TextField
@@ -237,10 +240,10 @@ const RegisterForm = ({ onRegister }) => {
             placeholder="What is the instructor description?"
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
-            helperText={getFieldError(formik, "instructorDescription")}
+            helperText={getFieldError(formik, 'instructorDescription')}
           />
         </div>
 
@@ -258,7 +261,7 @@ const RegisterForm = ({ onRegister }) => {
             }
             label={
               <Typography color="rgba(50, 71, 92, 0.6)">
-                I agree to{" "}
+                I agree to{' '}
                 <Typography component="span" color="rgb(105, 108, 255)">
                   privacy policy & terms
                 </Typography>
@@ -267,10 +270,10 @@ const RegisterForm = ({ onRegister }) => {
           />
           <p
             style={{
-              color: "red",
+              color: 'red',
             }}
           >
-            {getFieldError(formik, "termsAgree")}
+            {getFieldError(formik, 'termsAgree')}
           </p>
         </div>
 
@@ -283,19 +286,19 @@ const RegisterForm = ({ onRegister }) => {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? "SIGNING UP" : "SIGN UP"}
+          {formik.isSubmitting ? 'SIGNING UP' : 'SIGN UP'}
         </Button>
         <Typography p={3} color="rgba(50, 71, 92, 0.6)">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             to="/login"
             style={{
-              textDecoration: "none",
-              color: "rgb(105, 108, 255)",
+              textDecoration: 'none',
+              color: 'rgb(105, 108, 255)',
             }}
           >
             Sign in instead
-          </Link>{" "}
+          </Link>{' '}
         </Typography>
       </form>
     </Box>

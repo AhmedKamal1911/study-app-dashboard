@@ -18,6 +18,7 @@ import CustomSelectField from './CustomSelectField';
 
 const LoginForm = ({ onLogin }) => {
   const [userType, setUserType] = useState('user');
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -25,7 +26,6 @@ const LoginForm = ({ onLogin }) => {
     },
     validationSchema: loginFormSchema,
     onSubmit: async (values) => {
-      console.log('submit');
       await onLogin(values, userType);
       formik.setSubmitting(false);
     },
@@ -161,7 +161,7 @@ const LoginForm = ({ onLogin }) => {
               <Typography color="rgba(50, 71, 92, 0.6)">Remember me</Typography>
             }
           />
-          {/* TODO: implement forget password functionalitiy */}
+          {/* TODO: implement forget password functionalitiy + page is possible */}
           <Link
             to="/forget-password"
             style={{

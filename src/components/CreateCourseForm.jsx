@@ -6,38 +6,37 @@ import {
   MenuItem,
   Stack,
   TextField,
-  createFilterOptions,
-} from "@mui/material";
+  // createFilterOptions,
+} from '@mui/material';
 
-import CustomSelectField from "./CustomSelectField";
-import CustomAutoComplete from "./CustomAutoComplete";
-import DragZone from "./DragZone";
-import { useFormik } from "formik";
+import CustomSelectField from './CustomSelectField';
+// import CustomAutoComplete from './CustomAutoComplete';
+import DragZone from './DragZone';
+import { useFormik } from 'formik';
 import createCourseFormSchema, {
   fileValidationSchema,
-} from "../schemas/createCourseFormSchema";
-import { useRef } from "react";
-import getFieldError from "../utils/getFieldError";
+} from '../schemas/createCourseFormSchema';
+import { useRef } from 'react';
+import getFieldError from '../utils/getFieldError';
 
-const instructorFilterOptions = createFilterOptions({
-  matchFrom: "any",
-  stringify: (option) => `${option.id} ${option.fullName}`,
-});
+// const instructorFilterOptions = createFilterOptions({
+//   matchFrom: 'any',
+//   stringify: (option) => `${option.id} ${option.fullName}`,
+// });
 const CreateCourseForm = ({ onCourseCreation }) => {
-  // TODO: Image Validation using formik instead of normal validation
   const formRef = useRef(null);
   const certifiedCheckBoxRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      courseImgFile: null,
-      courseName: "",
-      courseCat: "",
-      courseDesc: "",
-      courseReq: "",
-      courseLearning: "",
-      courseLang: "",
-      courseLevel: "",
-      courseInstructor: null,
+      thumbnails: null,
+      title: '',
+      courseLink: '',
+      category: '',
+      courseDescription: '',
+      prerequisites: '',
+      whatYouWillLearn: '',
+      language: '',
+      skillLevel: '',
     },
     validationSchema: createCourseFormSchema,
     onSubmit: async (values) => {
@@ -50,40 +49,40 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       // TODO: idea of resizing image into different sizes (small - medium - large)
       // TODO: possible to check image dimensions if you want more than 1 course image
       const courseData = {
-        title: values.courseName,
-        description: values.courseDesc,
-        skillLevel: values.courseLevel,
-        language: values.courseLang,
-        category: values.courseCat,
-        instructorId: values.courseInstructor.id,
+        title: values.title,
+        description: values.courseDescription,
+        skillLevel: values.skillLevel,
+        language: values.language,
+        category: values.category,
+        // instructorId: values.courseInstructor.id,
         thumbnails: {
-          medium: "url",
+          medium: 'url',
         },
         learn: {
           learnValues: [
             {
-              id: "1",
-              text: "",
+              id: '1',
+              text: '',
             },
           ],
         },
         requirement: {
-          requirements: [{ id: "2", text: "dasdasda" }],
+          requirements: [{ id: '2', text: 'dasdasda' }],
         },
       };
       await onCourseCreation(courseData);
       formik.setSubmitting(false);
     },
   });
-  const onCourseInstructorChange = (e, value) => {
-    formik.setFieldValue("courseInstructor", value);
-  };
+  // const onCourseInstructorChange = (e, value) => {
+  //   formik.setFieldValue('courseInstructor', value);
+  // };
   const onFileInputChange = (file) => {
-    formik.setFieldValue("courseImgFile", file ?? null);
+    formik.setFieldValue('thumbnails', file ?? null);
   };
   const onFileDrop = (files, onDropSuccess) => {
     if (files.length > 1) {
-      formik.setFieldError("courseImgFile", "You cant drop more than 1 image");
+      formik.setFieldError('thumbnails', 'You cant drop more than 1 image');
     } else {
       onDropSuccess(files[0]);
     }
@@ -94,35 +93,38 @@ const CreateCourseForm = ({ onCourseCreation }) => {
         <Stack gap={4} mb={2}>
           {/* File Input */}
           <DragZone
-            name="courseImgFile"
-            error={getFieldError(formik, "courseImgFile")}
+            name="thumbnails"
+            error={getFieldError(formik, 'thumbnails')}
             fileValidationSchema={fileValidationSchema}
             onChange={onFileInputChange}
             onDrop={onFileDrop}
+            onBlur={formik.handleBlur}
           />
           <div>
             <TextField
-              id="courseName"
-              label="Course Name"
+              id="title"
+              name="title"
+              label="Course Title"
               variant="outlined"
               placeholder="ex: React JS"
-              value={formik.values.courseName}
-              fullWidth
+              value={formik.values.title}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              fullWidth
             />
             <p
               style={{
-                color: "red",
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "courseName")}
+              {getFieldError(formik, 'title')}
             </p>
           </div>
           <div>
             <CustomSelectField
               label="Course Category"
-              name="courseCat"
-              value={formik.values.courseCat}
+              name="category"
+              value={formik.values.category}
               onChange={formik.handleChange}
             >
               <MenuItem value="frontend">Front End</MenuItem>
@@ -132,89 +134,114 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
-                marginTop: "5px",
-                color: "red",
+                marginTop: '5px',
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "courseCat")}
+              {getFieldError(formik, 'category')}
             </p>
           </div>
           <TextField
-            label="Course description"
-            name="courseDesc"
-            value={formik.values.courseDesc}
+            label="Course Description"
+            name="courseDescription"
+            value={formik.values.courseDescription}
             onChange={formik.handleChange}
-            id="courseDesc"
+            onBlur={formik.handleBlur}
+            id="courseDescription"
             variant="outlined"
             placeholder="ex: Master Python by building 100 projects in 100 days. Learn data science, automation, build websites, games and apps!"
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
-            helperText={getFieldError(formik, "courseDesc")}
+            helperText={getFieldError(formik, 'courseDescription')}
           />
-
+          <div>
+            <TextField
+              id="courseLink"
+              name="courseLink"
+              label="Course Link"
+              variant="outlined"
+              placeholder="ex: https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj"
+              value={formik.values.courseLink}
+              fullWidth
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <p
+              style={{
+                color: 'red',
+              }}
+            >
+              {getFieldError(formik, 'courseLink')}
+            </p>
+          </div>
           <TextField
-            id="courseReq"
-            label="Course Requirements"
+            id="prerequisites"
+            name="prerequisites"
+            label="Course Prerequisites"
             variant="outlined"
-            name="courseReq"
-            value={formik.values.courseReq}
+            value={formik.values.prerequisites}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             multiline
             rows={3}
-            placeholder="Requirements"
+            placeholder="Prerequisites"
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
-            helperText={getFieldError(formik, "courseReq")}
+            helperText={getFieldError(formik, 'prerequisites')}
           />
           <TextField
-            id="courseLearning"
-            label="Course Learning"
-            name="courseLearning"
-            value={formik.values.courseLearning}
+            id="whatYouWillLearn"
+            name="whatYouWillLearn"
+            label="What you will learn?"
+            value={formik.values.whatYouWillLearn}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             variant="outlined"
             multiline
             rows={3}
             placeholder="What to learn in this course?"
             FormHelperTextProps={{
               style: {
-                color: "red",
+                color: 'red',
               },
             }}
-            helperText={getFieldError(formik, "courseLearning")}
+            helperText={getFieldError(formik, 'whatYouWillLearn')}
           />
           <div>
             <CustomSelectField
-              value={formik.values.courseLevel}
+              value={formik.values.skillLevel}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               label="Course Level"
-              name="courseLevel"
+              name="skillLevel"
             >
-              <MenuItem value="student">Basic</MenuItem>
-              <MenuItem value="admin">Expert</MenuItem>
+              <MenuItem value="beginner">Beginner</MenuItem>
+              <MenuItem value="intermediate">Intermediate</MenuItem>
+              <MenuItem value="advanced">Advanced</MenuItem>
             </CustomSelectField>
             <p
               style={{
                 margin: 0,
-                marginTop: "5px",
-                color: "red",
+                marginTop: '5px',
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "courseLevel")}
+              {getFieldError(formik, 'skillLevel')}
             </p>
           </div>
           <div>
             <CustomSelectField
-              name="courseLang"
+              name="language"
               label="Course Language"
-              value={formik.values.courseLang}
+              value={formik.values.language}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <MenuItem value="english">English</MenuItem>
               <MenuItem value="arabic">Arabic</MenuItem>
@@ -222,14 +249,14 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <p
               style={{
                 margin: 0,
-                marginTop: "5px",
-                color: "red",
+                marginTop: '5px',
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "courseLang")}
+              {getFieldError(formik, 'language')}
             </p>
           </div>
-          <div>
+          {/* <div>
             <CustomAutoComplete
               textFieldName="courseInstructor"
               label="Course Instructor"
@@ -240,22 +267,29 @@ const CreateCourseForm = ({ onCourseCreation }) => {
               noOptionsText="No Such Instructor"
               value={formik.values.courseInstructor}
               onChange={onCourseInstructorChange}
+              onBlur={formik.handleBlur}
             />
             <p
               style={{
                 margin: 0,
-                marginTop: "5px",
-                color: "red",
+                marginTop: '5px',
+                color: 'red',
               }}
             >
-              {getFieldError(formik, "courseInstructor")}
+              {getFieldError(formik, 'courseInstructor')}
             </p>
-          </div>
+          </div> */}
 
           <FormControlLabel
-            control={<Checkbox inputRef={certifiedCheckBoxRef} />}
+            control={
+              <Checkbox
+                name="isCertified"
+                id="isCertified"
+                inputRef={certifiedCheckBoxRef}
+              />
+            }
             sx={{
-              userSelect: "none",
+              userSelect: 'none',
             }}
             label="Certified Course"
           />
@@ -271,7 +305,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? "Creating" : "Create"}
+          {formik.isSubmitting ? 'Creating' : 'Create'}
         </Button>
       </form>
     </Box>

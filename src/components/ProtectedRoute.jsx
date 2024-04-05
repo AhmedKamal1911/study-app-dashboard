@@ -7,7 +7,10 @@ const ProtectedRoute = ({
   onlyAdmin = false,
   onlyInstructor = false,
   onlyStudent = false,
+  onlyInstructorAndStudent = false,
 }) => {
+  // TODO: make a component to handle Authorization message
+  // FIXME: Fix layout when goes to mobile for these typographies
   const { auth } = useAuth();
   if (onlyAdmin && !auth.user.isAdmin) {
     return (
@@ -23,13 +26,14 @@ const ProtectedRoute = ({
       </Typography>
     );
   }
-  if (onlyStudent && onlyInstructor && auth.user.isAdmin)
+  if (onlyInstructorAndStudent && auth.user.isAdmin)
     return (
       <Typography>
         You can't access this page (Only Instructors + Students) because it's
         protected
       </Typography>
     );
+
   return <Outlet />;
 };
 

@@ -1,41 +1,31 @@
-import { Box } from '@mui/material';
-import React from 'react';
+import { Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { LoginForm } from '../../components';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 import fetchFromAPI from '../../utils/constans/fetchFromApi';
-import { usersBaseURL } from '../../App';
+import { getUserBaseURL } from '../../App';
 
 const LoginPage = () => {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [serverError, setServerError] = useState('');
   const onLogin = async (loginCredentials, loginType) => {
     try {
       console.log({ loginCredentials });
-      // TODO: login request here + storing localStorage token
       const { user, token } = await fetchFromAPI({
         method: 'POST',
         url: `/auth/${loginType}/signin`,
         data: loginCredentials,
       });
-      // const currentUserResponse = await fetchFromAPI({
-      //   url: "/auth/user/profile",
-      //   headers: {
-      //     Authorization: `Bearer ${signInResponse.token}`,
-      //   },
-      // });
-      // console.log({ signInResponse, currentUserResponse });
-      const userType = user.isAdmin
-        ? 'admin'
-        : user.isInstructor
-        ? 'instructor'
-        : 'student';
+      setServerError('');
       setAuth({ user, token });
       localStorage.setItem('token', token);
-      navigate(location.state?.to.pathname || usersBaseURL[userType]);
+      navigate(location.state?.from.pathname || getUserBaseURL(user));
     } catch (e) {
+      setServerError(e.response.data.message);
+      // Ask ahmed if he prefers showing server error inside the component or in a snackbar
       // TODO:Show snackbar if there is error
       console.log({ loginError: e });
     }
@@ -49,9 +39,15 @@ const LoginPage = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column',
       }}
     >
       <LoginForm onLogin={onLogin} />
+      {serverError && (
+        <Typography color="indianred" variant="h6" textTransform="uppercase">
+          {serverError}
+        </Typography>
+      )}
     </Box>
   );
 };
