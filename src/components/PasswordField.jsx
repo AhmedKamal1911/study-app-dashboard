@@ -9,14 +9,9 @@ import {
 } from "@mui/material";
 import React, { useId, useRef, useState } from "react";
 const CustomOutlinedInput = styled(OutlinedInput)(() => ({
-  "& .MuiInputBase-input ": {
-    color: "gray",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    border: "1px solid rgba(50,71,92,0.2)",
-  },
-  "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: "rgba(50,71,92,0.5)",
+  "& .css-p51h6s-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill": {
+    WebkitBoxShadow: "initial",
+    WebkitTextFillColor: "rgb(105, 108, 255)",
   },
 }));
 const PasswordField = ({
@@ -53,12 +48,17 @@ const PasswordField = ({
       <InputLabel
         htmlFor={passwordId}
         sx={{
-          color: "rgba(50, 71, 92, 0.6)",
+          color: "primary.main",
         }}
       >
         {label}
       </InputLabel>
       <CustomOutlinedInput
+        sx={{
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(105,108,255)",
+          },
+        }}
         name={name}
         placeholder="*******"
         value={value}

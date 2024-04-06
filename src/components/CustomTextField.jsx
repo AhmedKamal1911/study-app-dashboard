@@ -1,18 +1,15 @@
 import { TextField, styled } from "@mui/material";
 
 const CustomTextField = styled(TextField)(() => ({
-  "& .MuiInputLabel-root:not(.Mui-focused)": {
-    color: "rgba(50, 71, 92, 0.6)",
+  "& label": {
+    color: "rgb(105, 108, 255)",
   },
-  "& .MuiInputBase-input ": {
-    color: "gray",
+  "& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "rgb(105,108,255)",
   },
-  "& .MuiOutlinedInput-notchedOutline:not(.Mui-focused)": {
-    borderColor: "rgba(50,71,92,0.2)",
+  "& .css-usn00y-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill": {
+    WebkitBoxShadow: "initial",
+    WebkitTextFillColor: "rgb(105, 108, 255)",
   },
-  "&:hover MuiInputBase-input:not(.Mui-focused) .MuiOutlinedInput-notchedOutline":
-    {
-      borderColor: "rgba(50,71,92,0.5)",
-    },
 }));
 export default CustomTextField;

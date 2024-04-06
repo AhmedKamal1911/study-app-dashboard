@@ -16,10 +16,25 @@ const CustomSelectField = ({
   const selectId = `${name || "select"}-${idForSelect}`;
 
   return (
-    <FormControl variant="standard" fullWidth>
+    <FormControl
+      sx={{
+        "& .MuiFormLabel-root , & .MuiSvgIcon-root": {
+          color: "rgb(105, 108, 255)",
+        },
+        "& .css-n6941b-MuiInputBase-root-MuiInput-root-MuiSelect-root::before":
+          {
+            borderColor: "rgb(105, 108, 185)",
+          },
+      }}
+      variant="standard"
+      fullWidth
+    >
       <InputLabel id={labelId}>{label}</InputLabel>
       {controlled ? (
         <Select
+          sx={{
+            color: "rgb(105, 108, 255)",
+          }}
           labelId={labelId}
           id={selectId}
           name={name}
@@ -31,6 +46,9 @@ const CustomSelectField = ({
         </Select>
       ) : (
         <Select
+          sx={{
+            color: "rgb(105, 108, 255)",
+          }}
           labelId={labelId}
           id={selectId}
           name={name}

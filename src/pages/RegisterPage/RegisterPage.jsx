@@ -1,44 +1,46 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import { RegisterForm } from '../../components';
+import { Box } from "@mui/material";
+import React from "react";
+import { RegisterForm } from "../../components";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import fetchFromAPI from '../../utils/constans/fetchFromApi';
-import { useAuth } from '../../contexts/authContext';
+import fetchFromAPI from "../../utils/constans/fetchFromApi";
+import { useAuth } from "../../contexts/authContext";
+import { useSnackbar } from "../../contexts/snackbarContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
-  const onRegister = async (registerData, endPoint = 'users') => {
+  const { openSnackbar } = useSnackbar();
+  const onRegister = async (registerData, endPoint = "users") => {
+    const userTypeSingular = endPoint.slice(0, endPoint.length - 1);
     try {
       console.log({ registerData });
       console.log([...registerData.entries()]);
       const response = await fetchFromAPI({
         url: `/${endPoint}`,
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
         data: registerData,
       });
       console.log({ registerResponse: response });
-      // TODO: close Modal and show Alert of success
-      navigate('/');
+      openSnackbar(`${userTypeSingular}, created successfully.`);
+      navigate("/");
     } catch (e) {
-      // TODO: show Alert of failure
-      console.log({ loginError: e });
+      openSnackbar(`Failed to create ${userTypeSingular}`, "error");
     }
   };
   return (
     <Box
-      bgcolor="#f7f7f7"
+      bgcolor="background.default"
       sx={{
-        height: '100vh',
-        px: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        minHeight: "100vh",
+        p: 2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <RegisterForm onRegister={onRegister} />

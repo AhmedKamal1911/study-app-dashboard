@@ -9,10 +9,10 @@ import {
   TextField,
   Tooltip,
   useMediaQuery,
-} from '@mui/material';
-import { profileImg } from '../assets/images';
+} from "@mui/material";
+import { profileImg } from "../assets/images";
 
-import { useToggleDarkMode } from '../contexts/themeContext';
+import { useToggleDarkMode } from "../contexts/themeContext";
 
 import {
   Logout,
@@ -21,22 +21,23 @@ import {
   Notifications,
   LightMode,
   DarkMode,
-} from '@mui/icons-material';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext';
-import { useAsideContext } from '../contexts/asideContext';
-import fetchFromAPI from '../utils/constans/fetchFromApi';
+} from "@mui/icons-material";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
+import { useAsideContext } from "../contexts/asideContext";
+import fetchFromAPI from "../utils/constans/fetchFromApi";
+import { useSnackbar } from "../contexts/snackbarContext";
 
 const Navbar = () => {
   const { toggleDarkMode, colorMode } = useToggleDarkMode();
   const { setAuth } = useAuth();
-  const isMediumScreen = useMediaQuery('(max-width: 1199px)');
+  const isMediumScreen = useMediaQuery("(max-width: 1199px)");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { openAside } = useAsideContext();
   const { auth } = useAuth();
-
+  const { openSnackbar } = useSnackbar();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -46,18 +47,21 @@ const Navbar = () => {
   const logUserOut = async () => {
     try {
       const response = await fetchFromAPI({
-        url: '/auth/user/signout',
-        method: 'DELETE',
+        url: "/auth/user/signout",
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
       });
       console.log({ logoutResponse: response });
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       setAuth({ auth: null, user: null });
-      // TODO: show success msg (snackbar)
+      openSnackbar("You logged out successfully");
     } catch (e) {
-      // TODO: show error msg
+      openSnackbar(
+        "Failed to logout due to network error, try again.",
+        "error"
+      );
     }
   };
   function handleLogout() {
@@ -85,22 +89,22 @@ const Navbar = () => {
         <IconButton
           onClick={() => {}}
           size="medium"
-          sx={{ alignSelf: 'flex-end' }}
+          sx={{ alignSelf: "flex-end" }}
         >
           <Search />
         </IconButton>
         <TextField id="input-with-sx" label="Search" variant="standard" />
       </Stack>
       <Stack direction="row" gap={2} alignItems="center">
-        <IconButton size="medium" sx={{ alignSelf: 'flex-end' }}>
+        <IconButton size="medium" sx={{ alignSelf: "flex-end" }}>
           <Notifications />
         </IconButton>
         <IconButton
           onClick={() => toggleDarkMode()}
           size="medium"
-          sx={{ alignSelf: 'flex-end' }}
+          sx={{ alignSelf: "flex-end" }}
         >
-          {colorMode === 'light' ? <LightMode /> : <DarkMode />}
+          {colorMode === "light" ? <LightMode /> : <DarkMode />}
         </IconButton>
 
         <Tooltip title="Profile settings">
@@ -108,19 +112,19 @@ const Navbar = () => {
             onClick={handleClick}
             size="medium"
             sx={{
-              position: 'relative',
+              position: "relative",
 
-              '&::after': {
-                position: 'absolute',
+              "&::after": {
+                position: "absolute",
                 content: "''",
-                width: '10px',
-                height: '10px',
-                borderRadius: '10px',
+                width: "10px",
+                height: "10px",
+                borderRadius: "10px",
                 right: 8,
                 bottom: 5,
-                transition: '0.3s',
-                bgcolor: '#16c416',
-                border: '1px solid gray',
+                transition: "0.3s",
+                bgcolor: "#16c416",
+                border: "1px solid gray",
               },
             }}
           >
@@ -128,9 +132,9 @@ const Navbar = () => {
               src={auth.user?.avatar || profileImg}
               alt="profile"
               style={{
-                height: '40px',
-                width: '40px',
-                borderRadius: '50%',
+                height: "40px",
+                width: "40px",
+                borderRadius: "50%",
               }}
             />
           </IconButton>
@@ -144,11 +148,11 @@ const Navbar = () => {
           PaperProps={{
             elevation: 0,
             sx: {
-              width: '200px',
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              width: "200px",
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 2.5,
-              '& .MuiCardMedia-root': {
+              "& .MuiCardMedia-root": {
                 width: 40,
                 height: 40,
                 ml: -0.5,
@@ -156,17 +160,17 @@ const Navbar = () => {
               },
             },
           }}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <MenuItem component={Link} to="/profile">
             <CardMedia
               component="img"
               image={auth.user?.avatar || profileImg}
               sx={{
-                height: '40px',
-                width: '40px',
-                borderRadius: '50%',
+                height: "40px",
+                width: "40px",
+                borderRadius: "50%",
               }}
             />
             Profile

@@ -8,6 +8,7 @@ export { default as RegisterForm } from "./RegisterForm.jsx";
 export { default as LoginForm } from "./LoginForm.jsx";
 export { default as PasswordField } from "./PasswordField.jsx";
 export { default as CustomSelectField } from "./CustomSelectField.jsx";
+export { default as Unauthorized } from "./Unauthorized.jsx";
 // Charts
 
 export { default as TinyLineChart } from "./TinyLineChart.jsx";

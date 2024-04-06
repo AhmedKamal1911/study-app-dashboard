@@ -7,14 +7,16 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PasswordField from './PasswordField';
-import CustomSelectField from './CustomSelectField';
-import { useFormik } from 'formik';
-import registerFormSchema from '../schemas/registerFormSchema';
-import getFieldError from '../utils/getFieldError';
+} from "@mui/material";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import PasswordField from "./PasswordField";
+import CustomSelectField from "./CustomSelectField";
+import { useFormik } from "formik";
+import registerFormSchema from "../schemas/registerFormSchema";
+import getFieldError from "../utils/getFieldError";
+import CustomTextField from "./CustomTextField";
+import FieldError from "./FieldError";
 // const CustomTextField = styled(TextField)({
 //   "& .MuiOutlinedInput-root": {
 //     "&:not(:hover) fieldset": {
@@ -33,30 +35,29 @@ const RegisterForm = ({ onRegister }) => {
   const [showInstructorDescription, setShowInstructorDesc] = useState(false);
   const formik = useFormik({
     initialValues: {
-      username: '',
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      userType: 'users',
-      instructorDescription: '',
+      username: "",
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      userType: "users",
+      instructorDescription: "",
       termsAgree: false,
     },
     validationSchema: registerFormSchema,
     onSubmit: async (values) => {
       const formData = new FormData(formRef.current);
-      // TODO: test images on ahmed device
       console.log([...formData.entries()]);
       const unnecessaryInputNames = [
-        'userType',
-        'termsAgree',
-        'confirmPassword',
+        "userType",
+        "termsAgree",
+        "confirmPassword",
       ];
       const trimmedFullName = values.fullName.trim();
-      formData.set('fullName', trimmedFullName);
+      formData.set("fullName", trimmedFullName);
       unnecessaryInputNames.forEach((key) => formData.delete(key));
-      if (values.userType === 'users') {
-        formData.delete('instructorDescription');
+      if (values.userType === "users") {
+        formData.delete("instructorDescription");
       }
       await onRegister(formData, values.userType);
       formik.setSubmitting(false);
@@ -64,7 +65,7 @@ const RegisterForm = ({ onRegister }) => {
   });
   return (
     <Box
-      bgcolor="#141213"
+      bgcolor="background.paper"
       boxShadow="0 0 4px 1px #0000001c"
       p={3}
       borderRadius={2}
@@ -101,19 +102,15 @@ const RegisterForm = ({ onRegister }) => {
             d="M17.543 52.7266C21.2241 53.9875 28.5535 57.0509 30.091 59.101C32.0129 61.6635 33.1576 64.34 29.2527 71.2039C28.5954 71.6481 27.9821 72.0633 27.4069 72.4528C22.1953 75.9817 20.1085 77.3946 16.6243 79.0531C13.5855 80.2464 6.61575 81.7103 2.66559 74.5653C-1.11764 67.7222 3.23818 62.7113 6.5963 60.065L12.1695 56.0339L14.8359 54.3477L17.543 52.7266Z"
           ></path>
         </svg>
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          color="rgba(50, 71, 92, 0.87)"
-        >
+        <Typography variant="h5" fontWeight="bold" color="primary.main">
           Healther
         </Typography>
       </Stack>
       <Box color="black" mb={2}>
-        <Typography fontWeight="bold" fontSize={24} color="rgb(50,71,92)">
+        <Typography fontWeight="bold" fontSize={24} color="primary.main">
           Adventure starts here 🚀
         </Typography>
-        <Typography color="rgba(50, 71, 92, 0.6)">
+        <Typography color="lightDark">
           Make your app management easy and fun!
         </Typography>
       </Box>
@@ -121,52 +118,46 @@ const RegisterForm = ({ onRegister }) => {
         <Stack gap={2} mb={2}>
           {/* TODO: remove this later or create it / cloudinary error */}
           <input type="file" name="file" id="file" />
-          <TextField
-            name="username"
-            id="username"
-            label="Username"
-            variant="outlined"
-            placeholder="max9874"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            helperText={getFieldError(formik, 'username')}
-            FormHelperTextProps={{
-              style: {
-                color: 'red',
-              },
-            }}
-          />
-          <TextField
-            name="fullName"
-            id="fullName"
-            label="Full Name"
-            variant="outlined"
-            placeholder="max9874"
-            value={formik.values.fullName}
-            onChange={formik.handleChange}
-            helperText={getFieldError(formik, 'fullName')}
-            FormHelperTextProps={{
-              style: {
-                color: 'red',
-              },
-            }}
-          />
-          <TextField
-            name="email"
-            id="email"
-            label="Email"
-            variant="outlined"
-            type="email"
-            placeholder="example@gmail.com"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            helperText={getFieldError(formik, 'email')}
-            FormHelperTextProps={{
-              style: {
-                color: 'red',
-              },
-            }}
-          />
+          <div>
+            <CustomTextField
+              name="username"
+              id="username"
+              label="Username"
+              variant="outlined"
+              placeholder="max9874"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              fullWidth
+            />
+            <FieldError errorText={getFieldError(formik, "username")} />
+          </div>
+          <div>
+            <CustomTextField
+              name="fullName"
+              id="fullName"
+              label="Full Name"
+              variant="outlined"
+              placeholder="max9874"
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              fullWidth
+            />
+            <FieldError errorText={getFieldError(formik, "fullName")} />
+          </div>
+          <div>
+            <CustomTextField
+              name="email"
+              id="email"
+              label="Email"
+              variant="outlined"
+              type="email"
+              placeholder="example@gmail.com"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              fullWidth
+            />
+            <FieldError errorText={getFieldError(formik, "email")} />
+          </div>
           <div>
             <PasswordField
               name="password"
@@ -175,13 +166,7 @@ const RegisterForm = ({ onRegister }) => {
               label="Password"
               fullWidth
             />
-            <p
-              style={{
-                color: 'red',
-              }}
-            >
-              {getFieldError(formik, 'password')}
-            </p>
+            <FieldError errorText={getFieldError(formik, "password")} />
           </div>
 
           <div>
@@ -192,13 +177,7 @@ const RegisterForm = ({ onRegister }) => {
               label="Confirm Password"
               fullWidth
             />
-            <p
-              style={{
-                color: 'red',
-              }}
-            >
-              {getFieldError(formik, 'confirmPassword')}
-            </p>
+            <FieldError errorText={getFieldError(formik, "confirmPassword")} />
           </div>
         </Stack>
         <div>
@@ -207,7 +186,7 @@ const RegisterForm = ({ onRegister }) => {
             label="User Type"
             onChange={(e) => {
               formik.handleChange(e);
-              setShowInstructorDesc(e.target.value === 'instructors');
+              setShowInstructorDesc(e.target.value === "instructors");
             }}
             value={formik.values.userType}
             controlled
@@ -215,21 +194,15 @@ const RegisterForm = ({ onRegister }) => {
             <MenuItem value="users">Student</MenuItem>
             <MenuItem value="instructors">Instructor</MenuItem>
           </CustomSelectField>
-          <p
-            style={{
-              color: 'red',
-            }}
-          >
-            {getFieldError(formik, 'userType')}
-          </p>
+          <FieldError errorText={getFieldError(formik, "userType")} />
         </div>
 
         <div
           style={{
-            display: showInstructorDescription ? 'block' : 'none',
+            display: showInstructorDescription ? "block" : "none",
           }}
         >
-          <TextField
+          <CustomTextField
             id="instructorDescription"
             label="Instructor Description"
             name="instructorDescription"
@@ -238,12 +211,9 @@ const RegisterForm = ({ onRegister }) => {
             variant="outlined"
             fullWidth
             placeholder="What is the instructor description?"
-            FormHelperTextProps={{
-              style: {
-                color: 'red',
-              },
-            }}
-            helperText={getFieldError(formik, 'instructorDescription')}
+          />
+          <FieldError
+            errorText={getFieldError(formik, "instructorDescription")}
           />
         </div>
 
@@ -251,6 +221,10 @@ const RegisterForm = ({ onRegister }) => {
           <FormControlLabel
             sx={{
               mt: 2,
+
+              "& .MuiButtonBase-root": {
+                color: "#9d95d9",
+              },
             }}
             control={
               <Checkbox
@@ -260,21 +234,15 @@ const RegisterForm = ({ onRegister }) => {
               />
             }
             label={
-              <Typography color="rgba(50, 71, 92, 0.6)">
-                I agree to{' '}
+              <Typography color="lightDark">
+                I agree to{" "}
                 <Typography component="span" color="rgb(105, 108, 255)">
                   privacy policy & terms
                 </Typography>
               </Typography>
             }
           />
-          <p
-            style={{
-              color: 'red',
-            }}
-          >
-            {getFieldError(formik, 'termsAgree')}
-          </p>
+          <FieldError errorText={getFieldError(formik, "termsAgree")} />
         </div>
 
         <Button
@@ -286,19 +254,19 @@ const RegisterForm = ({ onRegister }) => {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? 'SIGNING UP' : 'SIGN UP'}
+          {formik.isSubmitting ? "SIGNING UP" : "SIGN UP"}
         </Button>
-        <Typography p={3} color="rgba(50, 71, 92, 0.6)">
-          Already have an account?{' '}
+        <Typography p={3} color="lightDark">
+          Already have an account?{" "}
           <Link
             to="/login"
             style={{
-              textDecoration: 'none',
-              color: 'rgb(105, 108, 255)',
+              textDecoration: "none",
+              color: "rgb(105, 108, 255)",
             }}
           >
             Sign in instead
-          </Link>{' '}
+          </Link>{" "}
         </Typography>
       </form>
     </Box>

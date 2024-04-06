@@ -1,42 +1,43 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from "react";
 import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
-} from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
+} from "react-router-dom";
+import { CssBaseline } from "@mui/material";
 // import { Aside, Feed } from "./components";
-import StatsPage from './pages/StatsPage/StatsPage.jsx';
-import ErrorPage from './pages/ErrorPage/ErrorPage.jsx';
-import { ColorModeProvider } from './contexts/themeContext.js';
-import LoginPage from './pages/LoginPage/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage/RegisterPage.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import CreateCoursePage from './pages/CreateCoursePage/CreateCoursePage.jsx';
-import InstructorCourseReviewsPage from './pages/InstructorCourseReviewsPage/InstructorCourseReviewsPage.jsx';
-import ProfilePage from './pages/ProfilePage/ProfilePage.jsx';
-import UserCoursesPage from './pages/UserCoursesPage/UserCoursesPage.jsx';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
-import AuthProvider from './contexts/authContext.js';
-import StudentEnrollPage from './pages/StudentEnrollPage/StudentEnrollPage.jsx';
-import ModalProvider from './contexts/modalContext.js';
-import Loader from './components/Loader.jsx';
-import PersistLogin from './components/PersistLogin.jsx';
+import StatsPage from "./pages/StatsPage/StatsPage.jsx";
+import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
+import { ColorModeProvider } from "./contexts/themeContext.js";
+import LoginPage from "./pages/LoginPage/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import CreateCoursePage from "./pages/CreateCoursePage/CreateCoursePage.jsx";
+import InstructorCourseReviewsPage from "./pages/InstructorCourseReviewsPage/InstructorCourseReviewsPage.jsx";
+import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
+import UserCoursesPage from "./pages/UserCoursesPage/UserCoursesPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
+import AuthProvider from "./contexts/authContext.js";
+import StudentEnrollPage from "./pages/StudentEnrollPage/StudentEnrollPage.jsx";
+import ModalProvider from "./contexts/modalContext.js";
+import Loader from "./components/Loader.jsx";
+import PersistLogin from "./components/PersistLogin.jsx";
+import SnackBarProvider from "./contexts/snackbarContext.js";
 const usersBaseURL = {
-  instructor: '/courses',
-  admin: '/',
-  student: '/courses',
+  instructor: "/courses",
+  admin: "/",
+  student: "/courses",
 };
 export function getUserBaseURL(user) {
   const userType = user.isAdmin
-    ? 'admin'
+    ? "admin"
     : user.isInstructor
-    ? 'instructor'
-    : 'student';
+    ? "instructor"
+    : "student";
   return usersBaseURL[userType];
 }
-const RootLayout = lazy(() => import('./layouts/RootLayout/RootLayout.jsx'));
+const RootLayout = lazy(() => import("./layouts/RootLayout/RootLayout.jsx"));
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -60,8 +61,10 @@ const router = createBrowserRouter(
             <Route element={<ProtectedRoute onlyInstructor />}>
               <Route path="/create-course" element={<CreateCoursePage />} />
             </Route>
-            <Route element={<ProtectedRoute onlyAdmin />}>
+            <Route element={<ProtectedRoute onlyStudent />}>
               <Route path="/enroll" element={<StudentEnrollPage />} />
+            </Route>
+            <Route element={<ProtectedRoute onlyAdmin />}>
               <Route index element={<StatsPage />} />
             </Route>
 
@@ -94,7 +97,9 @@ const App = () => {
       <ColorModeProvider>
         <AuthProvider>
           <ModalProvider>
-            <RouterProvider router={router} />
+            <SnackBarProvider>
+              <RouterProvider router={router} />
+            </SnackBarProvider>
           </ModalProvider>
         </AuthProvider>
       </ColorModeProvider>

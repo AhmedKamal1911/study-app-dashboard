@@ -1,7 +1,8 @@
-import { Typography } from '@mui/material';
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext';
+import { Typography } from "@mui/material";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
+import { Unauthorized } from ".";
 
 const ProtectedRoute = ({
   onlyAdmin = false,
@@ -9,29 +10,28 @@ const ProtectedRoute = ({
   onlyStudent = false,
   onlyInstructorAndStudent = false,
 }) => {
-  // TODO: make a component to handle Authorization message
-  // FIXME: Fix layout when goes to mobile for these typographies
   const { auth } = useAuth();
   if (onlyAdmin && !auth.user.isAdmin) {
     return (
-      <Typography>
-        You can't access this page (Only admins) because it's protected
-      </Typography>
+      <Unauthorized message="You can't access this page (Only admins) because it's protected" />
     );
   }
   if (onlyInstructor && !auth.user.isInstructor) {
     return (
-      <Typography>
-        You can't access this page (Only Instructors) because it's protected
-      </Typography>
+      <Unauthorized message="You can't access this page (Only Instructors) because it's protected" />
+    );
+  }
+  if (onlyStudent && (auth.user.isAdmin || auth.user.isInstructor)) {
+    return (
+      <Unauthorized message="You can't access this page (Only Students) because it's protected" />
     );
   }
   if (onlyInstructorAndStudent && auth.user.isAdmin)
     return (
-      <Typography>
-        You can't access this page (Only Instructors + Students) because it's
-        protected
-      </Typography>
+      <Unauthorized
+        message="You can't access this page (Only Instructors + Students) because it's
+      protected"
+      />
     );
 
   return <Outlet />;
