@@ -1,6 +1,8 @@
 import * as Yup from "yup";
-
+import generateFileValidationSchema from "./fileValidationSchema";
+export const fileValidationSchema = generateFileValidationSchema(2.5, "User");
 const registerFormSchema = Yup.object({
+  file: fileValidationSchema,
   userType: Yup.string().required("User type is required"),
   instructorDescription: Yup.string().when("userType", {
     is: "instructors",

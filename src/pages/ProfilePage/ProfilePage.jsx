@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
 import InfoBoxWrapper from "../../components/InfoBoxWrapper";
 import { useAuth } from "../../contexts/authContext";
 const profileInfo = [

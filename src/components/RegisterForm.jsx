@@ -8,15 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PasswordField from "./PasswordField";
 import CustomSelectField from "./CustomSelectField";
 import { useFormik } from "formik";
-import registerFormSchema from "../schemas/registerFormSchema";
+import registerFormSchema, {
+  fileValidationSchema,
+} from "../schemas/registerFormSchema";
 import getFieldError from "../utils/getFieldError";
 import CustomTextField from "./CustomTextField";
 import FieldError from "./FieldError";
+import validateFile from "../utils/validateFile";
 // const CustomTextField = styled(TextField)({
 //   "& .MuiOutlinedInput-root": {
 //     "&:not(:hover) fieldset": {
@@ -31,10 +34,13 @@ import FieldError from "./FieldError";
 //   },
 // });
 const RegisterForm = ({ onRegister }) => {
+  const inputFileRef = useRef(null);
   const formRef = useRef(null);
   const [showInstructorDescription, setShowInstructorDesc] = useState(false);
+  const [userSelectedImageURL, setUserSelectedImageURL] = useState("");
   const formik = useFormik({
     initialValues: {
+      file: null,
       username: "",
       fullName: "",
       email: "",
@@ -59,10 +65,32 @@ const RegisterForm = ({ onRegister }) => {
       if (values.userType === "users") {
         formData.delete("instructorDescription");
       }
-      await onRegister(formData, values.userType);
-      formik.setSubmitting(false);
+      try {
+        await onRegister(formData, values.userType);
+        console.log({ userSelectedImageURLbeforerevoke: userSelectedImageURL });
+        URL.revokeObjectURL(userSelectedImageURL);
+      } finally {
+        formik.setSubmitting(false);
+      }
     },
   });
+  function hideUserImage() {
+    URL.revokeObjectURL(userSelectedImageURL);
+    setUserSelectedImageURL("");
+  }
+  function clearInputFileList() {
+    inputFileRef.current.files = new DataTransfer().files;
+  }
+  function handleFileChange(file) {
+    formik.setFieldValue("file", file ?? null);
+    if (!file) return void (userSelectedImageURL && hideUserImage());
+    // there is file and is valid
+    if (validateFile(file, fileValidationSchema))
+      return setUserSelectedImageURL(URL.createObjectURL(file));
+    // there is file but not valid
+    clearInputFileList();
+    userSelectedImageURL && hideUserImage();
+  }
   return (
     <Box
       bgcolor="background.paper"
@@ -116,8 +144,29 @@ const RegisterForm = ({ onRegister }) => {
       </Box>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
         <Stack gap={2} mb={2}>
-          {/* TODO: remove this later or create it / cloudinary error */}
-          <input type="file" name="file" id="file" />
+          <div>
+            {userSelectedImageURL && (
+              <img
+                style={{
+                  width: "100%",
+                }}
+                src={userSelectedImageURL}
+                alt="user"
+              />
+            )}
+            <CustomTextField
+              type="file"
+              name="file"
+              id="file"
+              accept="image/*"
+              inputRef={inputFileRef}
+              onChange={(e) => handleFileChange(e.target.files[0])}
+              onBlur={formik.handleBlur}
+              fullWidth
+            />
+            <FieldError errorText={getFieldError(formik, "file")} />
+          </div>
+
           <div>
             <CustomTextField
               name="username"
@@ -127,6 +176,7 @@ const RegisterForm = ({ onRegister }) => {
               placeholder="max9874"
               value={formik.values.username}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               fullWidth
             />
             <FieldError errorText={getFieldError(formik, "username")} />
@@ -140,6 +190,7 @@ const RegisterForm = ({ onRegister }) => {
               placeholder="max9874"
               value={formik.values.fullName}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               fullWidth
             />
             <FieldError errorText={getFieldError(formik, "fullName")} />
@@ -153,6 +204,7 @@ const RegisterForm = ({ onRegister }) => {
               type="email"
               placeholder="example@gmail.com"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.email}
               fullWidth
             />
@@ -163,6 +215,7 @@ const RegisterForm = ({ onRegister }) => {
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               label="Password"
               fullWidth
             />
@@ -174,6 +227,7 @@ const RegisterForm = ({ onRegister }) => {
               name="confirmPassword"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               label="Confirm Password"
               fullWidth
             />
@@ -188,6 +242,7 @@ const RegisterForm = ({ onRegister }) => {
               formik.handleChange(e);
               setShowInstructorDesc(e.target.value === "instructors");
             }}
+            onBlur={formik.handleBlur}
             value={formik.values.userType}
             controlled
           >
@@ -208,6 +263,7 @@ const RegisterForm = ({ onRegister }) => {
             name="instructorDescription"
             value={formik.values.instructorDescription}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             variant="outlined"
             fullWidth
             placeholder="What is the instructor description?"
@@ -230,6 +286,7 @@ const RegisterForm = ({ onRegister }) => {
               <Checkbox
                 name="termsAgree"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 checked={formik.values.termsAgree}
               />
             }

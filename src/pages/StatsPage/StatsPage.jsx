@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import {
   manWithLaptopImg,
   manWithLaptopImgDark,
@@ -30,7 +23,6 @@ import {
 import { formatNumber } from "../../utils/formatNumber";
 import PieChartBox from "../../components/PieChartBox";
 import StatsBox from "../../components/StatsBox";
-import { ThemeContext, useTheme } from "@emotion/react";
 import { useToggleDarkMode } from "../../contexts/themeContext";
 import StatsTabs from "../../components/StatsTabs";
 const transactionsInfo = [
@@ -78,7 +70,7 @@ const transactionsInfo = [
   },
 ];
 const StatsPage = () => {
-  const { toggleDarkMode, colorMode } = useToggleDarkMode();
+  const { colorMode } = useToggleDarkMode();
   return (
     <Box
       sx={{

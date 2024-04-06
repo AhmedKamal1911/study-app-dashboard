@@ -6,6 +6,7 @@ const CustomSelectField = ({
   label = "nolabel",
   name,
   onChange,
+  onBlur,
   value,
   defaultValue = "",
   controlled = false,
@@ -39,6 +40,7 @@ const CustomSelectField = ({
           id={selectId}
           name={name}
           onChange={onChange}
+          onBlur={onBlur}
           label={label}
           value={value}
         >
@@ -53,6 +55,7 @@ const CustomSelectField = ({
           id={selectId}
           name={name}
           onChange={onChange}
+          onBlur={onBlur}
           label={label}
           defaultValue={defaultValue}
         >

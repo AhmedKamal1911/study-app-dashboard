@@ -45,6 +45,7 @@ const Navbar = () => {
     setAnchorEl(null);
   };
   const logUserOut = async () => {
+    // FIXME: what if user tries to logout and his session is already expired what to do with the token ?  i cant even do logout request ? what should i do ?
     try {
       const response = await fetchFromAPI({
         url: "/auth/user/signout",
@@ -58,6 +59,8 @@ const Navbar = () => {
       setAuth({ auth: null, user: null });
       openSnackbar("You logged out successfully");
     } catch (e) {
+      console.log(e);
+      // detect if the user token is finished and he tries to signout then log him out with diffrent way for example
       openSnackbar(
         "Failed to logout due to network error, try again.",
         "error"

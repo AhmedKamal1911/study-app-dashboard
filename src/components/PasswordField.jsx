@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useId, useRef, useState } from "react";
 const CustomOutlinedInput = styled(OutlinedInput)(() => ({
-  "& .css-p51h6s-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill": {
+  "& .MuiInputBase-input:-webkit-autofill": {
     WebkitBoxShadow: "initial",
     WebkitTextFillColor: "rgb(105, 108, 255)",
   },

@@ -5,7 +5,7 @@ import booksLoader from "../assets/lottiefiles-animations/loading.json";
 const Loader = () => {
   return (
     <Stack
-      bgcolor="#e7e3f0"
+      bgcolor="background.paper"
       justifyContent="center"
       alignItems="center"
       height="100vh"
