@@ -9,7 +9,8 @@ const CourseCard = ({
   courseImg,
   reviewsCount,
   courseLink,
-  ratingVale,
+  ratingValue,
+  hideReviewBtn = false,
   title,
 }) => {
   const { openModal } = useModal();
@@ -47,7 +48,7 @@ const CourseCard = ({
       >
         <Rating
           readOnly
-          value={ratingVale > 5 ? 5 : ratingVale}
+          value={ratingValue > 5 ? 5 : ratingValue}
           precision={0.5}
           sx={{
             color: "#FF8F3C",
@@ -81,14 +82,15 @@ const CourseCard = ({
         flexWrap="wrap"
         gap={1}
       >
-        <Stack direction="row">
+        <Stack direction="row" gap={1}>
           <PeopleOutline />
           <Typography color="body">{`${totalStudents} Students`}</Typography>
         </Stack>
-
-        <Button onClick={handleReviewBtnClick} variant="outlined">
-          <Star sx={{ mr: "5px" }} /> Rate
-        </Button>
+        {!hideReviewBtn && (
+          <Button onClick={handleReviewBtnClick} variant="outlined">
+            <Star sx={{ mr: "5px" }} /> Rate
+          </Button>
+        )}
       </Stack>
       <Box>
         <Button

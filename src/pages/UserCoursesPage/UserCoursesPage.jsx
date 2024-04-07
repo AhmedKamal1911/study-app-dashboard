@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import React from "react";
 import InfoBoxWrapper from "../../components/InfoBoxWrapper";
@@ -12,7 +12,10 @@ import { useSnackbar } from "../../contexts/snackbarContext";
 const UserCoursesPage = () => {
   const { auth } = useAuth();
   const { error, responseData, isLoading } = useFetch({
-    url: "/courses",
+    url: `${auth.user.isInstructor ? "/courses/instructor" : "/users/courses"}`,
+    headers: {
+      Authorization: `Bearer ${auth.token}`,
+    },
   });
   const { closeModal } = useModal();
   const { openSnackbar } = useSnackbar();
@@ -22,9 +25,6 @@ const UserCoursesPage = () => {
         url: "/reviews",
         method: "POST",
         data: { courseId: courseId, userId: auth.user.id, ...reviewInfo },
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       closeModal();
 
@@ -41,21 +41,44 @@ const UserCoursesPage = () => {
           isLoading={isLoading}
           // error={"hasssssssssssssssssssssssssssssssss"}
         >
-          <Grid container spacing={3} alignItems="flex-start">
-            {responseData?.map((course) => (
-              <Grid key={course.id} xs={12} sm={6} md={4} lg={3}>
-                <CourseCard
-                  onReviewCreation={onReviewCreation(course.id)}
-                  courseImg={course.thumbnails.large}
-                  reviewsCount={15}
-                  totalStudents={course.totalStudents}
-                  courseLink={"https://www.youtube.com"}
-                  ratingVale={course.rating.value}
-                  title={course.title}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          {responseData?.courses.length > 0 ? (
+            <Grid container spacing={3} alignItems="flex-start">
+              {responseData?.courses?.map((course) => (
+                <Grid key={course.id} xs={12} sm={6} md={4} lg={3}>
+                  <CourseCard
+                    hideReviewBtn={auth.user.isInstructor}
+                    onReviewCreation={onReviewCreation(course.id)}
+                    courseImg={course.thumbnails}
+                    reviewsCount={course.numberOfRatings}
+                    totalStudents={course.numberOfStudents}
+                    courseLink={course.courseLink}
+                    ratingValue={5}
+                    // FIXME: please rating value from course
+                    title={course.title}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Stack
+              minHeight="88vh"
+              alignItems="
+            center"
+              justifyContent="center"
+            >
+              <Typography
+                variant="body2"
+                color="indianred"
+                border="1px solid indianred"
+                fontWeight="bold"
+                p={2}
+                borderRadius={2}
+                fontSize={18}
+              >
+                You have no courses to show
+              </Typography>
+            </Stack>
+          )}
         </Loading>
       </InfoBoxWrapper>
     </Box>

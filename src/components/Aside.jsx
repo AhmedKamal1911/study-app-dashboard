@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Button,
   Drawer,
   Stack,
   Typography,
   useMediaQuery,
-} from '@mui/material';
+} from "@mui/material";
 import {
   ShowChart,
   AppRegistrationRounded,
@@ -14,22 +14,22 @@ import {
   Star,
   CloudCircleRounded,
   ImportContacts,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAsideContext } from '../contexts/asideContext';
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useAsideContext } from "../contexts/asideContext";
 
 const pagesButtons = [
-  { name: 'Analyze', icon: <ShowChart />, path: '/' },
-  { name: 'Register', icon: <AppRegistrationRounded />, path: '/sign-up' },
-  { name: 'Create Course', icon: <Create />, path: '/create-course' },
-  { name: 'My Courses', icon: <OndemandVideo />, path: '/courses' },
-  { name: 'Enrollment', icon: <CloudCircleRounded />, path: '/enroll' },
-  { name: 'Reviews', icon: <Star />, path: '/course-reviews' },
+  { name: "Analyze", icon: <ShowChart />, path: "/" },
+  { name: "Register", icon: <AppRegistrationRounded />, path: "/sign-up" },
+  { name: "Create Course", icon: <Create />, path: "/create-course" },
+  { name: "My Courses", icon: <OndemandVideo />, path: "/courses" },
+  { name: "Enrollment", icon: <CloudCircleRounded />, path: "/enroll" },
+  { name: "Reviews", icon: <Star />, path: "/course-reviews" },
 ];
 
 const Aside = () => {
-  const isMediumScreen = useMediaQuery('(max-width: 1199px)');
+  const isMediumScreen = useMediaQuery("(max-width: 1199px)");
   const { open, closeAside } = useAsideContext();
   if (isMediumScreen) {
     return (
@@ -42,10 +42,10 @@ const Aside = () => {
     <Drawer
       anchor="left"
       sx={{
-        '& .MuiDrawer-paper': {
-          position: 'sticky',
-          display: 'block',
-          height: '100vh',
+        "& .MuiDrawer-paper": {
+          position: "sticky",
+          display: "block",
+          height: "100vh",
         },
       }}
       variant="permanent"
@@ -65,8 +65,8 @@ const AsideContent = () => {
     <Stack
       p={1.5}
       sx={{
-        bgcolor: 'background.paper',
-        height: '100%',
+        bgcolor: "background.paper",
+        height: "100%",
       }}
       zIndex={9}
       boxShadow=" 6px 0px 5px -5px rgb(0 0 0 / 9%)"
@@ -88,25 +88,25 @@ const AsideContent = () => {
           <Button
             sx={[
               {
-                px: '20px',
-                position: 'relative',
-                justifyContent: 'flex-start',
+                px: "20px",
+                position: "relative",
+                justifyContent: "flex-start",
               },
               currentActiveLinkPathName === path && {
-                '&::after': {
-                  position: 'absolute',
+                "&::after": {
+                  position: "absolute",
                   content: "''",
-                  width: '10px',
-                  height: '100%',
-                  borderRadius: '10px',
-                  right: '-16px',
+                  width: "10px",
+                  height: "100%",
+                  borderRadius: "10px",
+                  right: "-16px",
                   bottom: 0,
-                  transition: '0.3s',
-                  bgcolor: 'primary.main',
+                  transition: "0.3s",
+                  bgcolor: "primary.main",
                 },
               },
             ]}
-            variant={currentActiveLinkPathName === path ? 'contained' : 'text'}
+            variant={currentActiveLinkPathName === path ? "contained" : "text"}
             size="large"
             key={name}
             startIcon={icon}

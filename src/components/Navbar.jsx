@@ -133,6 +133,9 @@ const Navbar = () => {
           >
             <img
               src={auth.user?.avatar || profileImg}
+              onError={(e) => {
+                e.target.src = profileImg;
+              }}
               alt="profile"
               style={{
                 height: "40px",

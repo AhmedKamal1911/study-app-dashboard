@@ -25,19 +25,16 @@ import CustomTextField from "./CustomTextField";
 //   matchFrom: 'any',
 //   stringify: (option) => `${option.id} ${option.fullName}`,
 // });
-function convertStringToArrayByNewLine(str) {
-  return str
-    .split("\n")
-    .filter(Boolean)
-    .map((strValue) => strValue.trim()); // Use '\r\n' if you're dealing with Windows-style line endings
+function removeExtraSpacesAndNewlines(str) {
+  return str.trim().replace(/\s*\n\s*/g, "\n");
 }
 const CreateCourseForm = ({ onCourseCreation }) => {
+  const isCertifiedInputRef = useRef(null);
   const imageBlobURLRef = useRef("");
   const formRef = useRef(null);
-  const certifiedCheckBoxRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      thumbnails: null,
+      file: null,
       title: "",
       courseLink: "",
       category: "",
@@ -49,19 +46,18 @@ const CreateCourseForm = ({ onCourseCreation }) => {
     },
     validationSchema: createCourseFormSchema,
     onSubmit: async (values) => {
-      if (!certifiedCheckBoxRef.current) return;
-      const whatYouWillLearnArray = convertStringToArrayByNewLine(
-        values.whatYouWillLearn
-      );
-      const prerequisitesArray = convertStringToArrayByNewLine(
-        values.prerequisites
-      );
-      console.log({ whatYouWillLearnArray, prerequisitesArray });
       console.log({ formRef });
       const formData = new FormData(formRef.current);
-      formData.set("isCertified", certifiedCheckBoxRef.current.checked);
-      formData.set("whatYouWillLearn", whatYouWillLearnArray);
-      formData.set("prerequisites", prerequisitesArray);
+      formData.set(
+        "whatYouWillLearn",
+        removeExtraSpacesAndNewlines(values.whatYouWillLearn)
+      );
+      formData.set(
+        "prerequisites",
+        removeExtraSpacesAndNewlines(values.prerequisites)
+      );
+      formData.set("courseLink", values.courseLink);
+      formData.set("isCertified", isCertifiedInputRef.current.checked);
       console.log({ formData });
       console.table([...formData.entries()]);
 
@@ -70,9 +66,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       // TODO: possible to check image dimensions if you want more than 1 course image
       try {
         await onCourseCreation(formData);
-        console.log("refValue before if", { imageBlobURLRef });
         if (imageBlobURLRef.current) {
-          console.log("refValue inside if", { imageBlobURLRef });
           URL.revokeObjectURL(imageBlobURLRef.current);
         }
       } finally {
@@ -84,11 +78,11 @@ const CreateCourseForm = ({ onCourseCreation }) => {
   //   formik.setFieldValue('courseInstructor', value);
   // };
   const onFileInputChange = (file) => {
-    formik.setFieldValue("thumbnails", file ?? null);
+    formik.setFieldValue("file", file ?? null);
   };
   const onFileDrop = (files, onDropSuccess) => {
     if (files.length > 1) {
-      formik.setFieldError("thumbnails", "You cant drop more than 1 image");
+      formik.setFieldError("file", "You cant drop more than 1 image");
     } else {
       onDropSuccess(files[0]);
     }
@@ -99,8 +93,8 @@ const CreateCourseForm = ({ onCourseCreation }) => {
         <Stack gap={4} mb={2}>
           {/* File Input */}
           <DragZone
-            name="thumbnails"
-            error={getFieldError(formik, "thumbnails")}
+            name="file"
+            error={getFieldError(formik, "file")}
             fileValidationSchema={fileValidationSchema}
             onChange={onFileInputChange}
             onDrop={onFileDrop}
@@ -111,7 +105,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             <CustomTextField
               id="title"
               name="title"
-              label="Course Title"
+              label="Course name"
               variant="outlined"
               placeholder="ex: React JS"
               value={formik.values.title}
@@ -123,14 +117,14 @@ const CreateCourseForm = ({ onCourseCreation }) => {
           </div>
           <div>
             <CustomSelectField
-              label="Course Category"
+              label="Course category"
               name="category"
               value={formik.values.category}
               onChange={formik.handleChange}
             >
               <MenuItem value="frontend">Front End</MenuItem>
               <MenuItem value="backend">Back End</MenuItem>
-              <MenuItem value="fullstack">Full Stack</MenuItem>
+              <MenuItem value="fullStack">Full Stack</MenuItem>
             </CustomSelectField>
 
             <FieldError errorText={getFieldError(formik, "category")} />
@@ -253,8 +247,8 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             control={
               <Checkbox
                 name="isCertified"
+                inputRef={isCertifiedInputRef}
                 id="isCertified"
-                inputRef={certifiedCheckBoxRef}
               />
             }
             sx={{

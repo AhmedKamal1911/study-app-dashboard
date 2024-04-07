@@ -13,7 +13,9 @@ const RootLayout = () => {
           <Container maxWidth={false}>
             <Stack gap={3}>
               <Navbar />
-              <Outlet />
+              <Box minHeight="83.4vh">
+                <Outlet />
+              </Box>
             </Stack>
           </Container>
         </Box>

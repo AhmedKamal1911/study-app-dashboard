@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import generateFileValidationSchema from "./fileValidationSchema";
 export const fileValidationSchema = generateFileValidationSchema(2.5, "Course");
 const createCourseFormSchema = Yup.object({
-  thumbnails: fileValidationSchema,
+  file: fileValidationSchema,
   title: Yup.string().required("You must write course name."),
   category: Yup.string().required("Course category is required."),
   courseDescription: Yup.string().required("Course description is required."),

@@ -12,6 +12,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { openSnackbar } = useSnackbar();
+  console.log(auth.token, "**************Token");
   const onRegister = async (registerData, endPoint = "users") => {
     const userTypeSingular = endPoint.slice(0, endPoint.length - 1);
     try {

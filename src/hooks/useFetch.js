@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import fetchFromAPI from "../utils/constans/fetchFromApi";
+import { isCancel } from "axios";
 
 const useFetch = (fetchOptions) => {
   const toStringifiedFetchOptions = JSON.stringify(fetchOptions);
@@ -18,7 +19,7 @@ const useFetch = (fetchOptions) => {
         setResponseData(response);
         setIsLoading(false);
       } catch (e) {
-        if (e !== "canceled") {
+        if (!isCancel(e)) {
           setError(e);
           setIsLoading(false);
         }

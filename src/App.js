@@ -48,6 +48,7 @@ const router = createBrowserRouter(
           <Route path="/sign-up" element={<RegisterPage />} />
         </Route>
         {/*== Require login + admin ==*/}
+
         <Route
           path="/"
           element={
