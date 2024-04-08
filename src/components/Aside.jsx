@@ -16,8 +16,10 @@ import {
   ImportContacts,
 } from "@mui/icons-material";
 
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAsideContext } from "../contexts/asideContext";
+import { useAuth } from "../contexts/authContext";
+import { USER_AUTHORIZED_ROUTES, getUserType } from "../routes/AppRouter";
 
 const pagesButtons = [
   { name: "Analyze", icon: <ShowChart />, path: "/" },
@@ -54,13 +56,16 @@ const Aside = () => {
     </Drawer>
   );
 };
+
 const AsideContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const { closeAside } = useAsideContext();
   const [currentActiveLinkPathName, setCurrentActiveLinkPathName] = useState(
     () => location.pathname
   );
+
   return (
     <Stack
       p={1.5}
@@ -84,41 +89,47 @@ const AsideContent = () => {
         HiStudy
       </Typography>
       <Stack gap={2}>
-        {pagesButtons.map(({ name, icon, path }) => (
-          <Button
-            sx={[
-              {
-                px: "20px",
-                position: "relative",
-                justifyContent: "flex-start",
-              },
-              currentActiveLinkPathName === path && {
-                "&::after": {
-                  position: "absolute",
-                  content: "''",
-                  width: "10px",
-                  height: "100%",
-                  borderRadius: "10px",
-                  right: "-16px",
-                  bottom: 0,
-                  transition: "0.3s",
-                  bgcolor: "primary.main",
+        {pagesButtons
+          .filter(({ path }) =>
+            USER_AUTHORIZED_ROUTES[getUserType(auth.user)].includes(path)
+          )
+          .map(({ name, icon, path }) => (
+            <Button
+              sx={[
+                {
+                  px: "20px",
+                  position: "relative",
+                  justifyContent: "flex-start",
                 },
-              },
-            ]}
-            variant={currentActiveLinkPathName === path ? "contained" : "text"}
-            size="large"
-            key={name}
-            startIcon={icon}
-            onClick={() => {
-              setCurrentActiveLinkPathName(path);
-              closeAside();
-              navigate(path);
-            }}
-          >
-            {name}
-          </Button>
-        ))}
+                currentActiveLinkPathName === path && {
+                  "&::after": {
+                    position: "absolute",
+                    content: "''",
+                    width: "10px",
+                    height: "100%",
+                    borderRadius: "10px",
+                    right: "-16px",
+                    bottom: 0,
+                    transition: "0.3s",
+                    bgcolor: "primary.main",
+                  },
+                },
+              ]}
+              variant={
+                currentActiveLinkPathName === path ? "contained" : "text"
+              }
+              size="large"
+              key={name}
+              startIcon={icon}
+              onClick={() => {
+                setCurrentActiveLinkPathName(path);
+                closeAside();
+                navigate(path);
+              }}
+            >
+              {name}
+            </Button>
+          ))}
       </Stack>
     </Stack>
   );

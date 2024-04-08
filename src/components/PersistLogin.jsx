@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../contexts/authContext";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
 import { Stack } from "@mui/material";
-import { InfinitySpin } from "react-loader-spinner";
+import fetchFromAPI from "../services/api";
+import React, { useEffect, useState } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { isCancel } from "axios";
-import { getUserBaseURL } from "../App";
+import { InfinitySpin } from "react-loader-spinner";
+import { getUserBaseURL } from "../routes/AppRouter";
+import { useAuth } from "../contexts/authContext";
 
 const PersistLogin = () => {
   const { auth, setAuth } = useAuth();
@@ -66,22 +66,22 @@ const PersistLogin = () => {
         <InfinitySpin color="purple" />
       </Stack>
     );
+  const isLoginPage = location.pathname === "/login";
+  const isLoggedIn = Boolean(auth.token);
+  const isUserLoggedIn = Boolean(auth.user);
 
-  if (!auth.token) {
-    if (location.pathname === "/login") return <Outlet />;
-    return (
-      <Navigate
-        to="/login"
-        replace
-        state={{
-          from: location,
-        }}
-      />
-    );
+  if (!isLoggedIn) {
+    if (isLoginPage) {
+      return <Outlet />;
+    } else {
+      return <Navigate to="/login" replace />;
+    }
   }
-  if (auth.user && location.pathname === "/login") {
+
+  if (isUserLoggedIn && isLoginPage) {
     return <Navigate to={getUserBaseURL(auth.user)} replace />;
   }
+
   return <Outlet />;
 };
 

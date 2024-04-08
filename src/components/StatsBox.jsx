@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
 
 const StatsBox = ({ itemImg, subTitle, itemTitle, total }) => {
   return (

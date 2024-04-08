@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import Lottie from "lottie-react";
-import unauthorized from "../assets/lottiefiles-animations/unauthorized.json";
+import unauthorizedAnimationData from "../assets/lottiefiles-animations/unauthorized.json";
 const Unauthorized = ({ message }) => {
   return (
     <Stack
@@ -15,7 +15,7 @@ const Unauthorized = ({ message }) => {
         style={{
           maxWidth: "500px",
         }}
-        animationData={unauthorized}
+        animationData={unauthorizedAnimationData}
       />
       <Typography
         color="#ff5722f0"

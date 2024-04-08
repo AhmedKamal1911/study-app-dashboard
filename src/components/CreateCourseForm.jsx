@@ -9,17 +9,14 @@ import {
   // createFilterOptions,
 } from "@mui/material";
 
-import CustomSelectField from "./CustomSelectField";
 // import CustomAutoComplete from './CustomAutoComplete';
-import DragZone from "./DragZone";
 import { useFormik } from "formik";
 import createCourseFormSchema, {
   fileValidationSchema,
-} from "../schemas/createCourseFormSchema";
+} from "../validations/createCourseFormSchema";
 import { useRef } from "react";
-import getFieldError from "../utils/getFieldError";
-import FieldError from "./FieldError";
-import CustomTextField from "./CustomTextField";
+import { getFieldError } from "../utils";
+import { FieldError, CustomTextField, CustomSelectField, DragZone } from ".";
 
 // const instructorFilterOptions = createFilterOptions({
 //   matchFrom: 'any',
@@ -61,7 +58,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       console.log({ formData });
       console.table([...formData.entries()]);
 
-      // FIXME: structure the data for the api request
       // TODO: idea of resizing image into different sizes (small - medium - large)
       // TODO: possible to check image dimensions if you want more than 1 course image
       try {

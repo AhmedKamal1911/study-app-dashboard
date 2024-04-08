@@ -11,9 +11,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { profileImg } from "../assets/images";
-
-import { useToggleDarkMode } from "../contexts/themeContext";
-
 import {
   Logout,
   Search,
@@ -22,11 +19,12 @@ import {
   LightMode,
   DarkMode,
 } from "@mui/icons-material";
+import fetchFromAPI from "../services/api";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useToggleDarkMode } from "../contexts/themeContext";
 import { useAuth } from "../contexts/authContext";
 import { useAsideContext } from "../contexts/asideContext";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
 import { useSnackbar } from "../contexts/snackbarContext";
 
 const Navbar = () => {
@@ -99,14 +97,10 @@ const Navbar = () => {
         <TextField id="input-with-sx" label="Search" variant="standard" />
       </Stack>
       <Stack direction="row" gap={2} alignItems="center">
-        <IconButton size="medium" sx={{ alignSelf: "flex-end" }}>
+        <IconButton size="medium">
           <Notifications />
         </IconButton>
-        <IconButton
-          onClick={() => toggleDarkMode()}
-          size="medium"
-          sx={{ alignSelf: "flex-end" }}
-        >
+        <IconButton onClick={() => toggleDarkMode()} size="medium">
           {colorMode === "light" ? <LightMode /> : <DarkMode />}
         </IconButton>
 

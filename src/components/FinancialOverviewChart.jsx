@@ -1,10 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
-import { formatNumber } from "../utils/formatNumber";
-import PercentageArrow from "./PercentageArrow";
-import SimpleLineChart from "./SimpleLineChart";
+import { formatNumber } from "../utils";
+import { PercentageArrow, SimpleLineChart } from ".";
 
-const FinancialOverviewChart = ({ img, statName, total, data }) => {
+const FinancialOverviewChart = ({ img, statName, total, data, percentage }) => {
+  console.log(statName, "nanana");
   return (
     <Stack gap={2}>
       <Stack direction="row" gap={1}>
@@ -17,12 +16,12 @@ const FinancialOverviewChart = ({ img, statName, total, data }) => {
             <Typography color="dark" variant="h5">
               ${formatNumber(total)}
             </Typography>
-            <PercentageArrow percentage={65} />
+            <PercentageArrow percentage={percentage} />
           </Stack>
         </Box>
       </Stack>
       <Box>
-        <SimpleLineChart data={data} />
+        <SimpleLineChart data={data} property={statName} />
       </Box>
     </Stack>
   );

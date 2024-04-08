@@ -1,6 +1,5 @@
 import { MoreVert } from "@mui/icons-material";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import React from "react";
 
 const BoxHeader = ({ children, title }) => {
   return (

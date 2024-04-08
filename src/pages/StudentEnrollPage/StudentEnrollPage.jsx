@@ -1,22 +1,30 @@
 import { Box } from "@mui/material";
-import InfoBoxWrapper from "../../components/InfoBoxWrapper";
-import StudentEnrollmentForm from "../../components/StudentEnrollmentForm";
+import { InfoBoxWrapper, StudentEnrollmentForm } from "../../components";
 import { useNavigate } from "react-router-dom";
-import wait from "../../utils/wait";
+import fetchFromAPI from "../../services/api";
 import { useSnackbar } from "../../contexts/snackbarContext";
+import { useAuth } from "../../contexts/authContext";
+import { getUserBaseURL } from "../../routes/AppRouter";
 const StudentEnrollPage = () => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
-  const onEnrollment = async (enrollmentData) => {
-    console.log({ enrollmentData });
+  const { auth } = useAuth();
+  const onEnrollment = async (enrolledCourseSlug) => {
     try {
-      // TODO: implement enroll api request
-
-      await wait(2000);
-      navigate("/");
-
+      await fetchFromAPI({
+        url: `/courses/${enrolledCourseSlug}/enroll`,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
       openSnackbar("You enrolled to the course successfully.");
+      navigate(getUserBaseURL(auth.user));
     } catch (e) {
+      if (e.response.data.statusCode === 405) {
+        openSnackbar(e.response.data.message, "error");
+        return;
+      }
       openSnackbar(
         "Failed to enroll to the course due to network error",
         "error"

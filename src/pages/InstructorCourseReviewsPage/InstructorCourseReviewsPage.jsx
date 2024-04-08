@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import Loading from "../../components/Loading";
+import { useAuth } from "../../contexts/authContext";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.lightDark,
@@ -36,22 +37,21 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 const labels = {
-  0.5: "Useless",
-  1: "Useless+",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
+  0: { text: "No Reviews", color: "" },
+  1: { text: "Useless", color: "gray" },
+  2: { text: "Poor", color: "red" },
+  3: { text: "Ok", color: "yellowgreen" },
+  4: { text: "Good", color: "green" },
+  5: { text: "Excellent", color: "gold" },
 };
 const InstructorCourseReviewsPage = () => {
+  //TODO: responsive
+  const { auth } = useAuth();
   const { error, responseData, isLoading } = useFetch({
-    url: "/reviews",
+    url: `reviews/instructor/${auth.user.username}`,
   });
-  const reviewsToShow = responseData?.slice(0, 10);
+  console.log({ responseData });
+  // const reviewsToShow = responseData?.slice(0, 10);
   return (
     <Box minHeight="83.4vh">
       <Loading isLoading={isLoading} error={error}>
@@ -64,53 +64,56 @@ const InstructorCourseReviewsPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {reviewsToShow?.map(({ courseId, id, reviewValue }) => (
-                <StyledTableRow key={id}>
-                  <StyledTableCell component="th" scope="row">
-                    {id}
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Stack direction="column" gap={1}>
-                      <Stack direction="row">
-                        <Rating
-                          readOnly
-                          value={reviewValue}
-                          precision={0.5}
-                          sx={{
-                            color: "#FF8F3C",
-                            "& .css-1tv3chh-MuiRating-icon": {
-                              color: "rgb(222 220 220)",
-                            },
-                            mr: "5px",
-                          }}
-                        />
-                        <Typography
-                          sx={{ textWrap: "nowrap" }}
-                          variant="body1"
-                          fontWeight="bold"
-                          color="dark"
-                        >
-                          (9 Reviews)
+              {responseData?.courses.map((course) => {
+                // TODO: remove this after zeyad get reviewValue
+                const reviewValue =
+                  course.reviews.length > 0
+                    ? Math.ceil(
+                        course.reviews.reduce(
+                          (accumlator, current) =>
+                            accumlator + current?.rating ?? 0,
+                          0
+                        ) / course.reviews.length
+                      )
+                    : 0;
+                console.log({ reviewValue });
+                return (
+                  <StyledTableRow key={course.id}>
+                    <StyledTableCell component="th" scope="row">
+                      {course.title}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Stack direction="column" gap={1}>
+                        <Stack direction="row">
+                          <Rating
+                            readOnly
+                            value={reviewValue}
+                            sx={{
+                              color: "#FF8F3C",
+                              "& .css-1tv3chh-MuiRating-icon": {
+                                color: "rgb(222 220 220)",
+                              },
+                              mr: "5px",
+                            }}
+                          />
+                          <Typography
+                            sx={{ textWrap: "nowrap" }}
+                            variant="body1"
+                            fontWeight="bold"
+                            color="dark"
+                          >
+                            ({course.reviews.length} Reviews)
+                          </Typography>
+                        </Stack>
+
+                        <Typography color={labels[reviewValue].color}>
+                          {labels[reviewValue].text}
                         </Typography>
                       </Stack>
-
-                      <Typography
-                        color={
-                          reviewValue < 2
-                            ? "red"
-                            : reviewValue >= 2
-                            ? "#ffae2f"
-                            : reviewValue >= 3
-                            ? "#4abe43"
-                            : ""
-                        }
-                      >
-                        {labels[Math.round(reviewValue)]}
-                      </Typography>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

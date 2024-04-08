@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
+import fetchFromAPI from "../services/api";
 
 const useFetchOnAutoCompleteOpen = (endPointSlug = "/instructors") => {
   const [open, setOpen] = useState(false);

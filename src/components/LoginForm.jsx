@@ -7,19 +7,21 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import PasswordField from "./PasswordField";
+import { useRef, useState } from "react";
+import {
+  PasswordField,
+  CustomTextField,
+  CustomSelectField,
+  FieldError,
+} from ".";
 import { Link } from "react-router-dom";
-import CustomTextField from "./CustomTextField";
 import { useFormik } from "formik";
-import loginFormSchema from "../schemas/loginFormSchema";
-import getFieldError from "../utils/getFieldError";
-import CustomSelectField from "./CustomSelectField";
-import FieldError from "./FieldError";
+import loginFormSchema from "../validations/loginFormSchema";
+import { getFieldError } from "../utils";
 
 const LoginForm = ({ onLogin }) => {
   const [userType, setUserType] = useState("user");
-
+  const rememberMeCheckRef = useRef(null);
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -27,7 +29,8 @@ const LoginForm = ({ onLogin }) => {
     },
     validationSchema: loginFormSchema,
     onSubmit: async (values) => {
-      await onLogin(values, userType);
+      // TODO: send remember me flag
+      await onLogin(values, userType, rememberMeCheckRef.current.checked);
       formik.setSubmitting(false);
     },
   });
@@ -144,7 +147,7 @@ const LoginForm = ({ onLogin }) => {
                 color: "#9d95d9",
               },
             }}
-            control={<Checkbox />}
+            control={<Checkbox inputRef={rememberMeCheckRef} />}
             label={<Typography color="lightDark">Remember me</Typography>}
           />
           {/* TODO: implement forget password functionalitiy + page is possible */}

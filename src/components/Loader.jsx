@@ -1,6 +1,5 @@
 import { Stack } from "@mui/material";
 import Lottie from "lottie-react";
-import React from "react";
 import booksLoader from "../assets/lottiefiles-animations/loading.json";
 const Loader = () => {
   return (

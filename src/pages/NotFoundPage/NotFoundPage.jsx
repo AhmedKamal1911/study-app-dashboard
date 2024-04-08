@@ -1,5 +1,3 @@
-import React from "react";
-
 import notFound from "../../assets/lottiefiles-animations/not-found.json";
 
 import { Stack } from "@mui/material";

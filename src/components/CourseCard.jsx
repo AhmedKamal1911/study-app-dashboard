@@ -1,7 +1,6 @@
 import { Box, Button, Rating, Stack, Tooltip, Typography } from "@mui/material";
 import { PeopleOutline, Star } from "@mui/icons-material";
 import { useModal } from "../contexts/modalContext";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
 
 const CourseCard = ({
   onReviewCreation,

@@ -1,13 +1,13 @@
 import { Button, Rating, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import reviewFormSchema from "../schemas/reviewFormSchema";
-import getFieldError from "../utils/getFieldError";
+import reviewFormSchema from "../validations/reviewFormSchema";
+import { getFieldError } from "../utils";
 const ReviewModal = ({ onReviewCreation }) => {
   // TODO: implement blur formik
   const formik = useFormik({
     initialValues: {
-      ratingValue: null,
-      reviewText: "",
+      rating: null,
+      reviewBody: "",
     },
     validationSchema: reviewFormSchema,
     onSubmit: async (values) => {
@@ -16,7 +16,7 @@ const ReviewModal = ({ onReviewCreation }) => {
     },
   });
   const handleRatingChange = (event, newValue) => {
-    formik.setFieldValue("ratingValue", newValue);
+    formik.setFieldValue("rating", newValue);
   };
 
   return (
@@ -24,9 +24,9 @@ const ReviewModal = ({ onReviewCreation }) => {
       <Stack gap={2}>
         <div>
           <Rating
-            name="ratingValue"
-            precision={0.5}
-            value={formik.values.ratingValue}
+            name="rating"
+            id="rating"
+            value={formik.values.rating}
             onChange={handleRatingChange}
           />
           <p
@@ -35,16 +35,16 @@ const ReviewModal = ({ onReviewCreation }) => {
               margin: 0,
             }}
           >
-            {getFieldError(formik, "ratingValue")}
+            {getFieldError(formik, "rating")}
           </p>
         </div>
         <div>
           <TextField
             fullWidth
-            name="reviewText"
-            value={formik.values.reviewText}
+            name="reviewBody"
+            value={formik.values.reviewBody}
             onChange={formik.handleChange}
-            id="course-req"
+            id="reviewBody"
             label="Create Review"
             variant="outlined"
             multiline
@@ -58,7 +58,7 @@ const ReviewModal = ({ onReviewCreation }) => {
               margin: 0,
             }}
           >
-            {getFieldError(formik, "reviewText")}
+            {getFieldError(formik, "reviewBody")}
           </p>
         </div>
         <Button

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   CartesianGrid,
   Legend,
@@ -9,19 +8,19 @@ import {
   XAxis,
 } from "recharts";
 
-const SimpleLineChart = ({ data }) => {
+const SimpleLineChart = ({ data, property }) => {
   return (
-    <ResponsiveContainer height={400} width="100%">
+    <ResponsiveContainer height={500} width="100%">
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="5" />
+        <CartesianGrid strokeDasharray="0.1" />
         <Legend />
         <XAxis dataKey="name" color="red" />
         <Tooltip />
         <Line
           tooltip={true}
           type="monotone"
-          dataKey="pv"
-          stroke="#8884d8"
+          dataKey={property}
+          stroke="#3884d6"
           strokeWidth={3}
         />
       </LineChart>

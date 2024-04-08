@@ -1,12 +1,12 @@
-import enrollFormSchema from "../schemas/enrollFormSchema";
-import getFieldError from "../utils/getFieldError";
-import CustomAutoComplete from "./CustomAutoComplete";
+import enrollFormSchema from "../validations/enrollFormSchema";
+import { getFieldError } from "../utils";
 import { Button, Stack, createFilterOptions } from "@mui/material";
 import { useFormik } from "formik";
-const studentFilterOptions = createFilterOptions({
-  matchFrom: "any",
-  stringify: (option) => `${option.id} ${option.fullName}`,
-});
+import { FieldError, CustomAutoComplete } from ".";
+// const studentFilterOptions = createFilterOptions({
+//   matchFrom: "any",
+//   stringify: (option) => `${option.id} ${option.fullName}`,
+// });
 const courseFilterOptions = createFilterOptions({
   matchFrom: "any",
   stringify: (option) => `${option.id} ${option.title}`,
@@ -14,15 +14,11 @@ const courseFilterOptions = createFilterOptions({
 const StudentEnrollmentForm = ({ onEnrollment }) => {
   const formik = useFormik({
     initialValues: {
-      enrolledStudent: null,
       enrolledCourse: null,
     },
     validationSchema: enrollFormSchema,
     onSubmit: async (values) => {
-      await onEnrollment({
-        courseId: values.enrolledCourse.id,
-        studentId: values.enrolledStudent.id,
-      });
+      await onEnrollment(values.enrolledCourse.slug);
       formik.setSubmitting(false);
     },
   });
@@ -33,7 +29,8 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack gap={3}>
-        <div>
+        {/*
+      <div>
           <CustomAutoComplete
             textFieldName="enrolledStudent"
             label="Student(s)"
@@ -55,6 +52,8 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
             {getFieldError(formik, "enrolledStudent")}
           </p>
         </div>
+      */}
+
         <div>
           <CustomAutoComplete
             textFieldName="enrolledCourse"
@@ -66,17 +65,8 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
             onChange={onAutoCompleteChange("enrolledCourse")}
             value={formik.values.enrolledCourse}
           />
-          <p
-            style={{
-              margin: 0,
-              marginTop: "10px",
-              color: "red",
-            }}
-          >
-            {getFieldError(formik, "enrolledCourse")}
-          </p>
+          <FieldError errorText={getFieldError(formik, "enrolledCourse")} />
         </div>
-
         <Button
           variant="contained"
           type="submit"

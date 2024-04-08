@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import fetchFromAPI from "../utils/constans/fetchFromApi";
+import fetchFromAPI from "../services/api";
 import { isCancel } from "axios";
 
 const useFetch = (fetchOptions) => {
@@ -7,6 +7,10 @@ const useFetch = (fetchOptions) => {
   const [responseData, setResponseData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isRefetch, setIsRefetch] = useState(false);
+  const refetch = () => {
+    setIsRefetch((prevRefetchValue) => !prevRefetchValue);
+  };
   useEffect(() => {
     const abortSignal = new AbortController();
     const executeRequestHandler = async () => {
@@ -30,7 +34,7 @@ const useFetch = (fetchOptions) => {
       abortSignal.abort("unmount");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toStringifiedFetchOptions]);
-  return { responseData, isLoading, error };
+  }, [toStringifiedFetchOptions, isRefetch]);
+  return { responseData, isLoading, error, refetch };
 };
 export default useFetch;

@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import uploadFileAnimation from "../assets/lottiefiles-animations/upload-file.json";
 import styled from "@emotion/styled";
 import { useRef, useState } from "react";
-import validateFile from "../utils/validateFile";
+import { validateFile } from "../utils";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",

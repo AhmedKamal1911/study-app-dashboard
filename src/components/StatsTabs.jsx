@@ -1,116 +1,115 @@
-import { Box, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Stack, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import SimpleLineChart from "./SimpleLineChart";
 import { walletImg, paymentsImg, profitImg } from "../assets/images";
-import { formatNumber } from "../utils/formatNumber";
-import PercentageArrow from "./PercentageArrow";
-import FinancialOverviewChart from "./FinancialOverviewChart";
+
+import { FinancialOverviewChart } from ".";
+import { calculateTotal } from "../utils/calculateTotal";
 const incomeData = [
   {
     name: "Jan",
-    pv: 1000,
+    income: 5750,
   },
   {
     name: "Feb",
 
-    pv: 1398,
+    income: 8200,
   },
   {
     name: "Mar",
 
-    pv: 9800,
+    income: 12000,
   },
   {
     name: "Apr",
 
-    pv: 3908,
+    income: 10000,
   },
   {
     name: "May",
 
-    pv: 4800,
+    income: 18000,
   },
   {
     name: "Jun",
 
-    pv: 3800,
+    income: 18500,
   },
   {
     name: "Jul",
 
-    pv: 4300,
+    income: 22000,
   },
 ];
 const expensesData = [
   {
     name: "Jan",
-    pv: 800,
+    expenses: 200,
   },
   {
     name: "Feb",
 
-    pv: 2000,
+    expenses: 500,
   },
   {
     name: "Mar",
 
-    pv: 5000,
+    expenses: 1200,
   },
   {
     name: "Apr",
 
-    pv: 2500,
+    expenses: 2500,
   },
   {
     name: "May",
 
-    pv: 4800,
+    expenses: 833,
   },
   {
     name: "Jun",
 
-    pv: 3800,
+    expenses: 792,
   },
   {
     name: "Jul",
 
-    pv: 4300,
+    expenses: 588,
   },
 ];
 const profitData = [
   {
     name: "Jan",
-    pv: 1600,
+    profit: 1000,
   },
   {
     name: "Feb",
 
-    pv: 4000,
+    profit: 7837,
   },
   {
     name: "Mar",
 
-    pv: 2000,
+    profit: 9000,
   },
   {
     name: "Apr",
 
-    pv: 2500,
+    profit: 10000,
   },
   {
     name: "May",
 
-    pv: 3500,
+    profit: 15000,
   },
   {
     name: "Jun",
 
-    pv: 3000,
+    profit: 20000,
   },
   {
     name: "Jul",
 
-    pv: 4300,
+    profit: 25000,
   },
 ];
 const images = {
@@ -123,13 +122,14 @@ const chartData = {
   expenses: expensesData,
   profit: profitData,
 };
-function getListSum(chartData) {
-  return chartData.reduce((accumlator, current) => accumlator + current, 0);
-}
+
 const totalChartData = {
-  income: incomeData,
-  expenses: expensesData,
-  profit: profitData,
+  income: calculateTotal(incomeData, "income"),
+  incomePercentage: "195.6",
+  expenses: calculateTotal(expensesData, "expenses"),
+  expensesPercentage: "-7",
+  profit: calculateTotal(profitData, "profit"),
+  profitPercentage: "87.8",
 };
 const StatsTabs = () => {
   const [statTab, setStatTab] = useState("income");
@@ -155,8 +155,15 @@ const StatsTabs = () => {
         img={images[statTab]}
         statName={statTab}
         data={chartData[statTab]}
+        total={totalChartData[statTab]}
+        percentage={
+          statTab === "income"
+            ? totalChartData.incomePercentage
+            : statTab === "expenses"
+            ? totalChartData.expensesPercentage
+            : totalChartData.profitPercentage
+        }
       />
-      {/* TODO:Create Total Value pv  */}
     </Stack>
   );
 };

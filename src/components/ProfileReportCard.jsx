@@ -1,8 +1,7 @@
 import { North, South } from "@mui/icons-material";
 import { Box, Chip, Stack, Typography } from "@mui/material";
-import { TinyLineChart } from "../components";
-import { formatNumber } from "../utils/formatNumber";
-import PercentageArrow from "./PercentageArrow";
+import { TinyLineChart, PercentageArrow } from "../components";
+import { formatNumber } from "../utils";
 
 const ProfileReportCard = () => {
   return (
@@ -21,15 +20,15 @@ const ProfileReportCard = () => {
           </Typography>
           <Chip
             color="error"
-            label="Year 2022"
+            label="Year 2024"
             disabled={false}
             size="medium"
           />
         </Box>
         <Box>
-          <PercentageArrow percentage={50.2} />
+          <PercentageArrow percentage={82.8} />
           <Typography color="dark" variant="h5">
-            ${formatNumber(50500)}
+            ${formatNumber(87837)}
           </Typography>
         </Box>
       </Box>

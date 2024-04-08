@@ -1,12 +1,10 @@
 import { Box } from "@mui/material";
-import React from "react";
-import InfoBoxWrapper from "../../components/InfoBoxWrapper";
-import CreateCourseForm from "../../components/CreateCourseForm";
+import { InfoBoxWrapper, CreateCourseForm } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../contexts/snackbarContext";
-import fetchFromAPI from "../../utils/constans/fetchFromApi";
 import { useAuth } from "../../contexts/authContext";
-import { getUserBaseURL } from "../../App";
+import fetchFromAPI from "../../services/api";
+import { getUserBaseURL } from "../../routes/AppRouter";
 
 const CreateCoursePage = () => {
   const navigate = useNavigate();

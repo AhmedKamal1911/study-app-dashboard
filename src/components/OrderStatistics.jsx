@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import BoxHeader from "./BoxHeader";
-import { formatNumber } from "../utils/formatNumber";
+import { BoxHeader } from ".";
+import { formatNumber } from "../utils";
 
 const OrderStatistics = ({ totalSales }) => {
   return (

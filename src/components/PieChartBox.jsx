@@ -1,45 +1,48 @@
+import { CurrencyBitcoin } from "@mui/icons-material";
 import { useState } from "react";
 
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  Cell,
+} from "recharts";
+import { coursesData } from "../utils/constants/data";
 
-const data01 = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-  { name: "Group E", value: 278 },
-  { name: "Group F", value: 189 },
-];
-
-const data02 = [
-  { name: "Group A", value: 2400 },
-  { name: "Group B", value: 4567 },
-  { name: "Group C", value: 1398 },
-  { name: "Group D", value: 9800 },
-  { name: "Group E", value: 3908 },
-  { name: "Group F", value: 4800 },
-];
 const PieChartBox = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   function onPieEnter(_, index) {
     setActiveIndex(index);
   }
+  function onPieLeave(_, index) {
+    setActiveIndex(-1);
+  }
 
   return (
-    <ResponsiveContainer height={200}>
+    <ResponsiveContainer height={400}>
       <PieChart>
         <Pie
           dataKey="value"
-          isAnimationActive={false}
-          data={data01}
+          isAnimationActive={true}
+          data={coursesData}
           cx="50%"
           cy="50%"
-          outerRadius={80}
-          fill="#8c3ee0"
-          label
-        />
-
+          fill="red"
+          outerRadius={90}
+          onPointerEnter={onPieEnter}
+          onPointerLeave={onPieLeave}
+        >
+          {coursesData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={activeIndex === index ? "gold" : entry.color}
+            />
+          ))}
+        </Pie>
+        <Legend />
         <Tooltip />
       </PieChart>
     </ResponsiveContainer>

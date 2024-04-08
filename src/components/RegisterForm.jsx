@@ -5,21 +5,21 @@ import {
   FormControlLabel,
   MenuItem,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import PasswordField from "./PasswordField";
-import CustomSelectField from "./CustomSelectField";
+import {
+  PasswordField,
+  CustomSelectField,
+  CustomTextField,
+  FieldError,
+} from ".";
 import { useFormik } from "formik";
 import registerFormSchema, {
   fileValidationSchema,
-} from "../schemas/registerFormSchema";
-import getFieldError from "../utils/getFieldError";
-import CustomTextField from "./CustomTextField";
-import FieldError from "./FieldError";
-import validateFile from "../utils/validateFile";
+} from "../validations/registerFormSchema";
+import { getFieldError, validateFile } from "../utils";
 // const CustomTextField = styled(TextField)({
 //   "& .MuiOutlinedInput-root": {
 //     "&:not(:hover) fieldset": {
@@ -148,7 +148,13 @@ const RegisterForm = ({ onRegister }) => {
             {userSelectedImageURL && (
               <img
                 style={{
+                  display: "block",
+                  marginInline: "auto",
+                  marginBottom: "20px",
                   width: "100%",
+                  maxWidth: "200px",
+                  aspectRatio: "1",
+                  borderRadius: "50%",
                 }}
                 src={userSelectedImageURL}
                 alt="user"

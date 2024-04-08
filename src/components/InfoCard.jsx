@@ -1,7 +1,7 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { MoreVert, North, South } from "@mui/icons-material";
-import { formatNumber } from "../utils/formatNumber";
-import PercentageArrow from "./PercentageArrow";
+import { MoreVert } from "@mui/icons-material";
+import { formatNumber } from "../utils";
+import { PercentageArrow } from ".";
 
 const InfoCard = ({ img, info, result, percentage }) => {
   return (

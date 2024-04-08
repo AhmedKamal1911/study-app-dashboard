@@ -12,38 +12,38 @@ import {
 const data = [
   {
     name: "Jan",
-    uv: 4000,
-    pv: 2400,
+    end: 4000,
+    beg: 2400,
     amt: 2400,
   },
   {
     name: "Feb",
-    uv: 3000,
-    pv: 1398,
+    end: 3000,
+    beg: 1398,
     amt: 2210,
   },
   {
     name: "Mar",
-    uv: 2000,
-    pv: 9800,
+    end: 5200,
+    beg: 3000,
     amt: 2290,
   },
   {
     name: "Apr",
-    uv: 2780,
-    pv: 3908,
+    end: 2780,
+    beg: 3908,
     amt: 2000,
   },
   {
     name: "Jun",
-    uv: 1890,
-    pv: 4800,
+    end: 3400,
+    beg: 2500,
     amt: 2181,
   },
   {
     name: "Jul",
-    uv: 2390,
-    pv: 3800,
+    end: 2390,
+    beg: 3800,
     amt: 2500,
   },
 ];
@@ -66,14 +66,14 @@ const BarChartBox = () => {
         <Tooltip />
         <Legend />
         <Bar
-          dataKey="pv"
+          dataKey="beg"
           fill="#8884d8"
-          activeBar={<Rectangle fill="pink" stroke="blue" />}
+          activeBar={<Rectangle fill="#2196F3" />}
         />
         <Bar
-          dataKey="uv"
-          fill="#82ca9d"
-          activeBar={<Rectangle fill="gold" stroke="purple" />}
+          dataKey="end"
+          fill="#8eea9d"
+          activeBar={<Rectangle fill="#e91e74" />}
         />
       </BarChart>
     </ResponsiveContainer>

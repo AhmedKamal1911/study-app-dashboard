@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
-import React from "react";
-import { RegisterForm } from "../../components";
 
 import { useNavigate } from "react-router-dom";
+import { RegisterForm } from "../../components";
 
-import fetchFromAPI from "../../utils/constans/fetchFromApi";
+import fetchFromAPI from "../../services/api";
 import { useAuth } from "../../contexts/authContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
+import { getUserBaseURL } from "../../routes/AppRouter";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const RegisterPage = () => {
       });
       console.log({ registerResponse: response });
       openSnackbar(`${userTypeSingular}, created successfully.`);
-      navigate("/");
+      navigate(getUserBaseURL(auth.user));
     } catch (e) {
       openSnackbar(`Failed to create ${userTypeSingular}`, "error");
     }

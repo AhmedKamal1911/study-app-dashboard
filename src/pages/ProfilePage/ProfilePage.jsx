@@ -1,23 +1,39 @@
 import { Box, Stack, Typography } from "@mui/material";
-import InfoBoxWrapper from "../../components/InfoBoxWrapper";
+import { InfoBoxWrapper } from "../../components";
 import { useAuth } from "../../contexts/authContext";
-const profileInfo = [
-  { info: "Registration Date", value: "February 25,2025 6:01 am" },
-  { info: "First Name", value: "Ahmed" },
-  { info: "Last Name", value: "Kamal" },
-  { info: "Username", value: "instructor" },
-  { info: "Email", value: "example@gmail.com" },
-  { info: "Phone Number", value: "01206881013" },
-  { info: "Skill/Occupation", value: "Application Developer" },
-  {
-    info: "Biography",
-    value:
-      "I'm the Front-End Developer for #Rainbow IT in Bangladesh, OR. I have serious passion for UI effects, animations and creating intuitive, dynamic user experiences.",
-  },
-];
+import avatarImg from "../../assets/images/person.png";
+import { formatDate } from "../../utils";
 const ProfilePage = () => {
-  const { auth } = useAuth();
-  const [firstName, lastName] = auth.user.fullName.split(" ");
+  const {
+    auth: { user },
+  } = useAuth();
+  const [firstName, lastName] = user.fullName.split(" ");
+  const profileInfo = [
+    {
+      info: "Registration Date",
+      value: formatDate(user.createdAt, {
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        year: "numeric",
+      }),
+    },
+    { info: "First Name", value: firstName },
+    { info: "Last Name", value: lastName },
+    { info: "Username", value: user.username },
+    { info: "Email", value: user.email },
+    { info: "Skill/Occupation", value: "Application Developer" },
+    ...(user.isInstructor
+      ? [
+          {
+            info: "Biography",
+            value: user.instructorDescription,
+          },
+        ]
+      : []),
+  ];
+  user.isInstructor && profileInfo.push();
 
   return (
     <Box
@@ -28,72 +44,60 @@ const ProfilePage = () => {
       minHeight="83.4vh"
     >
       <InfoBoxWrapper title={"Profile"} />
-      <Box mt={5}>
-        <Stack direction={{ xs: "column", md: "row" }} gap={8}>
-          <Stack direction="column" gap={7}>
-            {profileInfo.map(({ info }) => (
-              <Box key={info} direction="column">
-                <Typography color="body" fontWeight="bold">
-                  {info}
-                </Typography>
-              </Box>
-            ))}
-          </Stack>
-          <Stack direction="column" gap={7}>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                {auth.user.createdAt}
-              </Typography>
-            </Box>
+      <Box mt={2}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "80px",
+          }}
+        >
+          {user.avatar ? (
+            <img
+              src={user.avatar ?? avatarImg}
+              style={{
+                width: "200px",
+                aspectRatio: "1",
+                borderRadius: "50%",
+                outline: "4px groove #009688",
+                pointerEvents: "none",
+                userSelect: "none",
+              }}
+              alt="avatar"
+            />
+          ) : (
+            <img
+              src={avatarImg}
+              style={{
+                width: "200px",
+                aspectRatio: "1",
+              }}
+              alt="avatar"
+            />
+          )}
+        </div>
 
-            <Box>
+        <Stack gap={1}>
+          {profileInfo.map(({ info, value }) => (
+            <Stack
+              key={info}
+              alignItems="center"
+              textAlign={{ xs: "center", md: "start" }}
+              flexDirection={{ xs: "column", md: "row" }}
+              gap={3}
+            >
               <Typography
-                color="lightDark"
-                variant="body1"
-                maxWidth="500px"
-                textTransform="capitalize"
+                color="dark"
+                fontWeight="bold"
+                minWidth={{ xs: "auto", md: "200px" }}
+                mb="20px"
               >
-                {firstName}
+                {`${info} :`}
               </Typography>
-            </Box>
-            <Box>
-              <Typography
-                color="lightDark"
-                variant="body1"
-                maxWidth="500px"
-                textTransform="capitalize"
-              >
-                {lastName}
+              <Typography mb="20px" color="lightDark" variant="body1">
+                {value}
               </Typography>
-            </Box>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                {auth.user.username}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                {auth.user.email}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                01226891043
-              </Typography>
-            </Box>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                Application Developer
-              </Typography>
-            </Box>
-            <Box>
-              <Typography color="lightDark" variant="body1" maxWidth="500px">
-                I'm the Front-End Developer for #Rainbow IT in Bangladesh, OR. I
-                have serious passion for UI effects, animations and creating
-                intuitive, dynamic user experiences.
-              </Typography>
-            </Box>
-          </Stack>
+            </Stack>
+          ))}
         </Stack>
       </Box>
     </Box>

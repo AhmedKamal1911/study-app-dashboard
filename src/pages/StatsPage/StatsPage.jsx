@@ -19,57 +19,60 @@ import {
   BarChartBox,
   ProfileReportCard,
   BoxHeader,
+  StatsBox,
+  PieChartBox,
+  StatsTabs,
 } from "../../components";
-import { formatNumber } from "../../utils/formatNumber";
-import PieChartBox from "../../components/PieChartBox";
-import StatsBox from "../../components/StatsBox";
+import { formatNumber } from "../../utils";
 import { useToggleDarkMode } from "../../contexts/themeContext";
-import StatsTabs from "../../components/StatsTabs";
+import { useAuth } from "../../contexts/authContext";
 const transactionsInfo = [
   {
     id: 1,
-    itemImg: transactionsImg,
+    itemImg: paymentsImg,
     subTitle: "Paypal",
     itemTitle: "Send money",
-    total: 90.2,
+    total: 82.6,
   },
   {
     id: 2,
     itemImg: creditImg,
-    subTitle: "Paypal",
-    itemTitle: "Send money",
-    total: 90.2,
+    subTitle: "Credit Card",
+    itemTitle: "Equipments",
+    total: 450.72,
   },
   {
     id: 3,
     itemImg: transferImg,
-    subTitle: "Paypal",
-    itemTitle: "Send money",
-    total: 90.2,
+    subTitle: "Transfer",
+    itemTitle: "Salaries",
+    total: formatNumber(15000),
   },
   {
     id: 4,
     itemImg: profitImg,
-    subTitle: "Paypal",
-    itemTitle: "Send money",
-    total: 90.2,
+    subTitle: "Expenses",
+    itemTitle: "Labors",
+    total: formatNumber(12500),
   },
   {
     id: 5,
     itemImg: walletImg,
-    subTitle: "Paypal",
-    itemTitle: "Send money",
-    total: 90.2,
+    subTitle: "Wallet",
+    itemTitle: "Courses",
+    total: 270.69,
   },
   {
     id: 6,
-    itemImg: paymentsImg,
-    subTitle: "Paypal",
-    itemTitle: "Send money",
-    total: 90.2,
+    itemImg: transactionsImg,
+    subTitle: "withdrawals",
+    itemTitle: "withdrawal of funds",
+    total: 520,
   },
 ];
 const StatsPage = () => {
+  const { auth } = useAuth();
+
   const { colorMode } = useToggleDarkMode();
   return (
     <Box
@@ -96,14 +99,13 @@ const StatsPage = () => {
         >
           <Box p={2} flex={2} sx={{ order: { xs: "1", md: "0" } }}>
             <Typography fontWeight="bold" color="primary.main" variant="h5">
-              Congratulations Mr john! 🎉
+              Congratulations {auth?.user.username}🎉
             </Typography>
             <Typography my={3} maxWidth={"370px"} color="lightDark">
-              You have done 72% 🤩 more sales today. Check your new raising
-              badge in your profile.
+              You have done 72% 🤩 more sales today. Check your wallet
             </Typography>
             <Button color="primary" size="small" variant="outlined">
-              Secondary
+              Wallet
             </Button>
           </Box>
           <Box display="flex" flex={1} sx={{ mt: { xs: "15px", md: "0px" } }}>
@@ -128,9 +130,9 @@ const StatsPage = () => {
       >
         <InfoCard
           img={profitImg}
-          result={12687}
+          result={87837}
           info={"Profit"}
-          percentage={72.8}
+          percentage={87.8}
         />
       </Box>
       <Box
@@ -141,9 +143,9 @@ const StatsPage = () => {
       >
         <InfoCard
           img={salesImg}
-          result={4679}
+          result={2300}
           info={"Sales"}
-          percentage={28.42}
+          percentage={47.42}
         />
       </Box>
 
@@ -179,9 +181,9 @@ const StatsPage = () => {
       >
         <InfoCard
           img={paymentsImg}
-          result={2468}
+          result={6613}
           info={"Payments"}
-          percentage={-14.82}
+          percentage={-7}
         />
       </Box>
       <Box
@@ -192,7 +194,7 @@ const StatsPage = () => {
       >
         <InfoCard
           img={transactionsImg}
-          result={14857}
+          result={28824}
           info={"Transactions"}
           percentage={28.14}
         />
@@ -214,10 +216,10 @@ const StatsPage = () => {
         p={2}
         gridColumn={{ md: "span 3", lg: "span 2" }}
       >
-        <OrderStatistics totalSales={22600} />
+        <OrderStatistics totalSales={2300} />
         <Stack
           mb={5}
-          gap={5}
+          gap={{ md: 3, lg: 2, xl: 5 }}
           direction={{ xs: "column", md: "row" }}
           alignItems="center"
           justifyContent="space-between"
