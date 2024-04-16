@@ -5,6 +5,7 @@ import { useSnackbar } from "../../contexts/snackbarContext";
 import { useAuth } from "../../contexts/authContext";
 import fetchFromAPI from "../../services/api";
 import { getUserBaseURL } from "../../routes/AppRouter";
+import withHelmet from "../../components/withHelmet";
 
 const CreateCoursePage = () => {
   const navigate = useNavigate();
@@ -38,4 +39,4 @@ const CreateCoursePage = () => {
   );
 };
 
-export default CreateCoursePage;
+export default withHelmet(CreateCoursePage, "Create Course");

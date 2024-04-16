@@ -29,6 +29,7 @@ export { default as StudentEnrollmentForm } from "./StudentEnrollmentForm.jsx";
 export { default as Loading } from "./Loading.jsx";
 export { default as PersistLogin } from "./PersistLogin.jsx";
 export { default as ProtectedRoute } from "./ProtectedRoute.jsx";
+export { default as HelmetWrapper } from "./HelmetWrapper.jsx";
 
 // Charts
 export { default as FinancialOverviewChart } from "./FinancialOverviewChart.jsx";

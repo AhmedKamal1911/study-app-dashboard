@@ -7,6 +7,7 @@ import fetchFromAPI from "../../services/api";
 import { useAuth } from "../../contexts/authContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
 import { getUserBaseURL } from "../../routes/AppRouter";
+import withHelmet from "../../components/withHelmet";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -47,4 +48,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default withHelmet(RegisterPage, "Register");

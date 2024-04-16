@@ -17,6 +17,7 @@ import useFetch from "../../hooks/useFetch";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/authContext";
 import { calculateReviewValue } from "../../utils";
+import withHelmet from "../../components/withHelmet";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.lightDark,
@@ -132,4 +133,4 @@ const InstructorCourseReviewsPage = () => {
   );
 };
 
-export default InstructorCourseReviewsPage;
+export default withHelmet(InstructorCourseReviewsPage, "Reviews");

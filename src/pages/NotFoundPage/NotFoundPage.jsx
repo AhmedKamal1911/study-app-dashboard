@@ -2,6 +2,7 @@ import notFound from "../../assets/lottiefiles-animations/not-found.json";
 
 import { Stack } from "@mui/material";
 import Lottie from "lottie-react";
+import withHelmet from "../../components/withHelmet";
 
 const NotFoundPage = () => {
   return (
@@ -17,4 +18,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default withHelmet(NotFoundPage, "Not Found");

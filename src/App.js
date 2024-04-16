@@ -6,6 +6,7 @@ import {
   ColorModeProvider,
 } from "./contexts";
 import AppRouter from "./routes/AppRouter.jsx";
+import { HelmetProvider } from "react-helmet-async";
 
 const App = () => {
   return (
@@ -14,7 +15,9 @@ const App = () => {
         <AuthProvider>
           <ModalProvider>
             <SnackBarProvider>
-              <AppRouter />
+              <HelmetProvider>
+                <AppRouter />
+              </HelmetProvider>
             </SnackBarProvider>
           </ModalProvider>
         </AuthProvider>

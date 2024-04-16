@@ -8,6 +8,7 @@ import { useSnackbar } from "../../contexts/snackbarContext";
 import useFetch from "../../hooks/useFetch";
 import usePaginateList from "../../hooks/usePagniateList";
 import { calculateReviewValue } from "../../utils";
+import withHelmet from "../../components/withHelmet";
 const UserCoursesPage = () => {
   const { auth } = useAuth();
 
@@ -32,7 +33,7 @@ const UserCoursesPage = () => {
   const { openSnackbar } = useSnackbar();
   const onReviewCreation = (courseSlug) => async (reviewInfo) => {
     try {
-      const response = await fetchFromAPI({
+      await fetchFromAPI({
         url: `/reviews/${courseSlug}`,
         method: "POST",
         headers: {
@@ -138,4 +139,4 @@ const UserCoursesPage = () => {
   );
 };
 
-export default UserCoursesPage;
+export default withHelmet(UserCoursesPage, "Courses");

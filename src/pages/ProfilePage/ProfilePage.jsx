@@ -3,6 +3,7 @@ import { InfoBoxWrapper } from "../../components";
 import { useAuth } from "../../contexts/authContext";
 import avatarImg from "../../assets/images/person.png";
 import { formatDate } from "../../utils";
+import withHelmet from "../../components/withHelmet";
 const ProfilePage = () => {
   const {
     auth: { user },
@@ -104,4 +105,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default withHelmet(ProfilePage, "Profile");

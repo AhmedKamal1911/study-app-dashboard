@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserBaseURL } from "../../routes/AppRouter";
 import { useAuth } from "../../contexts/authContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
+import withHelmet from "../../components/withHelmet";
 
 const LoginPage = () => {
   const { setAuth } = useAuth();
@@ -50,4 +51,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withHelmet(LoginPage, "Login");

@@ -30,6 +30,7 @@ import {
 import { formatNumber } from "../../utils";
 import { useToggleDarkMode } from "../../contexts/themeContext";
 import { useAuth } from "../../contexts/authContext";
+import withHelmet from "../../components/withHelmet";
 const transactionsInfo = [
   {
     id: 1,
@@ -288,4 +289,4 @@ const StatsPage = () => {
   );
 };
 
-export default StatsPage;
+export default withHelmet(StatsPage, "Statistics");
