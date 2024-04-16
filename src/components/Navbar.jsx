@@ -45,7 +45,7 @@ const Navbar = () => {
   const logUserOut = async () => {
     // FIXME: what if user tries to logout and his session is already expired what to do with the token ?  i cant even do logout request ? what should i do ?
     try {
-      const response = await fetchFromAPI({
+      await fetchFromAPI({
         url: "/auth/user/signout",
         method: "DELETE",
         headers: {

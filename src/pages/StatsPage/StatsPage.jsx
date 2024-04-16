@@ -9,8 +9,6 @@ import {
   creditImg,
   transferImg,
   walletImg,
-  bagImg,
-  javaScript,
   javaScriptImg,
   reactImg,
   nestJsImg,

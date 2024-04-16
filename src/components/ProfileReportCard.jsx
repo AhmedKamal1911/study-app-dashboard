@@ -1,4 +1,3 @@
-import { North, South } from "@mui/icons-material";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import { TinyLineChart, PercentageArrow } from "../components";
 import { formatNumber } from "../utils";
