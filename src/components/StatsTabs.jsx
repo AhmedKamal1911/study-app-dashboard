@@ -3,7 +3,7 @@ import { useState } from "react";
 import { walletImg, paymentsImg, profitImg } from "../assets/images";
 
 import { FinancialOverviewChart } from ".";
-import { calculateTotal } from "../utils/calculateTotal";
+import { calculateTotal } from "../utils";
 const incomeData = [
   {
     name: "Jan",

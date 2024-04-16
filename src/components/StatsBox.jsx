@@ -17,7 +17,11 @@ const StatsBox = ({ itemImg, subTitle, itemTitle, total }) => {
         <Typography variant="body1" fontSize="15px" color="lightDark">
           {subTitle}
         </Typography>
-        <Typography variant="h6" fontSize="17px" color="dark">
+        <Typography
+          variant="h6"
+          fontSize={{ xs: "14px", md: "17px" }}
+          color="dark"
+        >
           {itemTitle}
         </Typography>
       </Box>

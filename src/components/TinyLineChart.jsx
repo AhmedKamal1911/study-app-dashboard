@@ -61,5 +61,5 @@ const TinyLineChart = () => {
     </ResponsiveContainer>
   );
 };
-// TODO: search for Array.from
+
 export default TinyLineChart;

@@ -7,12 +7,13 @@ import { useModal } from "../../contexts/modalContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
 import useFetch from "../../hooks/useFetch";
 import usePaginateList from "../../hooks/usePagniateList";
+import { calculateReviewValue } from "../../utils";
 const UserCoursesPage = () => {
   const { auth } = useAuth();
-  // FIXME: prevent the student from reviewing the course more than 1 time maybe hide the btn
+
   const {
     error,
-    responseData,
+    responseData: userCourses,
     isLoading,
     refetch: refetchCourses,
   } = useFetch({
@@ -21,17 +22,15 @@ const UserCoursesPage = () => {
       Authorization: `Bearer ${auth.token}`,
     },
   });
-  // TODO: i wanted when i send request /users/courses it gets me the course with its reviews
-  console.log({ responseData });
+
   const { dataToShowList: coursesDataToShow, handleNextPage } = usePaginateList(
-    responseData?.courses,
+    userCourses,
     8
   );
 
   const { closeModal } = useModal();
   const { openSnackbar } = useSnackbar();
   const onReviewCreation = (courseSlug) => async (reviewInfo) => {
-    console.log({ reviewInfo });
     try {
       const response = await fetchFromAPI({
         url: `/reviews/${courseSlug}`,
@@ -42,17 +41,14 @@ const UserCoursesPage = () => {
         data: reviewInfo,
       });
       refetchCourses();
-      console.log({ response });
+
       closeModal();
 
       openSnackbar("Review created successfully.");
     } catch (e) {
-      console.log({ e });
-
       openSnackbar("Failed to create review due to network error", "error");
     }
   };
-  console.log({ hasAleadyReviewed: responseData });
   return (
     <Box minHeight="100vh" p={3} bgcolor="background.paper" borderRadius="8px">
       <InfoBoxWrapper title="My Courses">
@@ -61,28 +57,38 @@ const UserCoursesPage = () => {
           isLoading={isLoading}
           // error={"hasssssssssssssssssssssssssssssssss"}
         >
-          {responseData && (
+          {userCourses && (
             <>
               {coursesDataToShow.length > 0 ? (
                 <>
-                  <Grid container spacing={3} alignItems="flex-start">
-                    {coursesDataToShow?.map((course) => (
-                      <Grid key={course.id} xs={12} sm={6} md={4} lg={3}>
-                        <CourseCard
-                          hideReviewBtn={auth.user.isInstructor}
-                          onReviewCreation={onReviewCreation(course.slug)}
-                          courseImg={course.thumbnails}
-                          reviewsCount={course.numberOfRatings}
-                          totalStudents={course.numberOfStudents}
-                          courseLink={course.courseLink}
-                          ratingValue={5}
-                          // FIXME: please rating value from course
-                          title={course.title}
-                        />
-                      </Grid>
-                    ))}
+                  <Grid container spacing={3}>
+                    {coursesDataToShow?.map((course) => {
+                      const courseReviewValue = calculateReviewValue(
+                        course.reviews
+                      );
+                      return (
+                        <Grid key={course.id} xs={12} sm={6} md={4} lg={3}>
+                          <Box
+                            sx={{ "& > *": { height: "100%" }, height: "100%" }}
+                          >
+                            <CourseCard
+                              hideReviewBtn={
+                                auth.user.isInstructor || course.hasReviewed
+                              }
+                              onReviewCreation={onReviewCreation(course.slug)}
+                              courseImg={course.thumbnails}
+                              reviewsCount={course.numberOfRatings}
+                              totalStudents={course.numberOfStudents}
+                              courseLink={course.courseLink}
+                              ratingValue={courseReviewValue}
+                              title={course.title}
+                            />
+                          </Box>
+                        </Grid>
+                      );
+                    })}
                   </Grid>
-                  {responseData.courses.length !== coursesDataToShow.length && (
+                  {userCourses?.length !== coursesDataToShow.length && (
                     <div
                       style={{
                         marginTop: "30px",

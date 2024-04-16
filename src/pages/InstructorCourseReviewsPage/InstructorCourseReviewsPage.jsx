@@ -16,6 +16,7 @@ import {
 import useFetch from "../../hooks/useFetch";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/authContext";
+import { calculateReviewValue } from "../../utils";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.lightDark,
@@ -45,78 +46,87 @@ const labels = {
   5: { text: "Excellent", color: "gold" },
 };
 const InstructorCourseReviewsPage = () => {
-  //TODO: responsive
   const { auth } = useAuth();
+
   const { error, responseData, isLoading } = useFetch({
-    url: `reviews/instructor/${auth.user.username}`,
+    url: `/reviews/instructor/${auth.user.username}`,
   });
-  console.log({ responseData });
+
   // const reviewsToShow = responseData?.slice(0, 10);
+
   return (
-    <Box minHeight="83.4vh">
+    <Box height="84.9vh">
       <Loading isLoading={isLoading} error={error}>
-        <TableContainer sx={{ maxHeight: "83vh" }} component={Paper}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Course</StyledTableCell>
-                <StyledTableCell>Feedback</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {responseData?.courses.map((course) => {
-                // TODO: remove this after zeyad get reviewValue
-                const reviewValue =
-                  course.reviews.length > 0
-                    ? Math.ceil(
-                        course.reviews.reduce(
-                          (accumlator, current) =>
-                            accumlator + current?.rating ?? 0,
-                          0
-                        ) / course.reviews.length
-                      )
-                    : 0;
-                console.log({ reviewValue });
-                return (
-                  <StyledTableRow key={course.id}>
-                    <StyledTableCell component="th" scope="row">
-                      {course.title}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <Stack direction="column" gap={1}>
-                        <Stack direction="row">
-                          <Rating
-                            readOnly
-                            value={reviewValue}
-                            sx={{
-                              color: "#FF8F3C",
-                              "& .css-1tv3chh-MuiRating-icon": {
-                                color: "rgb(222 220 220)",
-                              },
-                              mr: "5px",
-                            }}
-                          />
-                          <Typography
-                            sx={{ textWrap: "nowrap" }}
-                            variant="body1"
-                            fontWeight="bold"
-                            color="dark"
-                          >
-                            ({course.reviews.length} Reviews)
+        {responseData?.courses.length > 0 ? (
+          <TableContainer
+            component={Paper}
+            sx={{
+              height: "800px",
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Course</StyledTableCell>
+                  <StyledTableCell>Feedback</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {responseData?.courses.map((course) => {
+                  const reviewValue = calculateReviewValue(course.reviews);
+                  return (
+                    <StyledTableRow key={course.id}>
+                      <StyledTableCell component="th" scope="row">
+                        {course.title}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        <Stack direction="column" gap={1}>
+                          <Stack direction="row">
+                            <Rating
+                              readOnly
+                              value={reviewValue}
+                              sx={{
+                                color: "#FF8F3C",
+                                "& .css-1tv3chh-MuiRating-icon": {
+                                  color: "rgb(222 220 220)",
+                                },
+                                mr: "5px",
+                              }}
+                            />
+                            <Typography
+                              sx={{ textWrap: "nowrap" }}
+                              variant="body1"
+                              fontWeight="bold"
+                              color="dark"
+                            >
+                              ({course.reviews.length} Reviews)
+                            </Typography>
+                          </Stack>
+
+                          <Typography color={labels[reviewValue].color}>
+                            {labels[reviewValue].text}
                           </Typography>
                         </Stack>
-
-                        <Typography color={labels[reviewValue].color}>
-                          {labels[reviewValue].text}
-                        </Typography>
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography
+            display="flex"
+            variant="h4"
+            textAlign="center"
+            height="100%"
+            color="dark"
+            justifyContent="center"
+            alignItems="center"
+          >
+            You Have No Reviews
+          </Typography>
+        )}
       </Loading>
     </Box>
   );

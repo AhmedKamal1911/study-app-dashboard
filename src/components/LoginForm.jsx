@@ -29,7 +29,6 @@ const LoginForm = ({ onLogin }) => {
     },
     validationSchema: loginFormSchema,
     onSubmit: async (values) => {
-      // TODO: send remember me flag
       await onLogin(values, userType, rememberMeCheckRef.current.checked);
       formik.setSubmitting(false);
     },
@@ -74,12 +73,12 @@ const LoginForm = ({ onLogin }) => {
           ></path>
         </svg>
         <Typography variant="h5" fontWeight="bold" color="primary.main">
-          Healther
+          HiStudy
         </Typography>
       </Stack>
       <Box color="black" mb={2}>
         <Typography fontWeight="bold" fontSize={24} color="dark">
-          Welcome to healther 🚀
+          Welcome to HiStudy 🚀
         </Typography>
         <Typography color="lightDark">
           Please Sign-in to your account and start the adventure
@@ -172,18 +171,6 @@ const LoginForm = ({ onLogin }) => {
         >
           {formik.isSubmitting ? "Loading" : "Login"}
         </Button>
-        <Typography p={3} color="lightDark" textAlign="center">
-          New on our platform?{" "}
-          <Link
-            to="/sign-up"
-            style={{
-              textDecoration: "none",
-              color: "rgb(105, 108, 255)",
-            }}
-          >
-            Create An Account
-          </Link>{" "}
-        </Typography>
       </form>
     </Box>
   );

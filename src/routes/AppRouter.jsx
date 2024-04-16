@@ -29,7 +29,6 @@ const StudentEnrollPage = lazy(() =>
 const InstructorCourseReviewsPage = lazy(() =>
   import("../pages/InstructorCourseReviewsPage/InstructorCourseReviewsPage.jsx")
 );
-// TODO: Add spinner for those pages
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,7 +46,7 @@ const router = createBrowserRouter(
           <Route
             path="/sign-up"
             element={
-              <Suspense>
+              <Suspense fallback={<Loader />}>
                 <RegisterPage />
               </Suspense>
             }
@@ -65,7 +64,7 @@ const router = createBrowserRouter(
             <Route
               path="/create-course"
               element={
-                <Suspense>
+                <Suspense fallback={<Loader />}>
                   <CreateCoursePage />
                 </Suspense>
               }
@@ -75,7 +74,7 @@ const router = createBrowserRouter(
             <Route
               path="/enroll"
               element={
-                <Suspense>
+                <Suspense fallback={<Loader />}>
                   <StudentEnrollPage />
                 </Suspense>
               }
@@ -95,7 +94,7 @@ const router = createBrowserRouter(
             <Route
               path="/courses"
               element={
-                <Suspense>
+                <Suspense fallback={<Loader />}>
                   <UserCoursesPage />
                 </Suspense>
               }
@@ -116,7 +115,7 @@ const router = createBrowserRouter(
             <Route
               path="/course-reviews"
               element={
-                <Suspense>
+                <Suspense fallback={<Loader />}>
                   <InstructorCourseReviewsPage />
                 </Suspense>
               }

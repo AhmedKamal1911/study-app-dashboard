@@ -12,13 +12,11 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { openSnackbar } = useSnackbar();
-  console.log(auth.token, "**************Token");
+
   const onRegister = async (registerData, endPoint = "users") => {
     const userTypeSingular = endPoint.slice(0, endPoint.length - 1);
     try {
-      console.log({ registerData });
-      console.log([...registerData.entries()]);
-      const response = await fetchFromAPI({
+      await fetchFromAPI({
         url: `/${endPoint}`,
         method: "POST",
         headers: {
@@ -26,7 +24,7 @@ const RegisterPage = () => {
         },
         data: registerData,
       });
-      console.log({ registerResponse: response });
+
       openSnackbar(`${userTypeSingular}, created successfully.`);
       navigate(getUserBaseURL(auth.user));
     } catch (e) {

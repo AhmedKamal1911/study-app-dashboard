@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import reviewFormSchema from "../validations/reviewFormSchema";
 import { getFieldError } from "../utils";
 const ReviewModal = ({ onReviewCreation }) => {
-  // TODO: implement blur formik
   const formik = useFormik({
     initialValues: {
       rating: null,
@@ -44,6 +43,7 @@ const ReviewModal = ({ onReviewCreation }) => {
             name="reviewBody"
             value={formik.values.reviewBody}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             id="reviewBody"
             label="Create Review"
             variant="outlined"

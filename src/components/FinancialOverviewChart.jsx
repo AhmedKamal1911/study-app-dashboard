@@ -3,7 +3,6 @@ import { formatNumber } from "../utils";
 import { PercentageArrow, SimpleLineChart } from ".";
 
 const FinancialOverviewChart = ({ img, statName, total, data, percentage }) => {
-  console.log(statName, "nanana");
   return (
     <Stack gap={2}>
       <Stack direction="row" gap={1}>

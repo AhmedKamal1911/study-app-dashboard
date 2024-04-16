@@ -25,21 +25,18 @@ const PersistLogin = () => {
               },
               signal: abortController.signal,
             });
-            console.log({ response });
+
             setAuth((prevAuth) => ({ ...prevAuth, user: response.user }));
             setIsLoading(false);
           } catch (e) {
-            console.log(e);
             // maybe it fails because of token expiration
             if (isCancel(e)) return;
-            if (e.request.status === 401) {
-              // if so
-              localStorage.removeItem("token");
-              // navigate the user to the login page to be able to get new access token and remove the old token from local storage and set auth to empty
-              setAuth({ user: null, token: null });
-              setIsLoading(false);
-              return;
-            }
+            // if so
+            localStorage.removeItem("token");
+            // navigate the user to the login page to be able to get new access token and remove the old token from local storage and set auth to empty
+            setAuth({ user: null, token: null });
+            setIsLoading(false);
+
             // network error
             // maybe it fails because of network error that means i cant go to protected pages for example because it requires user.isAdmin ,....
             // if so

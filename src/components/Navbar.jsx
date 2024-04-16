@@ -52,12 +52,11 @@ const Navbar = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      console.log({ logoutResponse: response });
+
       localStorage.removeItem("token");
       setAuth({ auth: null, user: null });
       openSnackbar("You logged out successfully");
     } catch (e) {
-      console.log(e);
       // detect if the user token is finished and he tries to signout then log him out with diffrent way for example
       openSnackbar(
         "Failed to logout due to network error, try again.",

@@ -17,7 +17,6 @@ const LoginPage = () => {
     rememberMe
   ) => {
     try {
-      console.log({ loginCredentials, rememberMe });
       const { user, token } = await fetchFromAPI({
         method: "POST",
         url: `/auth/${loginUserType}/signin`,
@@ -32,7 +31,6 @@ const LoginPage = () => {
       navigate(getUserBaseURL(user));
     } catch (e) {
       openSnackbar(e.response.data.message, "error");
-      console.log({ loginError: e });
     }
   };
   return (

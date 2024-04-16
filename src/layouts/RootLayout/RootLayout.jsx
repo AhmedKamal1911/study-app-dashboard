@@ -7,7 +7,11 @@ import AsideProvider from "../../contexts/asideContext";
 const RootLayout = () => {
   return (
     <AsideProvider>
-      <Stack direction="row" minheight="100vh">
+      <Stack
+        display={{ xs: "block", lg: "flex" }}
+        direction={"row"}
+        minheight="100vh"
+      >
         <Aside />
         <Box flex={"1"} py={3} bgcolor="background.default">
           <Container maxWidth={false}>

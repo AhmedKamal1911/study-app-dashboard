@@ -43,7 +43,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
     },
     validationSchema: createCourseFormSchema,
     onSubmit: async (values) => {
-      console.log({ formRef });
       const formData = new FormData(formRef.current);
       formData.set(
         "whatYouWillLearn",
@@ -55,8 +54,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       );
       formData.set("courseLink", values.courseLink);
       formData.set("isCertified", isCertifiedInputRef.current.checked);
-      console.log({ formData });
-      console.table([...formData.entries()]);
 
       // TODO: idea of resizing image into different sizes (small - medium - large)
       // TODO: possible to check image dimensions if you want more than 1 course image

@@ -10,6 +10,10 @@ import {
   transferImg,
   walletImg,
   bagImg,
+  javaScript,
+  javaScriptImg,
+  reactImg,
+  nestJsImg,
 } from "../../assets/images";
 
 import { MoreVert } from "@mui/icons-material";
@@ -226,7 +230,7 @@ const StatsPage = () => {
         >
           <Box>
             <Typography color="dark" variant="h4">
-              {formatNumber(8258)}
+              {formatNumber(2078)}
             </Typography>
             <Typography variant="body2" color="lightDark">
               Total Orders
@@ -236,22 +240,22 @@ const StatsPage = () => {
         </Stack>
         <Stack direction="column" gap={3}>
           <StatsBox
-            itemImg={paymentsImg}
-            subTitle={"Paypal"}
-            itemTitle={"Send money"}
-            total={85.6}
+            itemImg={reactImg}
+            subTitle={"React"}
+            itemTitle={"Received money"}
+            total={826.5}
           />
           <StatsBox
-            itemImg={paymentsImg}
-            subTitle={"Paypal"}
-            itemTitle={"Send money"}
-            total={85.6}
+            itemImg={javaScriptImg}
+            subTitle={"Javascript"}
+            itemTitle={"Received money"}
+            total={566.7}
           />
           <StatsBox
-            itemImg={paymentsImg}
-            subTitle={"Paypal"}
-            itemTitle={"Send money"}
-            total={85.6}
+            itemImg={nestJsImg}
+            subTitle={"nest Js"}
+            itemTitle={"Received money"}
+            total={343.6}
           />
         </Stack>
       </Box>
@@ -271,8 +275,10 @@ const StatsPage = () => {
         p={2}
         gridColumn={{ md: "span 3", lg: "span 2" }}
       >
-        <BoxHeader title={"Transactions"} />
-        <Stack direction="column" gap={3}>
+        <Box mb={8}>
+          <BoxHeader title={"Transactions"} />
+        </Box>
+        <Stack direction="column" gap={6}>
           {transactionsInfo.map((transaction) => (
             <StatsBox key={transaction.id} {...transaction} />
           ))}

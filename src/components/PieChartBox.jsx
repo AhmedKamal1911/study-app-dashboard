@@ -30,7 +30,6 @@ const PieChartBox = () => {
           data={coursesData}
           cx="50%"
           cy="50%"
-          fill="red"
           outerRadius={90}
           onPointerEnter={onPieEnter}
           onPointerLeave={onPieLeave}
@@ -38,7 +37,7 @@ const PieChartBox = () => {
           {coursesData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={activeIndex === index ? "gold" : entry.color}
+              fill={activeIndex === index ? entry.activeColor : entry.color}
             />
           ))}
         </Pie>

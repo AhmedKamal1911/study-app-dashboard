@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Drawer,
@@ -65,7 +65,10 @@ const AsideContent = () => {
   const [currentActiveLinkPathName, setCurrentActiveLinkPathName] = useState(
     () => location.pathname
   );
-
+  // TODO: find anotherway to make the like detect the active pathname
+  useEffect(() => {
+    setCurrentActiveLinkPathName(location.pathname);
+  }, [location.pathname]);
   return (
     <Stack
       p={1.5}

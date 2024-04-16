@@ -6,7 +6,7 @@ const usePaginateList = (dataList = [], dataToShowLimit = 6) => {
     dataList && dataList.length > dataToShowLimit
       ? dataList.slice(0, dataToShowLimit * currentPage)
       : dataList;
-  console.log({ dataToShowList });
+
   function setPaginationPage(page) {
     setCurrentPage(page);
   }

@@ -20,6 +20,8 @@ import registerFormSchema, {
   fileValidationSchema,
 } from "../validations/registerFormSchema";
 import { getFieldError, validateFile } from "../utils";
+import { getUserBaseURL } from "../routes/AppRouter";
+import { useAuth } from "../contexts/authContext";
 // const CustomTextField = styled(TextField)({
 //   "& .MuiOutlinedInput-root": {
 //     "&:not(:hover) fieldset": {
@@ -34,6 +36,7 @@ import { getFieldError, validateFile } from "../utils";
 //   },
 // });
 const RegisterForm = ({ onRegister }) => {
+  const { auth } = useAuth();
   const inputFileRef = useRef(null);
   const formRef = useRef(null);
   const [showInstructorDescription, setShowInstructorDesc] = useState(false);
@@ -53,7 +56,7 @@ const RegisterForm = ({ onRegister }) => {
     validationSchema: registerFormSchema,
     onSubmit: async (values) => {
       const formData = new FormData(formRef.current);
-      console.log([...formData.entries()]);
+
       const unnecessaryInputNames = [
         "userType",
         "termsAgree",
@@ -67,7 +70,7 @@ const RegisterForm = ({ onRegister }) => {
       }
       try {
         await onRegister(formData, values.userType);
-        console.log({ userSelectedImageURLbeforerevoke: userSelectedImageURL });
+
         URL.revokeObjectURL(userSelectedImageURL);
       } finally {
         formik.setSubmitting(false);
@@ -130,8 +133,17 @@ const RegisterForm = ({ onRegister }) => {
             d="M17.543 52.7266C21.2241 53.9875 28.5535 57.0509 30.091 59.101C32.0129 61.6635 33.1576 64.34 29.2527 71.2039C28.5954 71.6481 27.9821 72.0633 27.4069 72.4528C22.1953 75.9817 20.1085 77.3946 16.6243 79.0531C13.5855 80.2464 6.61575 81.7103 2.66559 74.5653C-1.11764 67.7222 3.23818 62.7113 6.5963 60.065L12.1695 56.0339L14.8359 54.3477L17.543 52.7266Z"
           ></path>
         </svg>
-        <Typography variant="h5" fontWeight="bold" color="primary.main">
-          Healther
+        <Typography
+          component={Link}
+          to={getUserBaseURL(auth.user)}
+          variant="h5"
+          fontWeight="bold"
+          color="primary.main"
+          sx={{
+            textDecoration: "none",
+          }}
+        >
+          HiStudy
         </Typography>
       </Stack>
       <Box color="black" mb={2}>

@@ -72,7 +72,6 @@ const DragZone = ({
 
   function handleDragEnter() {
     setIsDragging(true);
-    console.log("drag enter");
   }
 
   function handleDragLeave(e) {
@@ -85,7 +84,6 @@ const DragZone = ({
     } else {
       setIsDragging(true);
     }
-    console.log("drag leave", e);
   }
 
   return (

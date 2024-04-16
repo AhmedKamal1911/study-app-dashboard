@@ -32,7 +32,6 @@ const ModalProvider = ({ children }) => {
     setModalConfig({ ...modalConfig, visibility: false });
   };
   const openModal = (modalType = "ReviewModal", props = {}) => {
-    console.log({ modalType, props });
     setModalConfig({ visibility: true, type: modalType, props });
   };
   const SelectedModal = MODALS[modalConfig.type];

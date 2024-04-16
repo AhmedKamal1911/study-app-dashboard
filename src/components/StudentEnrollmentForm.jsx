@@ -24,7 +24,6 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
   });
   const onAutoCompleteChange = (fieldName) => (event, value) => {
     formik.setFieldValue(fieldName, value);
-    console.log({ fieldName, value });
   };
   return (
     <form onSubmit={formik.handleSubmit}>

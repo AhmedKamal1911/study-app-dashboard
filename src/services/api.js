@@ -1,6 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-  baseURL: "http://localhost:3000/v1",
+  baseURL: "https://educational-platform-nestjs-api.onrender.com/v1",
 });
 const fetchFromAPI = async (options) => {
   try {

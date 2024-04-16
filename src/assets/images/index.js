@@ -11,3 +11,7 @@ export { default as manWithLaptopImg } from "./manwithlaptop.png";
 export { default as profileImg } from "./person.png";
 export { default as manWithLaptopImgDark } from "./darkmode-person.png";
 export { default as courseImg } from "./course-img.png";
+
+export { default as javaScriptImg } from "./javascript.svg";
+export { default as nestJsImg } from "./nestjs.svg";
+export { default as reactImg } from "./react.png";
