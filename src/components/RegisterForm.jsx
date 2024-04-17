@@ -101,7 +101,6 @@ const RegisterForm = ({ onRegister }) => {
       p={3}
       borderRadius={2}
       width="100%"
-      maxWidth={450}
     >
       <Stack
         direction="row"

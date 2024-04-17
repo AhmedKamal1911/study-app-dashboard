@@ -5,6 +5,7 @@ import fetchFromAPI from "../../services/api";
 import { useSnackbar } from "../../contexts/snackbarContext";
 import { useAuth } from "../../contexts/authContext";
 import { getUserBaseURL } from "../../routes/AppRouter";
+import withHelmet from "../../components/withHelmet";
 const StudentEnrollPage = () => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
@@ -41,4 +42,4 @@ const StudentEnrollPage = () => {
   );
 };
 
-export default StudentEnrollPage;
+export default withHelmet(StudentEnrollPage, "Enroll");

@@ -43,7 +43,14 @@ const RegisterPage = () => {
         justifyContent: "center",
       }}
     >
-      <RegisterForm onRegister={onRegister} />
+      <div
+        style={{
+          maxWidth: "600px",
+          width: "100%",
+        }}
+      >
+        <RegisterForm onRegister={onRegister} />
+      </div>
     </Box>
   );
 };

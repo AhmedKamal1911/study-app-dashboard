@@ -49,6 +49,7 @@ const PasswordField = ({
         htmlFor={passwordId}
         sx={{
           color: "primary.main",
+          fontSize: "19px",
         }}
       >
         {label}
