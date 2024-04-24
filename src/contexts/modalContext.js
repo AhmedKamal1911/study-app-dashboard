@@ -1,6 +1,7 @@
 import { Box, Fade, Modal } from "@mui/material";
 import React, { createContext, useContext, useState } from "react";
 import ReviewModal from "../components/ReviewModal";
+import ConfirmModal from "../components/ConfirmModal";
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,6 +22,7 @@ const ModalContext = createContext({
 });
 const MODALS = {
   ReviewModal,
+  ConfirmModal,
 };
 const ModalProvider = ({ children }) => {
   const [modalConfig, setModalConfig] = useState({
@@ -34,6 +36,7 @@ const ModalProvider = ({ children }) => {
   const openModal = (modalType = "ReviewModal", props = {}) => {
     setModalConfig({ visibility: true, type: modalType, props });
   };
+  console.log(modalConfig.type);
   const SelectedModal = MODALS[modalConfig.type];
   return (
     <ModalContext.Provider

@@ -31,6 +31,37 @@ const UserCoursesPage = () => {
 
   const { closeModal } = useModal();
   const { openSnackbar } = useSnackbar();
+  const onUnenroll = (courseSlug) => async () => {
+    try {
+      await fetchFromAPI({
+        url: `/courses/${courseSlug}/unenroll`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      refetchCourses();
+      openSnackbar(`you unenrolled from course ${courseSlug} successfully.`);
+    } catch (e) {
+      console.log(e, "error from unenroll");
+    }
+  };
+  const onDelete = (courseId) => async () => {
+    try {
+      await fetchFromAPI({
+        url: `/courses/${courseId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+
+      refetchCourses();
+      openSnackbar(`Course Deleted successfully.`);
+    } catch (e) {
+      console.log(e, "error from Delete");
+    }
+  };
   const onReviewCreation = (courseSlug) => async (reviewInfo) => {
     try {
       await fetchFromAPI({
@@ -41,6 +72,7 @@ const UserCoursesPage = () => {
         },
         data: reviewInfo,
       });
+
       refetchCourses();
 
       closeModal();
@@ -53,11 +85,7 @@ const UserCoursesPage = () => {
   return (
     <Box minHeight="100vh" p={3} bgcolor="background.paper" borderRadius="8px">
       <InfoBoxWrapper title="My Courses">
-        <Loading
-          error={error}
-          isLoading={isLoading}
-          // error={"hasssssssssssssssssssssssssssssssss"}
-        >
+        <Loading error={error} isLoading={isLoading}>
           {userCourses && (
             <>
               {coursesDataToShow.length > 0 ? (
@@ -73,9 +101,11 @@ const UserCoursesPage = () => {
                             sx={{ "& > *": { height: "100%" }, height: "100%" }}
                           >
                             <CourseCard
+                              onUnenroll={onUnenroll(course.slug)}
                               hideReviewBtn={
                                 auth.user.isInstructor || course.hasReviewed
                               }
+                              hideUnenrollBtn={auth.user.isInstructor}
                               onReviewCreation={onReviewCreation(course.slug)}
                               courseImg={course.thumbnails}
                               reviewsCount={course.numberOfRatings}
@@ -83,6 +113,8 @@ const UserCoursesPage = () => {
                               courseLink={course.courseLink}
                               ratingValue={courseReviewValue}
                               title={course.title}
+                              onDelete={onDelete(course.id)}
+                              hideDeleteBtn={!auth.user.isInstructor}
                             />
                           </Box>
                         </Grid>

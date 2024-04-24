@@ -1,8 +1,8 @@
 import enrollFormSchema from "../validations/enrollFormSchema";
 import { getFieldError } from "../utils";
-import { Button, Stack, createFilterOptions } from "@mui/material";
+import { Button, MenuItem, Stack, createFilterOptions } from "@mui/material";
 import { useFormik } from "formik";
-import { FieldError, CustomAutoComplete } from ".";
+import { FieldError, CustomAutoComplete, CustomSelectField } from ".";
 // const studentFilterOptions = createFilterOptions({
 //   matchFrom: "any",
 //   stringify: (option) => `${option.id} ${option.fullName}`,
@@ -28,31 +28,6 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack gap={3}>
-        {/*
-      <div>
-          <CustomAutoComplete
-            textFieldName="enrolledStudent"
-            label="Student(s)"
-            endPointSlug="/users"
-            noOptionsText="No Such Student"
-            getOptionLabel={(option) => option.fullName}
-            filterOptions={studentFilterOptions}
-            filterSelectedOptions
-            onChange={onAutoCompleteChange("enrolledStudent")}
-            value={formik.values.enrolledStudent}
-          />
-          <p
-            style={{
-              margin: 0,
-              marginTop: "10px",
-              color: "red",
-            }}
-          >
-            {getFieldError(formik, "enrolledStudent")}
-          </p>
-        </div>
-      */}
-
         <div>
           <CustomAutoComplete
             textFieldName="enrolledCourse"
@@ -66,6 +41,7 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
           />
           <FieldError errorText={getFieldError(formik, "enrolledCourse")} />
         </div>
+
         <Button
           variant="contained"
           type="submit"

@@ -3,6 +3,8 @@ import { PeopleOutline, Star } from "@mui/icons-material";
 import { useModal } from "../contexts/modalContext";
 
 const CourseCard = ({
+  onDelete,
+  onUnenroll,
   onReviewCreation,
   totalStudents,
   courseImg,
@@ -10,6 +12,8 @@ const CourseCard = ({
   courseLink,
   ratingValue,
   hideReviewBtn = false,
+  hideUnenrollBtn = false,
+  hideDeleteBtn = false,
   title,
 }) => {
   const { openModal } = useModal();
@@ -17,13 +21,20 @@ const CourseCard = ({
   const handleReviewBtnClick = () => {
     openModal("ReviewModal", { onReviewCreation });
   };
+  const openUnenrollConfirmModal = () => {
+    openModal("ConfirmModal", {
+      onConfirm: onUnenroll,
+      title: "Are you sure you want to unenroll from this course ?",
+    });
+  };
+  const openDeleteConfirmModal = () => {
+    openModal("ConfirmModal", {
+      onConfirm: onDelete,
+      title: "Are you sure you want to Delete this course ?",
+    });
+  };
   return (
-    <Box
-      p={3}
-      borderRadius="8px"
-      className="shadow-1"
-      sx={{ background: "white" }}
-    >
+    <Box p={3} borderRadius="8px" boxShadow={2} sx={{ background: "white" }}>
       <Box>
         <img
           style={{
@@ -85,11 +96,34 @@ const CourseCard = ({
           <PeopleOutline />
           <Typography color="body">{`${totalStudents} Students`}</Typography>
         </Stack>
-        {!hideReviewBtn && (
-          <Button onClick={handleReviewBtnClick} variant="outlined">
-            <Star sx={{ mr: "5px" }} /> Rate
-          </Button>
-        )}
+        <div>
+          {!hideUnenrollBtn && (
+            <Button
+              onClick={openUnenrollConfirmModal}
+              variant="contained"
+              size="small"
+              sx={{ mr: "10px" }}
+            >
+              UnEnroll
+            </Button>
+          )}
+
+          {!hideReviewBtn && (
+            <Button onClick={handleReviewBtnClick} variant="outlined">
+              <Star sx={{ mr: "5px" }} /> Rate
+            </Button>
+          )}
+          {!hideDeleteBtn && (
+            <Button
+              onClick={openDeleteConfirmModal}
+              variant="contained"
+              color="error"
+              size="small"
+            >
+              Delete
+            </Button>
+          )}
+        </div>
       </Stack>
       <Box>
         <Button
