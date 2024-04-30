@@ -1,7 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import { Unauthorized } from ".";
+
 import { Box } from "@mui/material";
+import Unauthorized from "./Unauthorized";
 
 const UNAUTHORIZED_MSGS = {
   NOT_ADMIN: "You can't access this page (Only admins) because it's protected",

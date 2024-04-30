@@ -10,6 +10,8 @@ export { default as BoxHeader } from "./BoxHeader.jsx";
 export { default as InfoBoxWrapper } from "./InfoBoxWrapper.jsx";
 export { default as PercentageArrow } from "./PercentageArrow.jsx";
 export { default as ReviewModal } from "./ReviewModal.jsx";
+export { default as ConfirmModal } from "./ConfirmModal.jsx";
+
 export { default as Unauthorized } from "./Unauthorized.jsx";
 export { default as PasswordField } from "./PasswordField.jsx";
 export { default as CustomSelectField } from "./CustomSelectField.jsx";

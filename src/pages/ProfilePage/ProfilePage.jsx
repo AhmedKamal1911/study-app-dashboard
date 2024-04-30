@@ -4,10 +4,14 @@ import { useAuth } from "../../contexts/authContext";
 import avatarImg from "../../assets/images/person.png";
 import { formatDate } from "../../utils";
 import withHelmet from "../../components/withHelmet";
+import fetchFromAPI from "../../services/api";
+import { useEffect, useRef, useState } from "react";
+
 const ProfilePage = () => {
   const {
-    auth: { user },
+    auth: { user, token },
   } = useAuth();
+  const [newImgUrl, setNewImgUrl] = useState("");
   const [firstName, lastName] = user.fullName.split(" ");
   const profileInfo = [
     {
@@ -35,7 +39,34 @@ const ProfilePage = () => {
       : []),
   ];
   user.isInstructor && profileInfo.push();
+  const inputRef = useRef(null);
 
+  const handleUpdateImg = async (files) => {
+    if (files.length === 0) return;
+    const file = files[0];
+    const newImg = URL.createObjectURL(file);
+    const formData = new FormData();
+    formData.append("file", inputRef.current.files[0]);
+
+    try {
+      await fetchFromAPI({
+        url: `/${user.isInstructor ? "instructors" : "users"}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: formData,
+      });
+      setNewImgUrl(newImg);
+    } catch (e) {}
+  };
+  useEffect(
+    () => () => {
+      // clear object url from browser
+      if (newImgUrl) URL.revokeObjectURL(newImgUrl);
+    },
+    [newImgUrl]
+  );
   return (
     <Box
       p={4}
@@ -46,36 +77,42 @@ const ProfilePage = () => {
     >
       <InfoBoxWrapper title={"Profile"} />
       <Box mt={2}>
-        <div
+        <label
+          htmlFor="image-input"
           style={{
-            textAlign: "center",
-            marginBottom: "80px",
+            display: "block",
+            background: "gray",
+            maxWidth: "200px",
+            aspectRatio: "1",
+            borderRadius: "50%",
+            marginBottom: "20px",
+            outline: "4px groove #009688",
+            cursor: "pointer",
+            fontSize: 0,
+            marginInline: "auto",
+            userSelect: "none",
+            overflow: "hidden",
           }}
         >
-          {user.avatar ? (
-            <img
-              src={user.avatar ?? avatarImg}
-              style={{
-                width: "200px",
-                aspectRatio: "1",
-                borderRadius: "50%",
-                outline: "4px groove #009688",
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-              alt="avatar"
-            />
-          ) : (
-            <img
-              src={avatarImg}
-              style={{
-                width: "200px",
-                aspectRatio: "1",
-              }}
-              alt="avatar"
-            />
-          )}
-        </div>
+          <img
+            src={newImgUrl ? newImgUrl : user.avatar ?? avatarImg}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+            alt="avatar"
+          />
+        </label>
+        <input
+          onChange={(e) => handleUpdateImg(e.target.files)}
+          type="file"
+          name=""
+          id="image-input"
+          hidden
+          accept="image/*"
+          ref={inputRef}
+        />
 
         <Stack gap={1}>
           {profileInfo.map(({ info, value }) => (

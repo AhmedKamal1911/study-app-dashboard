@@ -16,7 +16,7 @@ import createCourseFormSchema, {
 } from "../validations/createCourseFormSchema";
 import { useRef } from "react";
 import { getFieldError } from "../utils";
-import { FieldError, CustomTextField, CustomSelectField, DragZone } from ".";
+import { FieldError, CustomSelectField, DragZone, CustomTextField } from ".";
 
 // const instructorFilterOptions = createFilterOptions({
 //   matchFrom: 'any',

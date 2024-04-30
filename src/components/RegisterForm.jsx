@@ -22,19 +22,7 @@ import registerFormSchema, {
 import { getFieldError, validateFile } from "../utils";
 import { getUserBaseURL } from "../routes/AppRouter";
 import { useAuth } from "../contexts/authContext";
-// const CustomTextField = styled(TextField)({
-//   "& .MuiOutlinedInput-root": {
-//     "&:not(:hover) fieldset": {
-//       // borderColor: "rgb(50, 71, 92)",
-//     },
-//     "&:hover fieldset": {
-//       // borderColor: "#B2BAC2",
-//     },
-//     "&.Mui-focused fieldset": {
-//       // borderColor: "#6F7E8C",
-//     },
-//   },
-// });
+
 const RegisterForm = ({ onRegister }) => {
   const { auth } = useAuth();
   const inputFileRef = useRef(null);
