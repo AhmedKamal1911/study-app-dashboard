@@ -86,7 +86,7 @@ const CourseCard = ({
 
       <Stack
         my={3}
-        direction="row"
+        direction={{ xs: "column", md: "row" }}
         alignItems="center"
         justifyContent="space-between"
         flexWrap="wrap"
@@ -96,13 +96,13 @@ const CourseCard = ({
           <PeopleOutline />
           <Typography color="body">{`${totalStudents} Students`}</Typography>
         </Stack>
-        <div>
+        <Stack direction={{ md: "row" }} sx={{ gap: "10px", width: "100%" }}>
           {!hideUnenrollBtn && (
             <Button
               onClick={openUnenrollConfirmModal}
               variant="contained"
               size="small"
-              sx={{ mr: "10px" }}
+              sx={{ mr: { xs: "0px", md: "10px" } }}
             >
               UnEnroll
             </Button>
@@ -123,7 +123,7 @@ const CourseCard = ({
               Delete
             </Button>
           )}
-        </div>
+        </Stack>
       </Stack>
       <Box>
         <Button
