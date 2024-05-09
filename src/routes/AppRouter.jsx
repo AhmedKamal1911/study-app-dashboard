@@ -6,15 +6,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ProtectedRoute, Loader, PersistLogin } from "../components";
-// import { Aside, Feed } from "./components";
-// import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
-// import InstructorCourseReviewsPage from "./pages/InstructorCourseReviewsPage/InstructorCourseReviewsPage.jsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 const RootLayout = lazy(() => import("../layouts/RootLayout/RootLayout.jsx"));
 const StatsPage = lazy(() => import("../pages/StatsPage/StatsPage.jsx"));
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage.jsx"));
-const RegisterPage = lazy(() =>
-  import("../pages/RegisterPage/RegisterPage.jsx")
+const DeleteUserPage = lazy(() =>
+  import("../pages/DeleteUserPage/DeleteUserPage.jsx")
 );
 const CreateCoursePage = lazy(() =>
   import("../pages/CreateCoursePage/CreateCoursePage.jsx")
@@ -44,10 +41,10 @@ const router = createBrowserRouter(
         />
         <Route element={<ProtectedRoute onlyAdmin />}>
           <Route
-            path="/sign-up"
+            path="/delete-user"
             element={
               <Suspense fallback={<Loader />}>
-                <RegisterPage />
+                <DeleteUserPage />
               </Suspense>
             }
           />
@@ -140,7 +137,7 @@ const usersBaseURL = {
 };
 export const USER_AUTHORIZED_ROUTES = {
   STUDENT: ["/enroll", "/courses"],
-  ADMIN: ["/", "/sign-up"],
+  ADMIN: ["/", "/delete-user"],
   INSTRUCTOR: ["/courses", "/create-course", "/course-reviews"],
 };
 export function getUserBaseURL(user) {

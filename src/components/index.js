@@ -23,7 +23,7 @@ export { default as DragZone } from "./DragZone.jsx";
 export { default as FieldError } from "./FieldError.jsx";
 // Forms
 export { default as LoginForm } from "./LoginForm.jsx";
-export { default as RegisterForm } from "./RegisterForm.jsx";
+
 export { default as CreateCourseForm } from "./CreateCourseForm.jsx";
 export { default as StudentEnrollmentForm } from "./StudentEnrollmentForm.jsx";
 

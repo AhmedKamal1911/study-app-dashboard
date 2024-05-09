@@ -23,7 +23,11 @@ import { USER_AUTHORIZED_ROUTES, getUserType } from "../routes/AppRouter";
 
 const pagesButtons = [
   { name: "Analyze", icon: <ShowChart />, path: "/" },
-  { name: "Register", icon: <AppRegistrationRounded />, path: "/sign-up" },
+  {
+    name: "Delete User",
+    icon: <AppRegistrationRounded />,
+    path: "/delete-user",
+  },
   { name: "Create Course", icon: <Create />, path: "/create-course" },
   { name: "My Courses", icon: <OndemandVideo />, path: "/courses" },
   { name: "Enrollment", icon: <CloudCircleRounded />, path: "/enroll" },
