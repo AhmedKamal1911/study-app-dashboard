@@ -42,6 +42,7 @@ const UserCoursesPage = () => {
       });
       refetchCourses();
       openSnackbar(`you unenrolled from course ${courseSlug} successfully.`);
+      console.log("slug ", courseSlug);
     } catch (e) {
       console.log(e, "error from unenroll");
     }

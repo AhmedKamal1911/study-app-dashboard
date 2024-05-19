@@ -11,7 +11,7 @@ const ConfirmModal = ({ onConfirm, title }) => {
   };
   return (
     <Box>
-      <Typography variant="h5" mb={2} textAlign="center">
+      <Typography color="dark" variant="h5" mb={2} textAlign="center">
         {title}
       </Typography>
       <Stack gap={2} direction="row">

@@ -14,7 +14,7 @@ const createCourseFormSchema = Yup.object({
     .required("Course link is required.")
     .matches(
       // Regular expression for YouTube video and playlist URLs
-      // /^(https?:\/\/)?(www\.youtube\.com|youtu\.?be)\/(watch\?v=.+|playlist\?.+)$/,
+
       /^(https?:\/\/)?(www\.youtube\.com|youtu\.?be)\/(watch\?v=.+|playlist\?.+|[^/?]+)(\?\S*)?$/,
       "Invalid Youtube video link or playlist link"
     ),

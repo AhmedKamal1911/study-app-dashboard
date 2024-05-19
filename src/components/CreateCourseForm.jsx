@@ -22,10 +22,14 @@ import { FieldError, CustomSelectField, DragZone, CustomTextField } from ".";
 //   matchFrom: 'any',
 //   stringify: (option) => `${option.id} ${option.fullName}`,
 // });
+
+// Helper Function
 function removeExtraSpacesAndNewlines(str) {
   return str.trim().replace(/\s*\n\s*/g, "\n");
 }
+// React Component
 const CreateCourseForm = ({ onCourseCreation }) => {
+  // Component Logic
   const isCertifiedInputRef = useRef(null);
   const imageBlobURLRef = useRef("");
   const formRef = useRef(null);
@@ -54,9 +58,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       );
       formData.set("courseLink", values.courseLink);
       formData.set("isCertified", isCertifiedInputRef.current.checked);
-
-      // TODO: idea of resizing image into different sizes (small - medium - large)
-      // TODO: possible to check image dimensions if you want more than 1 course image
       try {
         await onCourseCreation(formData);
         if (imageBlobURLRef.current) {
@@ -67,9 +68,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       }
     },
   });
-  // const onCourseInstructorChange = (e, value) => {
-  //   formik.setFieldValue('courseInstructor', value);
-  // };
+
   const onFileInputChange = (file) => {
     formik.setFieldValue("file", file ?? null);
   };
@@ -80,6 +79,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
       onDropSuccess(files[0]);
     }
   };
+  // Component UI
   return (
     <Box borderRadius={2}>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
@@ -212,29 +212,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             </CustomSelectField>
             <FieldError errorText={getFieldError(formik, "language")} />
           </div>
-          {/* <div>
-            <CustomAutoComplete
-              CustomTextFieldName="courseInstructor"
-              label="Course Instructor"
-              endPointSlug="/instructors"
-              getOptionLabel={(option) => option.fullName}
-              filterOptions={instructorFilterOptions}
-              filterSelectedOptions
-              noOptionsText="No Such Instructor"
-              value={formik.values.courseInstructor}
-              onChange={onCourseInstructorChange}
-              onBlur={formik.handleBlur}
-            />
-            <p
-              style={{
-                margin: 0,
-                marginTop: '5px',
-                color: 'red',
-              }}
-            >
-              {getFieldError(formik, 'courseInstructor')}
-            </p>
-          </div> */}
 
           <FormControlLabel
             control={
