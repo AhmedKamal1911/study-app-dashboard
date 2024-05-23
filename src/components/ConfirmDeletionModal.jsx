@@ -20,7 +20,7 @@ const ConfirmDeletionModal = ({ onConfirm, title }) => {
   };
   return (
     <Box>
-      <Typography color="dark" variant="h6" mb={2} textAlign="center">
+      <Typography color="dark" variant="h6" mb={2} textAlign="left">
         {title}
       </Typography>
       <Typography
