@@ -26,10 +26,11 @@ import { useToggleDarkMode } from "../contexts/themeContext";
 import { useAuth } from "../contexts/authContext";
 import { useAsideContext } from "../contexts/asideContext";
 import { useSnackbar } from "../contexts/snackbarContext";
+import useLogout from "../hooks/useLogout";
 
 const Navbar = () => {
   const { toggleDarkMode, colorMode } = useToggleDarkMode();
-  const { setAuth } = useAuth();
+  const logout = useLogout();
   const isMediumScreen = useMediaQuery("(max-width: 1199px)");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -52,9 +53,7 @@ const Navbar = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       });
-
-      localStorage.removeItem("token");
-      setAuth({ auth: null, user: null });
+      logout();
       openSnackbar("You logged out successfully");
     } catch (e) {
       // detect if the user token is finished and he tries to signout then log him out with diffrent way for example

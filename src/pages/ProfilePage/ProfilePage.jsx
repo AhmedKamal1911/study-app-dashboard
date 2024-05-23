@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { InfoBoxWrapper } from "../../components";
 import { useAuth } from "../../contexts/authContext";
 import avatarImg from "../../assets/images/person.png";
@@ -6,11 +6,15 @@ import { formatDate } from "../../utils";
 import withHelmet from "../../components/withHelmet";
 import fetchFromAPI from "../../services/api";
 import { useEffect, useRef, useState } from "react";
+import { useModal } from "../../contexts/modalContext";
+import useLogout from "../../hooks/useLogout";
 
 const ProfilePage = () => {
   const {
     auth: { user, token },
   } = useAuth();
+  const logout = useLogout();
+  const { openModal } = useModal();
   const [newImgUrl, setNewImgUrl] = useState("");
   const [firstName, lastName] = user.fullName.split(" ");
   const profileInfo = [
@@ -60,6 +64,30 @@ const ProfilePage = () => {
       setNewImgUrl(newImg);
     } catch (e) {}
   };
+
+  const onUserDeletion = async () => {
+    try {
+      await fetchFromAPI({
+        url: `${user.isInstructor ? "/instructors" : "/users"}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      logout();
+
+      console.log("endpoint");
+    } catch (e) {
+      console.log(e, "error from unenroll");
+    }
+  };
+  const openDeletionConfirmModal = () => {
+    openModal("ConfirmDeletionModal", {
+      onConfirm: onUserDeletion,
+      title: "Are you sure you want to Delete your self ?",
+    });
+  };
+
   useEffect(
     () => () => {
       // clear object url from browser
@@ -137,6 +165,13 @@ const ProfilePage = () => {
             </Stack>
           ))}
         </Stack>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => openDeletionConfirmModal()}
+        >
+          Deactive
+        </Button>
       </Box>
     </Box>
   );

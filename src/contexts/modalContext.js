@@ -1,8 +1,8 @@
 import { Box, Fade, Modal } from "@mui/material";
-import React, { createContext, useContext, useState } from "react";
-
+import { createContext, useContext, useState } from "react";
 import ReviewModal from "../components/ReviewModal";
 import ConfirmModal from "../components/ConfirmModal";
+import ConfirmDeletionModal from "../components/ConfirmDeletionModal";
 
 const style = {
   position: "absolute",
@@ -25,6 +25,7 @@ const ModalContext = createContext({
 const MODALS = {
   ReviewModal,
   ConfirmModal,
+  ConfirmDeletionModal,
 };
 const ModalProvider = ({ children }) => {
   const [modalConfig, setModalConfig] = useState({

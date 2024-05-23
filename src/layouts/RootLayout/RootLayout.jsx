@@ -1,5 +1,4 @@
 import { Box, Container, Stack } from "@mui/material";
-import React from "react";
 import { Aside, Navbar } from "../../components";
 import { Outlet } from "react-router-dom";
 import AsideProvider from "../../contexts/asideContext";

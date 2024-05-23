@@ -2,7 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 import { Box } from "@mui/material";
-import Unauthorized from "./Unauthorized";
+import UnAuthorized from "./UnAuthorized";
 
 const UNAUTHORIZED_MSGS = {
   NOT_ADMIN: "You can't access this page (Only admins) because it's protected",
@@ -44,10 +44,10 @@ const ProtectedRoute = ({
           placeItems: "center",
         }}
       >
-        <Unauthorized message={UNAUTHORIZED_MSGS[unauthorizedMsgKey]} />
+        <UnAuthorized message={UNAUTHORIZED_MSGS[unauthorizedMsgKey]} />
       </Box>
     ) : (
-      <Unauthorized message={UNAUTHORIZED_MSGS[unauthorizedMsgKey]} />
+      <UnAuthorized message={UNAUTHORIZED_MSGS[unauthorizedMsgKey]} />
     );
   }
   return <Outlet />;

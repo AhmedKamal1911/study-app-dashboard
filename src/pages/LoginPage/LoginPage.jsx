@@ -31,7 +31,7 @@ const LoginPage = () => {
       openSnackbar(`Logged in successfully, welcome back ${user.fullName}`);
       navigate(getUserBaseURL(user));
     } catch (e) {
-      openSnackbar(e.response.data.message, "error");
+      openSnackbar(e.response?.data.message ?? e.message, "error");
     }
   };
   return (

@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import Lottie from "lottie-react";
 import unauthorizedAnimationData from "../assets/lottiefiles-animations/unauthorized.json";
-const Unauthorized = ({ message }) => {
+const UnAuthorized = ({ message }) => {
   return (
     <Stack
       borderRadius="6px"
@@ -32,4 +32,4 @@ const Unauthorized = ({ message }) => {
   );
 };
 
-export default Unauthorized;
+export default UnAuthorized;

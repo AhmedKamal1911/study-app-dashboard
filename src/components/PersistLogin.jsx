@@ -1,14 +1,16 @@
 import { Stack } from "@mui/material";
 import fetchFromAPI from "../services/api";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { isCancel } from "axios";
 import { InfinitySpin } from "react-loader-spinner";
 import { getUserBaseURL } from "../routes/AppRouter";
 import { useAuth } from "../contexts/authContext";
+import useLogout from "../hooks/useLogout";
 
 const PersistLogin = () => {
   const { auth, setAuth } = useAuth();
+  const logout = useLogout();
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   useEffect(() => {
@@ -32,9 +34,8 @@ const PersistLogin = () => {
             // maybe it fails because of token expiration
             if (isCancel(e)) return;
             // if so
-            localStorage.removeItem("token");
+            logout();
             // navigate the user to the login page to be able to get new access token and remove the old token from local storage and set auth to empty
-            setAuth({ user: null, token: null });
             setIsLoading(false);
 
             // network error
@@ -51,7 +52,7 @@ const PersistLogin = () => {
     return () => {
       abortController?.abort("unmount");
     };
-  }, [auth, setAuth]);
+  }, [auth, setAuth, logout]);
   if (isLoading)
     return (
       <Stack
