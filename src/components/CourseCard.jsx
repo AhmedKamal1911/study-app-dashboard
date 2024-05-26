@@ -63,7 +63,7 @@ const CourseCard = ({
           sx={{
             color: "#FF8F3C",
             "& .css-1tv3chh-MuiRating-icon": {
-              color: "rgb(222 220 220)",
+              color: "rgb(222 ,220 ,220)",
             },
           }}
         />
