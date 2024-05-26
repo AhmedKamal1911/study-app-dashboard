@@ -62,8 +62,7 @@ const CourseCard = ({
           precision={0.5}
           sx={{
             color: "#FF8F3C",
-            // TODO:fix star color in light mode
-            "& .css-1tv3chh-MuiRating-icon": {
+            "& .MuiRating-iconEmpty": {
               color: "rgb(222 ,220 ,220)",
             },
           }}
