@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import withHelmet from "../../components/withHelmet";
 
@@ -18,8 +18,19 @@ const DeleteUserPage = () => {
         style={{
           maxWidth: "600px",
           width: "100%",
+          textAlign: "center",
         }}
-      ></div>
+      >
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          color="dark"
+          padding="10px"
+          bgcolor="primary.light"
+        >
+          In Progress
+        </Typography>
+      </div>
     </Box>
   );
 };

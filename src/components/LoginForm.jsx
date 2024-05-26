@@ -129,10 +129,7 @@ const LoginForm = ({ onLogin }) => {
           </Link>
         </Stack>
         <Button
-          fullWidth
-          sx={{
-            mt: 2,
-          }}
+          fullWidthsx={{ mt: 2 }}
           variant="contained"
           type="submit"
           disabled={formik.isSubmitting}
@@ -143,5 +140,4 @@ const LoginForm = ({ onLogin }) => {
     </Box>
   );
 };
-
 export default LoginForm;
