@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import withHelmet from "../../components/withHelmet";
 
@@ -22,6 +22,7 @@ const DeleteUserPage = () => {
         }}
       >
         <Typography
+          mb="10px"
           variant="h5"
           fontWeight="bold"
           color="dark"
@@ -30,6 +31,14 @@ const DeleteUserPage = () => {
         >
           In Progress
         </Typography>
+        <Button
+          variant="contained"
+          color="success"
+          LinkComponent={"a"}
+          href="https://histudy-dashboard.netlify.app/"
+        >
+          Back
+        </Button>
       </div>
     </Box>
   );

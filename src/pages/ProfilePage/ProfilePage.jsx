@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { InfoBoxWrapper } from "../../components";
+import { EditableField, InfoBoxWrapper } from "../../components";
 import { useAuth } from "../../contexts/authContext";
 import avatarImg from "../../assets/images/person.png";
 import { formatDate } from "../../utils";
@@ -20,6 +20,7 @@ const ProfilePage = () => {
   const profileInfo = [
     {
       info: "Registration Date",
+      isEditable: false,
       value: formatDate(user.createdAt, {
         month: "short",
         day: "2-digit",
@@ -28,16 +29,21 @@ const ProfilePage = () => {
         year: "numeric",
       }),
     },
-    { info: "First Name", value: firstName },
-    { info: "Last Name", value: lastName },
-    { info: "Username", value: user.username },
-    { info: "Email", value: user.email },
-    { info: "Skill/Occupation", value: "Application Developer" },
+    { info: "First Name", value: firstName, isEditable: true },
+    { info: "Last Name", value: lastName, isEditable: true },
+    { info: "Username", value: user.username, isEditable: true },
+    { info: "Email", value: user.email, isEditable: true },
+    {
+      info: "Skill/Occupation",
+      value: "Application Developer",
+      isEditable: true,
+    },
     ...(user.isInstructor
       ? [
           {
             info: "Biography",
             value: user.instructorDescription,
+            isEditable: true,
           },
         ]
       : []),
@@ -142,8 +148,8 @@ const ProfilePage = () => {
           ref={inputRef}
         />
 
-        <Stack gap={1}>
-          {profileInfo.map(({ info, value }) => (
+        <Stack gap={3}>
+          {profileInfo.map(({ info, value, isEditable }) => (
             <Stack
               key={info}
               alignItems="center"
@@ -155,17 +161,15 @@ const ProfilePage = () => {
                 color="dark"
                 fontWeight="bold"
                 minWidth={{ xs: "auto", md: "200px" }}
-                mb="20px"
               >
                 {`${info} :`}
               </Typography>
-              <Typography mb="20px" color="lightDark" variant="body1">
-                {value}
-              </Typography>
+              <EditableField initialText={value} isEditable={isEditable} />
             </Stack>
           ))}
         </Stack>
         <Button
+          sx={{ mt: "15px" }}
           variant="contained"
           color="error"
           onClick={() => openDeletionConfirmModal()}

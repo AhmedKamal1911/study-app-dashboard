@@ -18,6 +18,7 @@ export { default as StatsBox } from "./StatsBox";
 export { default as StatsTabs } from "./StatsTabs";
 export { default as DragZone } from "./DragZone";
 export { default as FieldError } from "./FieldError";
+export { default as EditableField } from "./EditableField";
 // Forms
 export { default as LoginForm } from "./LoginForm";
 
