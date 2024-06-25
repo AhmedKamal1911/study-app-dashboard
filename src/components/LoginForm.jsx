@@ -129,7 +129,6 @@ const LoginForm = ({ onLogin }) => {
           </Link>
         </Stack>
         <Button
-          fullWidthsx={{ mt: 2 }}
           variant="contained"
           type="submit"
           disabled={formik.isSubmitting}

@@ -1,13 +1,15 @@
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useFormik } from "formik";
 import { EditableField, InfoBoxWrapper } from "../../components";
 import { useAuth } from "../../contexts/authContext";
 import avatarImg from "../../assets/images/person.png";
 import { formatDate } from "../../utils";
 import withHelmet from "../../components/withHelmet";
 import fetchFromAPI from "../../services/api";
-import { useEffect, useRef, useState } from "react";
 import { useModal } from "../../contexts/modalContext";
 import useLogout from "../../hooks/useLogout";
+import profileValidationSchema from "../../validations/profileValidationSchema";
 
 const ProfilePage = () => {
   const {
@@ -16,7 +18,35 @@ const ProfilePage = () => {
   const logout = useLogout();
   const { openModal } = useModal();
   const [newImgUrl, setNewImgUrl] = useState("");
-  const [firstName, lastName] = user.fullName.split(" ");
+
+  const [initialValues, setInitialValues] = useState({
+    fullName: user.fullName || "",
+    username: user.username || "",
+    email: user.email || "",
+    instructorDescription: user.isInstructor ? user.instructorDescription : "",
+  });
+  const formik = useFormik({
+    initialValues,
+    enableReinitialize: true,
+    validationSchema: profileValidationSchema,
+
+    onSubmit: async (values) => {
+      // Handle form submission
+      try {
+        await fetchFromAPI({
+          url: `/${user.isInstructor ? "instructors" : "users"}`,
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: values,
+        });
+      } catch (e) {
+        console.log("eroor", e);
+      }
+    },
+  });
+  console.log(formik);
   const profileInfo = [
     {
       info: "Registration Date",
@@ -29,28 +59,58 @@ const ProfilePage = () => {
         year: "numeric",
       }),
     },
-    { info: "First Name", value: firstName, isEditable: true },
-    { info: "Last Name", value: lastName, isEditable: true },
-    { info: "Username", value: user.username, isEditable: true },
-    { info: "Email", value: user.email, isEditable: true },
     {
-      info: "Skill/Occupation",
-      value: "Application Developer",
+      info: "Full Name",
+      value: formik.values.fullName,
       isEditable: true,
+      name: "fullName",
+      id: "fullName",
+      error: formik.errors.fullName,
+      onChange: formik.handleChange,
+      onBlur: formik.handleBlur,
+    },
+    {
+      info: "Username",
+      value: formik.values.username,
+      isEditable: true,
+      name: "username",
+      id: "username",
+      error: formik.errors.username,
+      onChange: formik.handleChange,
+      onBlur: formik.handleBlur,
+    },
+    {
+      info: "Email",
+      value: formik.values.email,
+      isEditable: true,
+      name: "email",
+      id: "email",
+      error: formik.errors.email,
+      onChange: formik.handleChange,
+      onBlur: formik.handleBlur,
     },
     ...(user.isInstructor
       ? [
           {
             info: "Biography",
-            value: user.instructorDescription,
+            value: formik.values.instructorDescription,
             isEditable: true,
+            name: "instructorDescription",
+            id: "instructorDescription",
+            error: formik.errors.instructorDescription,
+            onChange: formik.handleChange,
+            onBlur: formik.handleBlur,
           },
         ]
       : []),
   ];
-  user.isInstructor && profileInfo.push();
   const inputRef = useRef(null);
-
+  useEffect(
+    () => () => {
+      if (newImgUrl) URL.revokeObjectURL(newImgUrl);
+    },
+    [newImgUrl]
+  );
   const handleUpdateImg = async (files) => {
     if (files.length === 0) return;
     const file = files[0];
@@ -87,20 +147,14 @@ const ProfilePage = () => {
       console.log(e, "error from unenroll");
     }
   };
+
   const openDeletionConfirmModal = () => {
     openModal("ConfirmDeletionModal", {
       onConfirm: onUserDeletion,
       title: "Are you sure you want to Delete your self ?",
     });
   };
-
-  useEffect(
-    () => () => {
-      // clear object url from browser
-      if (newImgUrl) URL.revokeObjectURL(newImgUrl);
-    },
-    [newImgUrl]
-  );
+  console.log(formik.errors.email);
   return (
     <Box
       p={4}
@@ -109,74 +163,104 @@ const ProfilePage = () => {
       borderRadius="8px"
       minHeight="83.4vh"
     >
-      <InfoBoxWrapper title={"Profile"} />
-      <Box mt={2}>
-        <label
-          htmlFor="image-input"
-          style={{
-            display: "block",
-            background: "gray",
-            maxWidth: "200px",
-            aspectRatio: "1",
-            borderRadius: "50%",
-            marginBottom: "20px",
-            outline: "4px groove #009688",
-            cursor: "pointer",
-            fontSize: 0,
-            marginInline: "auto",
-            userSelect: "none",
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={newImgUrl ? newImgUrl : user.avatar ?? avatarImg}
+      <InfoBoxWrapper title="Profile">
+        <Box>
+          <label
+            htmlFor="image-input"
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
+              display: "block",
+              background: "gray",
+              maxWidth: "200px",
+              aspectRatio: "1",
+              borderRadius: "50%",
+              marginBottom: "20px",
+              outline: "4px groove #009688",
+              cursor: "pointer",
+              fontSize: 0,
+              marginInline: "auto",
+              userSelect: "none",
+              overflow: "hidden",
             }}
-            alt="avatar"
+          >
+            <img
+              src={newImgUrl ? newImgUrl : user.avatar ?? avatarImg}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+              alt="avatar"
+            />
+          </label>
+          <input
+            onChange={(e) => handleUpdateImg(e.target.files)}
+            type="file"
+            name=""
+            id="image-input"
+            hidden
+            accept="image/*"
+            ref={inputRef}
           />
-        </label>
-        <input
-          onChange={(e) => handleUpdateImg(e.target.files)}
-          type="file"
-          name=""
-          id="image-input"
-          hidden
-          accept="image/*"
-          ref={inputRef}
-        />
 
-        <Stack gap={3}>
-          {profileInfo.map(({ info, value, isEditable }) => (
-            <Stack
-              key={info}
-              alignItems="center"
-              textAlign={{ xs: "center", md: "start" }}
-              flexDirection={{ xs: "column", md: "row" }}
-              gap={3}
-            >
-              <Typography
-                color="dark"
-                fontWeight="bold"
-                minWidth={{ xs: "auto", md: "200px" }}
-              >
-                {`${info} :`}
-              </Typography>
-              <EditableField initialText={value} isEditable={isEditable} />
-            </Stack>
-          ))}
-        </Stack>
-        <Button
-          sx={{ mt: "15px" }}
-          variant="contained"
-          color="error"
-          onClick={() => openDeletionConfirmModal()}
-        >
-          Deactive
-        </Button>
-      </Box>
+          <Stack gap={3}>
+            {profileInfo.map(
+              ({
+                info,
+                value,
+                isEditable,
+                name,
+                id,
+                error,
+                onChange,
+                onBlur,
+              }) => (
+                <Stack
+                  key={info}
+                  alignItems="center"
+                  textAlign={{ xs: "center", md: "start" }}
+                  flexDirection={{ xs: "column", md: "row" }}
+                  gap={3}
+                >
+                  <Typography
+                    color="dark"
+                    fontWeight="bold"
+                    minWidth={{ xs: "auto", md: "200px" }}
+                  >
+                    {`${info} :`}
+                  </Typography>
+                  {isEditable ? (
+                    <EditableField
+                      setInitialValues={setInitialValues}
+                      initialValue={formik.initialValues[name]}
+                      value={value}
+                      name={name}
+                      id={id}
+                      isEditable={isEditable}
+                      error={error}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      onSubmit={formik.handleSubmit}
+                      setFieldValue={formik.setFieldValue}
+                    />
+                  ) : (
+                    <Typography color="lightDark" variant="body1">
+                      {value}
+                    </Typography>
+                  )}
+                </Stack>
+              )
+            )}
+          </Stack>
+          <Button
+            sx={{ mt: "15px" }}
+            variant="contained"
+            color="error"
+            onClick={() => openDeletionConfirmModal()}
+          >
+            Deactive
+          </Button>
+        </Box>
+      </InfoBoxWrapper>
     </Box>
   );
 };
