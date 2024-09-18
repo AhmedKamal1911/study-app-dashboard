@@ -52,7 +52,7 @@ npm install
 Clone the project
 
 ```bash
-gh repo clone AhmedKamal1911/study-app-landing
+gh repo clone AhmedKamal1911/study-app-dashboard
 ```
 
 Go to the project directory
