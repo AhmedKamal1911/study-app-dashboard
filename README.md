@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+<p align="center">
+    <img  src="https://github.com/AhmedKamal1911/study-app-landing/blob/main/src/assets/images/logo.png" height="200"/>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+# Hi, I'm Ahmed! 
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+##  About Me
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+I’m a passionate front-end developer with a keen eye for detail and a love for creating beautiful, responsive, and user-friendly websites. I thrive in collaborative environments, where I can contribute to innovative projects that make a real impact. With a strong foundation in modern web technologies, I’m constantly exploring new frameworks, tools, and techniques to enhance my skills and deliver exceptional digital experiences. My goal is to build solutions that not only look great but also provide seamless functionality across all devices.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# HiStudy
 
-### `npm run build`
+HiStudy is a comprehensive dashboard platform designed for admins, students, and instructors. It features a secure login system with protected routes and enables users to perform full CRUD (Create, Read, Update, Delete) actions. The platform facilitates course management and user interactions, providing an efficient and user-friendly interface for managing educational content.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Client (Front-End):** ReactJS, Axios, Material UI 
+Check out more dependencies at: 
 
-### `npm run eject`
+https://github.com/AhmedKamal1911/study-app-dashboard/blob/main/package.json
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Features
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-Protected routes for secure access.
+-Login and logout system for authentication.
+-CRUD actions for all users (Admins, Students, Instructors).
+-Dark mode and light mode toggle.
+-Mobile-responsive design using media queries.
+-Contact section integrated with the HiStudy landing page.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Prerequisites
+This project uses **npm** as a package manager
+```bash
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+## Run Locally
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Clone the project
 
-### Code Splitting
+```bash
+gh repo clone AhmedKamal1911/study-app-landing
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Go to the project directory
 
-### Analyzing the Bundle Size
+```bash
+cd study-app-dashboard
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Install dependencies
 
-### Making a Progressive Web App
+```bash
+yarn
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Start the server
 
-### Advanced Configuration
+```bash
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+##Start the server
 
-### Deployment
+```bash
+npm run dev
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Deployment
+
+To deploy this project run
+
+```bash
+npm run build
+
+```
+## profile page
+
+![image](https://github.com/user-attachments/assets/a617f0f6-ffa6-455d-84a6-1b378f0d369f)
+
+
+## student Pages
+
+`My Courses Page`
+
+![image](https://github.com/user-attachments/assets/f287e190-f28e-4449-a26d-73e53aad0e29)
+
+
+![image](https://github.com/user-attachments/assets/fd77bd1c-00d2-48ea-8fb2-03a09b125450)
+
+![image](https://github.com/user-attachments/assets/9b6eced3-35bb-41e5-a3c6-7854629ff706)
+
+## Admin Pages
+
+`analyze Page`
+
+![image](https://github.com/user-attachments/assets/0da683d4-f0ec-4150-af2d-683cc7bca046)
+
+
+
+#### Where to find the movies api used?
+
+The Project API is built with Backend Developer and consumed by the client. You can check the Strapi API endpoints in the project for more details.
+
+https://educational-platform-nestjs-api.onrender.com/v1/
+
+#### What dependencies were used to develop the project?
+
+Check the full dependencies here: 
+https://github.com/AhmedKamal1911/study-app-dashboard/blob/main/package.json
+
+
