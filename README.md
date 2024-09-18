@@ -101,10 +101,6 @@ npm run build
 ![image](https://github.com/user-attachments/assets/f287e190-f28e-4449-a26d-73e53aad0e29)
 
 
-![image](https://github.com/user-attachments/assets/fd77bd1c-00d2-48ea-8fb2-03a09b125450)
-
-![image](https://github.com/user-attachments/assets/9b6eced3-35bb-41e5-a3c6-7854629ff706)
-
 ## Admin Pages
 
 `analyze Page`
