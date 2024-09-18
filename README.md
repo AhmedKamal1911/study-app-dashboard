@@ -28,15 +28,21 @@ https://github.com/AhmedKamal1911/study-app-dashboard/blob/main/package.json
 ## Features
 
 -Protected routes for secure access.
+
 -Login and logout system for authentication.
+
 -CRUD actions for all users (Admins, Students, Instructors).
+
 -Dark mode and light mode toggle.
+
 -Mobile-responsive design using media queries.
+
 -Contact section integrated with the HiStudy landing page.
 
 
 ## Prerequisites
 This project uses **npm** as a package manager
+
 ```bash
 npm install
 
