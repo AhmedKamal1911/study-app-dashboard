@@ -7,7 +7,7 @@ import { useModal } from "../../contexts/modalContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
 import useFetch from "../../hooks/useFetch";
 import usePaginateList from "../../hooks/usePagniateList";
-import { calculateReviewValue } from "../../utils";
+
 import withHelmet from "../../components/withHelmet";
 const UserCoursesPage = () => {
   const { auth } = useAuth();
@@ -28,10 +28,11 @@ const UserCoursesPage = () => {
     userCourses,
     8
   );
-
+  console.log(userCourses);
   const { closeModal } = useModal();
   const { openSnackbar } = useSnackbar();
   const onUnenroll = (courseSlug) => async () => {
+    console.log("slug ", courseSlug);
     try {
       await fetchFromAPI({
         url: `/courses/${courseSlug}/unenroll`,
@@ -42,15 +43,14 @@ const UserCoursesPage = () => {
       });
       refetchCourses();
       openSnackbar(`you unenrolled from course ${courseSlug} successfully.`);
-      console.log("slug ", courseSlug);
     } catch (e) {
       console.log(e, "error from unenroll");
     }
   };
-  const onDelete = (courseId) => async () => {
+  const onDelete = (courseSlug) => async () => {
     try {
       await fetchFromAPI({
-        url: `/courses/${courseId}`,
+        url: `/courses/${courseSlug}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -83,6 +83,48 @@ const UserCoursesPage = () => {
       openSnackbar("Failed to create review due to network error", "error");
     }
   };
+  const onReviewUpdate = (course) => async (reviewUpdatedInfo) => {
+    console.log(course.slug, "slug");
+    try {
+      await fetchFromAPI({
+        url: `/reviews/${course.reviews[0].id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+        data: reviewUpdatedInfo,
+      });
+
+      refetchCourses();
+
+      closeModal();
+
+      openSnackbar("Review Updated successfully.");
+    } catch (e) {
+      openSnackbar("Failed to Update review due to network error", "error");
+    }
+  };
+
+  const onReviewDelete = (course) => async () => {
+    try {
+      await fetchFromAPI({
+        url: `/reviews/${course.slug}/${course.reviews[0].id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+
+      refetchCourses();
+
+      closeModal();
+
+      openSnackbar("Review Deleted successfully.");
+    } catch (e) {
+      openSnackbar("Failed to Delete review due to network error", "error");
+    }
+  };
+
   return (
     <Box minHeight="100vh" p={3} bgcolor="background.paper" borderRadius="8px">
       <InfoBoxWrapper title="My Courses">
@@ -93,28 +135,20 @@ const UserCoursesPage = () => {
                 <>
                   <Grid container spacing={3}>
                     {coursesDataToShow?.map((course) => {
-                      const courseReviewValue = calculateReviewValue(
-                        course.reviews
-                      );
                       return (
                         <Grid key={course.id} xs={12} sm={6} md={4} lg={3}>
                           <Box
                             sx={{ "& > *": { height: "100%" }, height: "100%" }}
                           >
                             <CourseCard
+                              course={course}
                               onUnenroll={onUnenroll(course.slug)}
-                              hideReviewBtn={
-                                auth.user.isInstructor || course.hasReviewed
-                              }
+                              hideReviewBtn={auth.user.isInstructor}
                               hideUnenrollBtn={auth.user.isInstructor}
                               onReviewCreation={onReviewCreation(course.slug)}
-                              courseImg={course.thumbnails}
-                              reviewsCount={course.numberOfRatings}
-                              totalStudents={course.numberOfStudents}
-                              courseLink={course.courseLink}
-                              ratingValue={courseReviewValue}
-                              title={course.title}
-                              onDelete={onDelete(course.id)}
+                              onReviewUpdate={onReviewUpdate(course)}
+                              onReviewDelete={onReviewDelete(course)}
+                              onDelete={onDelete(course.slug)}
                               hideDeleteBtn={!auth.user.isInstructor}
                             />
                           </Box>

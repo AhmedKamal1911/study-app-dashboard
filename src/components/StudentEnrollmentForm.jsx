@@ -18,7 +18,9 @@ const StudentEnrollmentForm = ({ onEnrollment }) => {
     },
     validationSchema: enrollFormSchema,
     onSubmit: async (values) => {
-      await onEnrollment(values.enrolledCourse.slug);
+      const slug = values.enrolledCourse?.title?.split(" ").join("-");
+
+      await onEnrollment(slug);
       formik.setSubmitting(false);
     },
   });

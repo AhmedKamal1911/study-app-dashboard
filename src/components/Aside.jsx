@@ -15,7 +15,7 @@ import {
   CloudCircleRounded,
   ImportContacts,
 } from "@mui/icons-material";
-
+import VideoSettingsIcon from "@mui/icons-material/VideoSettings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAsideContext } from "../contexts/asideContext";
 import { useAuth } from "../contexts/authContext";
@@ -24,9 +24,14 @@ import { USER_AUTHORIZED_ROUTES, getUserType } from "../routes/AppRouter";
 const pagesButtons = [
   { name: "Analyze", icon: <ShowChart />, path: "/" },
   {
-    name: "Delete User",
+    name: "Manage Users",
     icon: <AppRegistrationRounded />,
-    path: "/delete-user",
+    path: "/manage-users",
+  },
+  {
+    name: "Manage Courses",
+    icon: <VideoSettingsIcon />,
+    path: "/manage-courses",
   },
   { name: "Create Course", icon: <Create />, path: "/create-course" },
   { name: "My Courses", icon: <OndemandVideo />, path: "/courses" },

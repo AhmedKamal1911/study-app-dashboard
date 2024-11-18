@@ -65,18 +65,27 @@ const PersistLogin = () => {
       </Stack>
     );
   const isLoginPage = location.pathname === "/login";
+  const isForgetPassowrdPage = location.pathname === "/forget-password";
+  const isPasswordVerifyCodePage =
+    location.pathname === "/password-verify-code";
   const isLoggedIn = Boolean(auth.token);
   const isUserLoggedIn = Boolean(auth.user);
 
   if (!isLoggedIn) {
-    if (isLoginPage) {
+    if (isLoginPage || isForgetPassowrdPage || isPasswordVerifyCodePage) {
+      console.log("in login page");
       return <Outlet />;
     } else {
+      console.log("not in login");
       return <Navigate to="/login" replace />;
     }
   }
 
-  if (isUserLoggedIn && isLoginPage) {
+  if (
+    (isUserLoggedIn && isLoginPage) ||
+    (isUserLoggedIn && isForgetPassowrdPage) ||
+    (isUserLoggedIn && isPasswordVerifyCodePage)
+  ) {
     return <Navigate to={getUserBaseURL(auth.user)} replace />;
   }
 

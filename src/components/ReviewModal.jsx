@@ -2,6 +2,7 @@ import { Button, Rating, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import reviewFormSchema from "../validations/reviewFormSchema";
 import { getFieldError } from "../utils";
+
 // React Component
 const ReviewModal = ({ onReviewCreation }) => {
   const formik = useFormik({
@@ -11,7 +12,9 @@ const ReviewModal = ({ onReviewCreation }) => {
     },
     validationSchema: reviewFormSchema,
     onSubmit: async (values) => {
+      console.log("create");
       await onReviewCreation(values);
+
       formik.setSubmitting(false);
     },
   });
@@ -25,6 +28,7 @@ const ReviewModal = ({ onReviewCreation }) => {
       <Stack gap={2}>
         <div>
           <Rating
+            disabled={formik.isSubmitting}
             name="rating"
             id="rating"
             value={formik.values.rating}

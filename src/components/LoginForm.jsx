@@ -22,6 +22,7 @@ import { getFieldError } from "../utils";
 const LoginForm = ({ onLogin }) => {
   const [userType, setUserType] = useState("user");
   const rememberMeCheckRef = useRef(null);
+
   const formik = useFormik({
     initialValues: {
       username: "",

@@ -9,7 +9,7 @@ const CustomSelectField = ({
   onBlur,
   value,
   defaultValue = "",
-  controlled = false,
+  controlled = true,
 }) => {
   const idForLabel = useId();
   const idForSelect = useId();

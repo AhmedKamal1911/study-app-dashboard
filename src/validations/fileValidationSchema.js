@@ -1,8 +1,15 @@
 import * as Yup from "yup";
-const generateFileValidationSchema = (sizeInMB = 2.5, imageType = "Course") => {
+const generateFileValidationSchema = (
+  sizeInMB = 2.5,
+  imageType = "Course",
+  isRequired
+) => {
   return Yup.mixed()
-    .required(`${imageType} image is required`)
+    [isRequired ? "required" : "nullable"](
+      isRequired ? `${imageType} image is required` : undefined
+    )
     .test("fileType", "Invalid file type, file must be an image", (value) => {
+      if (!isRequired && !value) return true;
       const acceptedTypes = [
         "image/jpeg",
         "image/png",
@@ -15,6 +22,7 @@ const generateFileValidationSchema = (sizeInMB = 2.5, imageType = "Course") => {
       "fileSize",
       `${imageType} Image is too large, must be maximum of ${sizeInMB} MB`,
       (value) => {
+        if (!isRequired && !value) return true;
         const maxFileSizeInMB = sizeInMB;
         const selectedFileSizeInMB = value.size / (1024 * 1024);
         return selectedFileSizeInMB <= maxFileSizeInMB;

@@ -12,6 +12,7 @@ const CreateCoursePage = () => {
   const { openSnackbar } = useSnackbar();
   const { auth } = useAuth();
   const onCourseCreation = async (data) => {
+    console.log(data, "datatatatat");
     try {
       await fetchFromAPI({
         url: "/courses",
@@ -33,7 +34,7 @@ const CreateCoursePage = () => {
   return (
     <Box p={3} bgcolor="background.paper" borderRadius="8px">
       <InfoBoxWrapper title="Create New Course">
-        <CreateCourseForm onCourseCreation={onCourseCreation} />
+        <CreateCourseForm onCourseCreation={onCourseCreation} course={{}} />
       </InfoBoxWrapper>
     </Box>
   );

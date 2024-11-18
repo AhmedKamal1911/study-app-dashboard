@@ -19,11 +19,17 @@ export { default as StatsTabs } from "./StatsTabs";
 export { default as DragZone } from "./DragZone";
 export { default as FieldError } from "./FieldError";
 export { default as EditableField } from "./EditableField";
+export { default as TableError } from "./TableError";
+export { default as CourseReviewCard } from "./CourseReviewCard";
+export { default as EmptyBox } from "./EmptyBox";
 // Forms
 export { default as LoginForm } from "./LoginForm";
 
 export { default as CreateCourseForm } from "./CreateCourseForm";
 export { default as StudentEnrollmentForm } from "./StudentEnrollmentForm";
+// Tables
+export { default as UsersTable } from "./UsersTable";
+export { default as CoursesTable } from "./CoursesTable";
 
 // Utils components (only has logic)
 export { default as Loading } from "./Loading";

@@ -5,47 +5,43 @@ import {
   FormControlLabel,
   MenuItem,
   Stack,
-
-  // createFilterOptions,
 } from "@mui/material";
-
-// import CustomAutoComplete from './CustomAutoComplete';
 import { useFormik } from "formik";
 import createCourseFormSchema, {
-  fileValidationSchema,
+  fileValidationSchemaNotReq,
+  fileValidationSchemaReq,
 } from "../validations/createCourseFormSchema";
 import { useRef } from "react";
 import { getFieldError } from "../utils";
 import { FieldError, CustomSelectField, DragZone, CustomTextField } from ".";
 
-// const instructorFilterOptions = createFilterOptions({
-//   matchFrom: 'any',
-//   stringify: (option) => `${option.id} ${option.fullName}`,
-// });
-
-// Helper Function
 function removeExtraSpacesAndNewlines(str) {
   return str.trim().replace(/\s*\n\s*/g, "\n");
 }
-// React Component
-const CreateCourseForm = ({ onCourseCreation }) => {
-  // Component Logic
-  const isCertifiedInputRef = useRef(null);
+
+const CreateCourseForm = ({
+  onCourseCreation,
+  course = {},
+  fileRequired = true,
+}) => {
   const imageBlobURLRef = useRef("");
   const formRef = useRef(null);
+
   const formik = useFormik({
     initialValues: {
       file: null,
-      title: "",
-      courseLink: "",
-      category: "",
-      courseDescription: "",
-      prerequisites: "",
-      whatYouWillLearn: "",
-      language: "",
-      skillLevel: "",
+      title: course?.title ?? "",
+      courseLink: course?.courseLink ?? "",
+      category: course?.category ?? "",
+      courseDescription: course?.courseDescription ?? "",
+      prerequisites: course?.prerequisites ?? "",
+      whatYouWillLearn: course?.whatYouWillLearn ?? "",
+      language: course?.language ?? "",
+      skillLevel: course?.skillLevel ?? "",
+      isCertified: course?.isCertified ?? false,
     },
-    validationSchema: createCourseFormSchema,
+    enableReinitialize: true,
+    validationSchema: createCourseFormSchema(fileRequired),
     onSubmit: async (values) => {
       const formData = new FormData(formRef.current);
       formData.set(
@@ -57,7 +53,8 @@ const CreateCourseForm = ({ onCourseCreation }) => {
         removeExtraSpacesAndNewlines(values.prerequisites)
       );
       formData.set("courseLink", values.courseLink);
-      formData.set("isCertified", isCertifiedInputRef.current.checked);
+      formData.set("isCertified", values.isCertified.toString());
+      if (formik.values.file === null) formData.delete("file");
       try {
         await onCourseCreation(formData);
         if (imageBlobURLRef.current) {
@@ -72,14 +69,16 @@ const CreateCourseForm = ({ onCourseCreation }) => {
   const onFileInputChange = (file) => {
     formik.setFieldValue("file", file ?? null);
   };
+
   const onFileDrop = (files, onDropSuccess) => {
     if (files.length > 1) {
-      formik.setFieldError("file", "You cant drop more than 1 image");
+      formik.setFieldError("file", "You can't drop more than 1 image");
     } else {
       onDropSuccess(files[0]);
     }
   };
-  // Component UI
+  // console.log(formik.values.category, "category");
+
   return (
     <Box borderRadius={2}>
       <form onSubmit={formik.handleSubmit} ref={formRef}>
@@ -88,11 +87,16 @@ const CreateCourseForm = ({ onCourseCreation }) => {
           <DragZone
             name="file"
             error={getFieldError(formik, "file")}
-            fileValidationSchema={fileValidationSchema}
+            fileValidationSchema={
+              fileRequired
+                ? fileValidationSchemaReq
+                : fileValidationSchemaNotReq
+            }
             onChange={onFileInputChange}
             onDrop={onFileDrop}
             onBlur={formik.handleBlur}
             imageBlobURLRef={imageBlobURLRef}
+            initialImg={course?.thumbnails ?? ""}
           />
           <div>
             <CustomTextField
@@ -110,7 +114,7 @@ const CreateCourseForm = ({ onCourseCreation }) => {
           </div>
           <div>
             <CustomSelectField
-              label="Course category"
+              label={"Course category"}
               name="category"
               value={formik.values.category}
               onChange={formik.handleChange}
@@ -119,7 +123,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
               <MenuItem value="backend">Back End</MenuItem>
               <MenuItem value="fullStack">Full Stack</MenuItem>
             </CustomSelectField>
-
             <FieldError errorText={getFieldError(formik, "category")} />
           </div>
           <div>
@@ -150,7 +153,6 @@ const CreateCourseForm = ({ onCourseCreation }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-
             <FieldError errorText={getFieldError(formik, "courseLink")} />
           </div>
           <div>
@@ -212,12 +214,12 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             </CustomSelectField>
             <FieldError errorText={getFieldError(formik, "language")} />
           </div>
-
           <FormControlLabel
             control={
               <Checkbox
                 name="isCertified"
-                inputRef={isCertifiedInputRef}
+                checked={formik.values.isCertified}
+                onChange={formik.handleChange}
                 id="isCertified"
               />
             }
@@ -227,8 +229,8 @@ const CreateCourseForm = ({ onCourseCreation }) => {
             }}
             label="Certified Course"
           />
+          <FieldError errorText={getFieldError(formik, "isCertified")} />
         </Stack>
-
         <Button
           fullWidth
           sx={{

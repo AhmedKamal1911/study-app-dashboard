@@ -10,3 +10,9 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* *,
+*::after,
+*::before {
+  outline: 1px solid red;
+} */

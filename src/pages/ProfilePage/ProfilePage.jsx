@@ -11,10 +11,12 @@ import { useModal } from "../../contexts/modalContext";
 import useLogout from "../../hooks/useLogout";
 import profileValidationSchema from "../../validations/profileValidationSchema";
 
+import { Edit } from "@mui/icons-material";
 const ProfilePage = () => {
   const {
     auth: { user, token },
   } = useAuth();
+  console.log(user);
   const logout = useLogout();
   const { openModal } = useModal();
   const [newImgUrl, setNewImgUrl] = useState("");
@@ -32,6 +34,15 @@ const ProfilePage = () => {
 
     onSubmit: async (values) => {
       // Handle form submission
+      console.log(values, "values");
+      const dataWithInstructorDesc = user.isInstructor
+        ? values
+        : {
+            fullName: values.fullName,
+            username: values.username,
+            email: values.email,
+          };
+
       try {
         await fetchFromAPI({
           url: `/${user.isInstructor ? "instructors" : "users"}`,
@@ -39,14 +50,15 @@ const ProfilePage = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          data: values,
+          data: dataWithInstructorDesc,
         });
+        console.log("done");
       } catch (e) {
         console.log("eroor", e);
       }
     },
   });
-  console.log(formik);
+
   const profileInfo = [
     {
       info: "Registration Date",
@@ -62,7 +74,7 @@ const ProfilePage = () => {
     {
       info: "Full Name",
       value: formik.values.fullName,
-      isEditable: true,
+      isEditable: false,
       name: "fullName",
       id: "fullName",
       error: formik.errors.fullName,
@@ -72,7 +84,7 @@ const ProfilePage = () => {
     {
       info: "Username",
       value: formik.values.username,
-      isEditable: true,
+      isEditable: false,
       name: "username",
       id: "username",
       error: formik.errors.username,
@@ -131,6 +143,22 @@ const ProfilePage = () => {
     } catch (e) {}
   };
 
+  const onUserAvatarDeletion = async () => {
+    try {
+      await fetchFromAPI({
+        url: `${user.isInstructor ? "/instructors/avatar" : "/users/avatar"}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setNewImgUrl("");
+      console.log("endpoint");
+    } catch (e) {
+      console.log(e, "error from unenroll");
+    }
+  };
+
   const onUserDeletion = async () => {
     try {
       await fetchFromAPI({
@@ -154,7 +182,13 @@ const ProfilePage = () => {
       title: "Are you sure you want to Delete your self ?",
     });
   };
-  console.log(formik.errors.email);
+  const openAvatarDeletionConfirmModal = () => {
+    openModal("ConfirmModal", {
+      onConfirm: onUserAvatarDeletion,
+      title: "Are you sure you want to Delete your avatar?",
+    });
+  };
+
   return (
     <Box
       p={4}
@@ -165,33 +199,74 @@ const ProfilePage = () => {
     >
       <InfoBoxWrapper title="Profile">
         <Box>
-          <label
-            htmlFor="image-input"
-            style={{
-              display: "block",
-              background: "gray",
-              maxWidth: "200px",
-              aspectRatio: "1",
-              borderRadius: "50%",
-              marginBottom: "20px",
-              outline: "4px groove #009688",
-              cursor: "pointer",
-              fontSize: 0,
-              marginInline: "auto",
-              userSelect: "none",
-              overflow: "hidden",
+          <Box
+            sx={{
+              position: "relative",
+              width: "fit-content",
+              marginX: "auto",
+              "&:hover Button": {
+                opacity: 1,
+              },
             }}
           >
-            <img
-              src={newImgUrl ? newImgUrl : user.avatar ?? avatarImg}
+            <label
+              htmlFor="image-input"
               style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
+                display: "block",
+                background: "gray",
+                maxWidth: "200px",
+                aspectRatio: "1",
+                borderRadius: "50%",
+                marginBottom: "20px",
+                outline: "4px groove #009688",
+                cursor: "pointer",
+                fontSize: 0,
+                marginInline: "auto",
+                userSelect: "none",
+                overflow: "hidden",
               }}
-              alt="avatar"
-            />
-          </label>
+            >
+              <img
+                src={newImgUrl ? newImgUrl : user.avatar ?? avatarImg}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+                alt="avatar"
+              />
+            </label>
+            <Button
+              disabled={user.avatar || newImgUrl ? false : true}
+              onClick={() => openAvatarDeletionConfirmModal()}
+              variant="contained"
+              size="small"
+              sx={{
+                position: "absolute",
+                zIndex: "999",
+                left: "-5px",
+                top: "-5px",
+                minWidth: "30px",
+                minHeight: "30px",
+                borderRadius: "50%",
+                padding: "8px",
+                opacity: "0",
+                transition: "0.3s all",
+                ":hover": {
+                  backgroundColor: "Highlight",
+                },
+              }}
+            >
+              <Edit
+                sx={{
+                  // color: user.avatar || newImgUrl ? "red" : "gray",
+                  color: "white",
+                  fontSize: "25px",
+                }}
+              />
+            </Button>
+          </Box>
+
           <input
             onChange={(e) => handleUpdateImg(e.target.files)}
             type="file"

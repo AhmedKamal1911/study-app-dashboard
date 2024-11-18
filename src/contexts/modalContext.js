@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 import ReviewModal from "../components/ReviewModal";
 import ConfirmModal from "../components/ConfirmModal";
 import ConfirmDeletionModal from "../components/ConfirmDeletionModal";
+import UpdateReviewModal from "../components/UpdateReviewModal";
 
 const style = {
   position: "absolute",
@@ -24,6 +25,7 @@ const ModalContext = createContext({
 });
 const MODALS = {
   ReviewModal,
+  UpdateReviewModal,
   ConfirmModal,
   ConfirmDeletionModal,
 };
